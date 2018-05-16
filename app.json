@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/produce/produce",
+    "pages/own/own"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#00abff",
+    "navigationBarTitleText": "美丽说",
+    "navigationBarTextStyle": "black",
+    "navigationStyle":"default",
+    "backgroundColor":"#ffffff",
+    "backgroundColorTop":"#ffffff",
+    "backgroundColorBottom":"#ffffff",
+    "enablePullDownRefresh":true,
+    "onReachBottomDistance":50
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#000000",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+         "iconPath": "resource/images/tabBar/browse.png",
+         "selectedIconPath": "resource/images/tabBar/browse_fill.png",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/produce/produce",
+        "iconPath": "resource/images/tabBar/添加.png",
+        "selectedIconPath": "resource/images/tabBar/添加.png",
+        "text": "开始创作"
+      },
+      {
+        "pagePath": "pages/own/own",
+        "iconPath": "resource/images/tabBar/people.png",
+        "selectedIconPath": "resource/images/tabBar/people_fill.png",
+        "text": "我的"
+      }
+    ],
+    "position": "bottom"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 60000,
+    "uploadFile": 60000,
+    "downloadFile": 10000
+  },
+  "debug": true
+}
