@@ -1,0 +1,25 @@
+/* template/articleTp.wxss */
+
+/* @import "../app.wxss"; */
+
+.art-tp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin: 15rpx 15rpx 20rpx 15rpx;
+  background: #fff;
+  border: 2px;
+  box-sizing: border-box;
+  height: 500rpx;
+}
+
+/* .art-tp-container art-tp-title{
+
+} */
+
+.art-tp-bottom {
+  width: 100%;
+  /* background: red; */
+  text-align: right;
+  font-size: 0.8em;
+}

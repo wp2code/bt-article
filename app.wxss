@@ -9,7 +9,7 @@
   box-sizing: border-box;
 } 
 /* font-awesome */
-/*!
+/*! http://www.fontawesome.com.cn/faicons/
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
@@ -440,6 +440,9 @@
   content: "\f053";
 }
 .fa-chevron-right:before {
+  content: "\f054";
+}
+.fa-chevron-right-at:after {
   content: "\f054";
 }
 .fa-plus-circle:before {
@@ -913,6 +916,9 @@
 .fa-angle-double-right:before {
   content: "\f101";
 }
+.fa-angle-double-right-at:after {
+  content: "\f101";
+}
 .fa-angle-double-up:before {
   content: "\f102";
 }
@@ -923,6 +929,9 @@
   content: "\f104";
 }
 .fa-angle-right:before {
+  content: "\f105";
+}
+.fa-angle-right-at:after {
   content: "\f105";
 }
 .fa-angle-up:before {
@@ -2349,6 +2358,8 @@
   overflow: visible;
   clip: auto;
 }
+/**********模板样式**********/
+@import "template/articleTp.wxss";
 
 
 

@@ -1,0 +1,17 @@
+<template name="articleTp">
+  <navigator url='../article/article?artId={{item.artId}}'>
+    <view class='fa fa-border art-tp-container'>
+      <view class='fa art-tp-title'>
+        <text class='fa  fa-angle-double-right-at'>{{item.artTitle}} </text>
+      </view>
+      <view>
+        <image src="{{item.artImagePath}}" mode='aspectFill'></image>
+      </view>
+      <view class='fa art-tp-bottom'>
+        <text space="nbsp">{{item.read!=null && item.read>0 ? item.read:0}}阅读  </text>
+        <text space="nbsp">{{item.comment!=null && item.comment>0 ? item.comment : 0}}评论  </text>
+        <text>{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>
+      </view>
+    </view>
+  </navigator>
+</template>

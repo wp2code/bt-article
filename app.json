@@ -3,19 +3,20 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/produce/produce",
-    "pages/own/own"
+    "pages/own/own",
+    "pages/article/article"
   ],
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#00abff",
     "navigationBarTitleText": "美丽说",
     "navigationBarTextStyle": "black",
-    "navigationStyle":"default",
-    "backgroundColor":"#ffffff",
-    "backgroundColorTop":"#ffffff",
-    "backgroundColorBottom":"#ffffff",
-    "enablePullDownRefresh":true,
-    "onReachBottomDistance":50
+    "navigationStyle": "default",
+    "backgroundColor": "#ffffff",
+    "backgroundColorTop": "#dfdfdf",
+    "backgroundColorBottom": "#ffffff",
+    "enablePullDownRefresh": true,
+    "onReachBottomDistance": 50
   },
   "tabBar": {
     "color": "#999999",
@@ -25,8 +26,8 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-         "iconPath": "resource/images/tabBar/browse.png",
-         "selectedIconPath": "resource/images/tabBar/browse_fill.png",
+        "iconPath": "resource/images/tabBar/browse.png",
+        "selectedIconPath": "resource/images/tabBar/browse_fill.png",
         "text": "发现"
       },
       {

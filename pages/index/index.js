@@ -6,11 +6,20 @@ Page({
   data: {
     motto: 'Hello World',
     userInfo: {},
+    artItems: [{
+      artId: 1,
+      artTitle: "标题1",
+      artImagePath: null
+    }, {
+      artId: 2,
+      artTitle: "标题2",
+      artImagePath: null
+    }],
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   //事件处理函数
-  bindViewTap: function() {
+  bindViewTap: function () {
     wx.navigateTo({
       url: '../logs/logs'
     })
@@ -21,7 +30,7 @@ Page({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       })
-    } else if (this.data.canIUse){
+    } else if (this.data.canIUse) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
@@ -43,7 +52,54 @@ Page({
       })
     }
   },
-  getUserInfo: function(e) {
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
+  },
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+    console.log("当前页面 " + this.route)
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  // onReachBottom: function () {
+
+  // },
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    // return {
+    //   title: '自定义转发标题',
+    //   path: '/pages/index/index'
+    // }
+  },
+  getUserInfo: function (e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
