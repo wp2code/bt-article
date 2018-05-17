@@ -1,22 +1,62 @@
 /* pages/own/own.wxss */
 
-.userinfo {
+.own-info {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-image:url("");
+  background: blue;
 }
 
-.userinfo-avatar {
+.own-info-avatar {
   width: 128rpx;
   height: 128rpx;
   margin: 20rpx;
   border-radius: 50%;
 }
 
-.userinfo-nickname {
+.own-info-nickname {
   color: #aaa;
 }
 
-.usermotto {
-  margin-top: 200px;
+.own-panel {
+  display: flex;
+  flex-direction: row;
+  background: red;
+  align-items: center;
+  /* justify-content:center; */
+}
+
+.own-panel > view {
+  margin: 10px;
+}
+
+.own-p-subscriber {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2em;
+  color: #fff;
+  /* background: yellow; */
+}
+
+.own-p-fans {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.2em;
+  color: #fff;
+  /* background: green; */
+}
+
+.own-p-divided {
+  float: left;
+  width: 1px;
+  height: 25px;
+  background: #fff;
+}
+
+.own-bar {
+  font-size: 0.8em;
+  color: #fff;
 }

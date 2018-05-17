@@ -1,6 +1,6 @@
 /**index.wxss**/
 page{
-  background: #fffafa ;
+  background: #ffffff ;
 }
 .userinfo {
   display: flex;

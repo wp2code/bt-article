@@ -1,8 +1,25 @@
 <!--pages/own/own.wxml-->
-<view class='userinfo'>
-<button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGetUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
+<wxs src="./../../wxs/own.wxs" module="ownWxs" />
+<view class='own-info'>
+  <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGetUserInfo"> 获取头像昵称 </button>
+  <block wx:else>
+    <image bindtap="bindViewTap" class="own-info-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+    <text class="own-info-nickname">{{userInfo.nickName}}</text>
+  </block>
+  <view class='own-panel'>
+    <view class='own-p-subscriber'>
+      <text>{{own.subscriber!=null && own.subscriber>0 ? own.subscriber:0}}</text>
+      <text>关注</text>
+    </view>
+    <label class='own-p-divided'></label>
+    <view class='own-p-fans'>
+      <text>{{own.fans!=null && own.fans>0 ? own.fans:0}}</text>
+      <text>粉丝</text>
+    </view>
+  </view>
+  <view>
+    <text class='own-bar'>{{ownWxs.bar(2,1,10)}}</text>
+  </view>
 </view>
+<import src="../../template/articleTp.wxml" />
+<template wx:for="{{artItems}}" is="articleTp"  wx:key="key" data="{{item}}"></template>

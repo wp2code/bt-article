@@ -7,6 +7,15 @@ Page({
    */
   data: {
     userInfo:{},
+    artItems: [{
+      artId: 1,
+      artTitle: "标题1",
+      artImagePath: null
+    }, {
+      artId: 2,
+      artTitle: "标题2",
+      artImagePath: null
+    }],
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },

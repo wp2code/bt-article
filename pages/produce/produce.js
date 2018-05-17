@@ -5,7 +5,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-  
+    artItems: [{
+      artId: 1,
+      artTitle: "标题1",
+      artImagePath: null
+    }]
   },
 
   /**

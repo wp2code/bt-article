@@ -1,2 +1,3 @@
 <!--pages/produce/produce.wxml-->
-<text>pages/produce/produce.wxml</text>
+<import src="../../template/articleTp.wxml" />
+<template wx:for="{{artItems}}" is="articleTp"  wx:key="key" data="{{item}}"></template>

@@ -1,0 +1,19 @@
+var artNum=picNum=visitorNum = 0;
+
+var bar = function (artNum, picNum, visitorNum) {
+  if(artNum>0){
+    this.artNum = artNum;
+  }
+  if (picNum>0){
+    this.picNum = picNum;
+  }
+  if (visitorNum>0){
+    this.visitorNum = visitorNum;
+  }
+  return "创作" + artNum + "篇文章，发布" + picNum + "张照片，被访问" + visitorNum + "次";
+}
+module.exports.bar = bar;
+// module.exports = {
+//   FOO: foo,
+//   bar: bar,
+// };
