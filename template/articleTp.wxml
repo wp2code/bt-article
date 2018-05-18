@@ -1,3 +1,4 @@
+<!-- 发现小文章模板 -->
 <template name="articleTp">
   <navigator url='../article/article?artId={{item.artId}}'>
     <view class='fa fa-border art-tp-container'>
@@ -9,6 +10,27 @@
         <image src="{{item.artImagePath}}" mode='scaleToFill'></image>
       </view>
       <view class='flex-item art-tp-bottom'>
+        <text space="nbsp">{{item.read!=null && item.read>0 ? item.read:0}}阅读  </text>
+        <text space="nbsp">{{item.comment!=null && item.comment>0 ? item.comment : 0}}评论</text>
+        <text>{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>
+      </view>
+    </view>
+  </navigator>
+</template>
+<!-- 我的小文章模板 -->
+<template name="ownArticleTp">
+  <navigator url='../article/article?artId={{item.artId}}'>
+    <view class='fa fa-border art-tp-container'>
+      <view class='flex-item art-tp-title'>
+        <text>{{item.artTitle}}</text>
+        <label class='fa-angle-double-right-at'></label>
+      </view>
+      <view class='flex-item art-tp-image'>
+        <image src="{{item.artImagePath}}" mode='scaleToFill'></image>
+      </view>
+
+      <view class='flex-item ownart-tp-bottom'>
+            <text>2018-09-01</text>
         <text space="nbsp">{{item.read!=null && item.read>0 ? item.read:0}}阅读  </text>
         <text space="nbsp">{{item.comment!=null && item.comment>0 ? item.comment : 0}}评论</text>
         <text>{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>

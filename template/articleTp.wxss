@@ -50,3 +50,11 @@
   font-size: 0.8em;
   padding-top: 1ch;
 }
+
+.ownart-tp-bottom {
+  height: 10%;
+  /* justify-content: space-around; */
+  background: red;
+  font-size: 0.8em;
+  padding-top: 1ch;
+}
