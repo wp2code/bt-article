@@ -1,0 +1,34 @@
+/* pages/components/bar-ct.wxss */
+
+.bar-ct-m1 {
+  display: flex;
+  flex-direction: row;
+  background: green;
+  justify-content: space-between;
+  width: 100px;
+}
+
+.bar-ct-left-m1 {
+  /* background: red; *//* align-self: left; */
+}
+
+.bar-ct-right-m1 {
+  /* background: red; *//* align-self: left; */
+}
+
+.bar-ct-m2 {
+  display:inline-table;
+  width: 50%;
+  flex-direction: row;
+  background: green;
+  justify-content: space-around;
+  /* position: relative; */
+}
+
+.bar-ct-left-m2 {
+  /* background: red; *//* flex-direction: row; *//* align-self: left; */
+}
+
+.bar-ct-right-m2 {
+  /* background: red; *//* align-self: left; */
+}

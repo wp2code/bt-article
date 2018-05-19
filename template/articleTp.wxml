@@ -30,7 +30,9 @@
       </view>
 
       <view class='flex-item ownart-tp-bottom'>
-            <text>2018-09-01</text>
+        <view>
+          <text>{{item.updateTime}}</text>
+        </view>
         <text space="nbsp">{{item.read!=null && item.read>0 ? item.read:0}}阅读  </text>
         <text space="nbsp">{{item.comment!=null && item.comment>0 ? item.comment : 0}}评论</text>
         <text>{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>

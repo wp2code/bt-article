@@ -20,6 +20,11 @@
   <view>
     <text class='own-bar'>{{ownWxs.bar(2,1,10)}}</text>
   </view>
+  <!-- <bar bar-style="color:red;background:#fff;width:100px"></bar> -->
+  <bar bar-model='m2'>
+    <text slot="left">left</text>
+    <text slot="right">right</text>
+  </bar>
 </view>
 <import src="../../template/articleTp.wxml" />
 <template wx:for="{{artItems}}" is="ownArticleTp"  wx:key="key" data="{{item}}"></template>
