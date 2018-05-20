@@ -2,11 +2,17 @@
 <template name="articleTp">
   <navigator url='../article/article?artId={{item.artId}}'>
     <view class='fa fa-border art-tp-container'>
-      <view class='flex-item art-tp-title'>
-        <text>{{item.artTitle}}</text>
-        <label class='fa-angle-double-right-at'></label>
+      <view class='flex-item art-tp-head1'>
+        <view>
+          <label>
+            {{item.artTitle}}
+          </label>
+        </view>
+        <view>
+          <label class='fa-angle-double-right-at'></label>
+        </view>
       </view>
-      <view class='flex-item art-tp-image'>
+      <view class='flex-item art-tp-middle'>
         <image src="{{item.artImagePath}}" mode='scaleToFill'></image>
       </view>
       <view class='flex-item art-tp-bottom'>
@@ -17,26 +23,86 @@
     </view>
   </navigator>
 </template>
+
+<!-- 创作小文章模板 -->
+<template name="createArticleTp">
+  <view class='art-tp-prd'>
+    <view class='tp-prd-rk'>
+      <view>
+        <label>{{item.remark1}}</label>
+      </view>
+      <view>
+        <label>{{item.remark2}}</label>
+      </view>
+    </view>
+    <navigator url='../article/create'>
+      <view class='tp-prd-beg'>
+        <view class='prd-icon'>
+          <image src='../../resource/images/icons/加号.png'></image>
+        </view>
+        <label>开始创作</label>
+      </view>
+    </navigator>
+  </view>
+</template>
 <!-- 我的小文章模板 -->
 <template name="ownArticleTp">
   <navigator url='../article/article?artId={{item.artId}}'>
     <view class='fa fa-border art-tp-container'>
-      <view class='flex-item art-tp-title'>
-        <text>{{item.artTitle}}</text>
-        <label class='fa-angle-double-right-at'></label>
+      <!-- 模板头部信息 -->
+      <view class='flex-item art-tp-head'>
+        <view>
+          <view>
+            <label>
+              {{item.artLimit}}
+            </label>
+          </view>
+        </view>
+        <view>
+          <label>
+            {{item.artTitle}}
+          </label>
+        </view>
+        <view>
+          <label class='fa-angle-double-right-at'></label>
+        </view>
       </view>
-      <view class='flex-item art-tp-image'>
+      <!-- 模板中部图片 -->
+      <view class='flex-item art-tp-middle'>
         <image src="{{item.artImagePath}}" mode='scaleToFill'></image>
       </view>
-
+      <!-- 模板底部信息 -->
       <view class='flex-item ownart-tp-bottom'>
+        <!-- <bar bar-model='m1' bar-background="green">
+          <view slot="left">
+            <text>{{item.updateTime}}2018-09-09</text>
+          </view>
+          <view slot="right">
+            <text space="nbsp">{{item.read!=null && item.read>0 ? item.read:0}}阅读  </text>
+            <text space="nbsp">{{item.comment!=null && item.comment>0 ? item.comment : 0}}评论</text>
+            <text>{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>
+          </view>
+        </bar> -->
         <view>
-          <text>{{item.updateTime}}</text>
+          <text>{{item.updateTime}}2018-09-09</text>
         </view>
-        <text space="nbsp">{{item.read!=null && item.read>0 ? item.read:0}}阅读  </text>
-        <text space="nbsp">{{item.comment!=null && item.comment>0 ? item.comment : 0}}评论</text>
-        <text>{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>
+        <view>
+          <text space="nbsp">{{item.read!=null && item.read>0 ? item.read:0}}阅读  </text>
+          <text space="nbsp">{{item.comment!=null && item.comment>0 ? item.comment : 0}}评论</text>
+          <text>{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>
+        </view>
       </view>
     </view>
   </navigator>
+</template>
+<!-- 编辑小文章模板 -->
+<template name="editArtTp">
+  <view class='art-tp-panel'>
+    <view class='art-tp-img'>
+      <image src='{{item.artImagePath}}'></image>
+    </view>
+    <view class='art-tp-cxt'>
+      <textarea>{{item.artContext}}</textarea>
+    </view>
+  </view>
 </template>

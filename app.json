@@ -4,7 +4,8 @@
     "pages/logs/logs",
     "pages/produce/produce",
     "pages/own/own",
-    "pages/article/article"
+    "pages/article/article",
+    "pages/article/create"
   ],
   "window": {
     "backgroundTextStyle": "dark",

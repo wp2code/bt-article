@@ -11,6 +11,14 @@ Component({
     barModel: {//写法为bar-model  
       type: String,
       value: ''
+    },
+    barWidth:{
+      type:String,
+      value:'200rpx'
+    },
+    barBackground:{
+      type:String,
+      value:''
     }
   },
 

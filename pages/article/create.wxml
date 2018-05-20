@@ -1,0 +1,14 @@
+<!--pages/article/create.wxml-->
+<import src="../../template/articleTp.wxml" />
+<view class='art-info-container'>
+  <view class='art-info-title'>
+    <input maxlength="10" bindinput="bindKeyInput" bindconfirm="bindHideKeyboard" focus="{{focus}}" placeholder="标题最大输入长度10位" />
+  </view>
+  <view style='background:#f8f8f8'>
+    <label class='art-title-cxt' >{{inputValue}}</label>
+  </view>
+  <!-- <view class='art-info-title'>
+    <input maxlength="10" focus='true' placeholder="标题最大输入长度10" />
+  </view> -->
+  <!-- <template is="editArtTp" data="{{item}}"></template> -->
+</view>

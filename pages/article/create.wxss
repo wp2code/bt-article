@@ -1,0 +1,9 @@
+/* pages/article/create.wxss */
+
+.art-info-container {
+  margin: 5px;
+}
+.art-info-title input{
+  height: 30px;
+  background: #f8f8f8;
+}

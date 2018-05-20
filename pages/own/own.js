@@ -9,10 +9,12 @@ Page({
     userInfo:{},
     artItems: [{
       artId: 1,
+      artLimit:"公开",
       artTitle: "标题1",
       artImagePath: null
     }, {
       artId: 2,
+      artLimit: "公开",
       artTitle: "标题2",
       artImagePath: null
     }],
