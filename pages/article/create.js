@@ -5,12 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    item:{
-      "artImagePath":null,
-      "artContext":"我的小文章 hello world!"
-    },
-    focus: true,
-    inputValue: ''
+    maxTextNum: 10,
+    textNum: 0
   },
 
   /**
@@ -62,29 +58,42 @@ Page({
   },
 
   /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
 
   },
-  bindKeyInput: function (e) {
-    this.setData({
-      inputValue: e.detail.value
-    })
+  onbindKeyInput: function (e) {
+    var value = e.detail.value
+    var textlen = value.length
+    if (this.data.maxTextNum < textlen) {
+      var pos = e.detail.cursor
+      console.log("pos==>" + pos);
+      var inputText
+      var left
+      if (pos !== -1) {
+        // 光标在中间
+        inputText = value.slice(0, pos)
+        left = value.slice(0, pos - 1);
+        console.log("inputText==>" + inputText);
+        console.log("left==>" + left);
+        // 计算光标的位置
+        pos = inputText.replace(inputText, left).length
+        console.log("new pos==>" + pos);
+        value = value.replace(inputText, left)
+      }
+      console.log("new value:===>" + value)
+      // 直接返回对象，可以对输入进行过滤处理，同时可以控制光标的位置
+      return {
+        value: value,
+        cursor: pos - 1
+      }
+      // return value.replace(/11/g, '2')
+    } else {
+      this.setData({
+        textNum: textlen
+      })
+    }
   },
   bindReplaceInput: function (e) {
     var value = e.detail.value
@@ -102,14 +111,39 @@ Page({
       value: value.replace(/11/g, '2'),
       cursor: pos
     }
-
     // 或者直接返回字符串,光标在最后边
     // return value.replace(/11/g,'2'),
   },
   bindHideKeyboard: function (e) {
     // if (e.detail.value === '123') {
-      // 收起键盘
-      wx.hideKeyboard()
+    // 收起键盘
+    wx.hideKeyboard()
     // }
+  },
+  onbindfocus: function (e) {
+    console.log("获取的了光标")
+    // wx.showKeyboard();
+  },
+  onbindconfirm: function (e) {
+    console.log(e.detail.value)
+    console.log(e.detail.value.length)
+    console.log(this.data.maxTextNum)
+    console.log(e.detail.value.length > this.data.maxTextNum)
+    if (e.detail.value.length > this.data.maxTextNum) {
+      wx.showModal({
+        content: "修复字数长度！",
+        showCancel: false,
+        success: function (res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+          }
+        }
+      })
+    } else {
+      wx.navigateTo({
+        url: './save',
+      })
+    }
+
   }
 })

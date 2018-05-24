@@ -5,7 +5,8 @@
     "pages/produce/produce",
     "pages/own/own",
     "pages/article/article",
-    "pages/article/create"
+    "pages/article/create",
+    "pages/article/save"
   ],
   "window": {
     "backgroundTextStyle": "dark",
