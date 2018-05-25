@@ -35,7 +35,7 @@
         <label>{{item.remark2}}</label>
       </view>
     </view>
-    <navigator url='../article/create'>
+    <navigator url='../article/create' open-type="navigate">
       <view class='tp-prd-beg'>
         <view class='prd-icon'>
           <image src='../../resource/images/icons/加号.png'></image>

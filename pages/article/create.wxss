@@ -1,9 +1,29 @@
 /* pages/article/create.wxss */
 
-.art-info-container {
+/* .art-info-container {
   margin: 5px;
 }
 .art-info-title input{
   height: 30px;
   background: #f8f8f8;
+} */
+
+.placeholder {
+  margin: 5px;
+  padding: 0 10px;
+  text-align: center;
+  /* background-color: #EBEBEB; */
+  height: 2.3em;
+  line-height: 2.3em;
+  /* color: #cfcfcf; */
+}
+
+.cancel {
+  background-color: #EBEBEB;
+  color: #cfcfcf;
+}
+
+.save {
+  background-color: #00abff;
+  color: #cfcfcf;
 }

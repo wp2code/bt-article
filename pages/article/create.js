@@ -5,8 +5,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    maxTextNum: 10,
-    textNum: 0
+    maxTextNum: 150,
+    textNum: 0,
+    textContext: '',
+    isShowTip:true
   },
 
   /**
@@ -42,19 +44,22 @@ Page({
    */
   onUnload: function () {
     console.log("离开创建小文章页面")
-    wx.showModal({
-      title: '退出编辑',
-      content: '是否保存当前内容为草稿?',
-      confirmText: "保存草稿",
-      cancelText: "不保存",
-      success: function (res) {
-        if (res.confirm) {
-          console.log("保存")
-        } else if (res.cancel) {
-          console.log("不保存")
+    var textContext = this.data.textContext;
+    if (this.data.isShowTip && textContext != null && textContext.length != 0) {
+      wx.showModal({
+        title: '退出编辑',
+        content: '是否保存当前内容为草稿?',
+        confirmText: "保存草稿",
+        cancelText: "不保存",
+        success: function (res) {
+          if (res.confirm) {
+            console.log("保存")
+          } else if (res.cancel) {
+            console.log("不保存")
+          }
         }
-      }
-    })
+      })
+    }
   },
 
   /**
@@ -63,9 +68,48 @@ Page({
   onShareAppMessage: function () {
 
   },
+  /**
+   * 取消
+   */
+  onCancel: function () {
+    var textContext = this.data.textContext;
+    if (textContext != null && textContext.length != 0) {
+      var that=this;
+      wx.showModal({
+        title: '',
+        content: '保留当前编辑?',
+        confirmText: "保留",
+        cancelText: "不保留",
+        success: function (res) {
+          if (res.confirm) {
+            console.log(textContext + "保存")
+          } else if (res.cancel) {
+            console.log(textContext + "不保存")
+          }
+          that.setData({
+            isShowTip:false
+          })
+          wx.navigateBack({
+            delta: 1
+          })
+        }
+      })
+    } else {
+      wx.navigateBack({
+        delta: 1
+      })
+    }
+  },
+  /**
+ * 保存
+ */
+  onSave: function () {
+
+  },
   onbindKeyInput: function (e) {
     var value = e.detail.value
     var textlen = value.length
+
     if (this.data.maxTextNum < textlen) {
       var pos = e.detail.cursor
       console.log("pos==>" + pos);
@@ -91,28 +135,10 @@ Page({
       // return value.replace(/11/g, '2')
     } else {
       this.setData({
-        textNum: textlen
+        textNum: textlen,
+        textContext: value
       })
     }
-  },
-  bindReplaceInput: function (e) {
-    var value = e.detail.value
-    var pos = e.detail.cursor
-    var left
-    if (pos !== -1) {
-      // 光标在中间
-      left = e.detail.value.slice(0, pos)
-      // 计算光标的位置
-      pos = left.replace(/11/g, '2').length
-    }
-
-    // 直接返回对象，可以对输入进行过滤处理，同时可以控制光标的位置
-    return {
-      value: value.replace(/11/g, '2'),
-      cursor: pos
-    }
-    // 或者直接返回字符串,光标在最后边
-    // return value.replace(/11/g,'2'),
   },
   bindHideKeyboard: function (e) {
     // if (e.detail.value === '123') {
@@ -129,7 +155,8 @@ Page({
     console.log(e.detail.value.length)
     console.log(this.data.maxTextNum)
     console.log(e.detail.value.length > this.data.maxTextNum)
-    if (e.detail.value.length > this.data.maxTextNum) {
+    var len = e.detail.value.length
+    if (len > this.data.maxTextNum) {
       wx.showModal({
         content: "修复字数长度！",
         showCancel: false,
@@ -139,7 +166,7 @@ Page({
           }
         }
       })
-    } else {
+    } else if (len > 0) {
       wx.navigateTo({
         url: './save',
       })
