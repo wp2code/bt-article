@@ -103,8 +103,23 @@ Page({
   /**
  * 保存
  */
-  onSave: function () {
-
+  onFormSubmit: function (e) {
+     var that=this;
+    //  var tokend = wx.getStorageSync('tokend')
+     var forrmData=e.detail.value;
+     var url = "http://127.0.0.1:8001/wechat/article/create"
+     wx.request({
+       url: url,
+       data:forrmData,
+       method:'post',
+       header:{
+         'Content-Type': 'application/json',
+         "auth-token":"XXXlwp"
+       },
+       success:function(res){
+          console.log("request "+url+" is success!" )
+       }
+     })
   },
   onbindKeyInput: function (e) {
     var value = e.detail.value
