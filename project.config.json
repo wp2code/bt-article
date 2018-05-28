@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -17,6 +17,8 @@
 	"isGameTourist": false,
 	"miniprogramRoot": "./client",
 	"qcloudRoot": "./server",
+	"client": "./client",
+	"svr": "./server",
 	"condition": {
 		"search": {
 			"current": -1,

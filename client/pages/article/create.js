@@ -108,7 +108,8 @@ Page({
      var that=this;
     //  var tokend = wx.getStorageSync('tokend')
      var forrmData=e.detail.value;
-     var url = config.service.requestUrl
+     var url = config.service.save
+     console.log("保存接口Url：" + url)
      wx.request({
        url: url,
        data:forrmData,
