@@ -1,4 +1,6 @@
 // pages/article/create.js
+var config = require('../../config')
+var util = require('../../utils/util.js')
 Page({
 
   /**
@@ -43,7 +45,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log("离开创建小文章页面")
     var textContext = this.data.textContext;
     if (this.data.isShowTip && textContext != null && textContext.length != 0) {
       wx.showModal({
@@ -107,7 +108,7 @@ Page({
      var that=this;
     //  var tokend = wx.getStorageSync('tokend')
      var forrmData=e.detail.value;
-     var url = "http://127.0.0.1:8001/wechat/article/create"
+     var url = config.service.requestUrl
      wx.request({
        url: url,
        data:forrmData,

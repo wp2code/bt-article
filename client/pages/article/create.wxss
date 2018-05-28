@@ -27,3 +27,9 @@
   background-color: #00abff;
   color: #cfcfcf;
 }
+.flex-right{
+  text-align: right;
+}
+.page__bd_spacing{
+  margin: 4px;
+}

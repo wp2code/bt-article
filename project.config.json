@@ -15,6 +15,8 @@
 	"appid": "wx1465f9a62bfea385",
 	"projectname": "bt-article",
 	"isGameTourist": false,
+	"miniprogramRoot": "./client",
+	"qcloudRoot": "./server",
 	"condition": {
 		"search": {
 			"current": -1,
