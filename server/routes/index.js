@@ -2,7 +2,7 @@
  * ajax 服务路由集合
  */
 const router = require("koa-router")({
-	prefix: "/article"
+	prefix: "/weapp"
 });
 const controllers = require("../controllers");
 
@@ -33,4 +33,7 @@ router.get("/message", controllers.message.get);
 router.post("/message", controllers.message.post);
 //保存文档
 router.post("/save", controllers.article.save);
+router.post("/diary/save", controllers.diary.save);
+router.post("/diary/query", controllers.diary.query);
+router.post("/diary/del", controllers.diary.del);
 module.exports = router;

@@ -21,7 +21,7 @@ const CONF = {
 		host: "192.168.11.16",
 		port: 5757,
 		user: "root",
-		db: "cAuth",
+		db: "article",
 		pass: "root",
 		char: "utf8mb4"
 	},

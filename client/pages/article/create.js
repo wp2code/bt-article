@@ -1,6 +1,7 @@
 // pages/article/create.js
 var config = require('../../config')
-var util = require('../../utils/util.js')
+// var util = require('../../utils/util.js')
+var ajax = require('../../utils/ajax.js')
 Page({
 
   /**
@@ -10,7 +11,7 @@ Page({
     maxTextNum: 150,
     textNum: 0,
     textContext: '',
-    isShowTip:true
+    isShowTip: true
   },
 
   /**
@@ -75,7 +76,7 @@ Page({
   onCancel: function () {
     var textContext = this.data.textContext;
     if (textContext != null && textContext.length != 0) {
-      var that=this;
+      var that = this;
       wx.showModal({
         title: '',
         content: '保留当前编辑?',
@@ -88,7 +89,7 @@ Page({
             console.log(textContext + "不保存")
           }
           that.setData({
-            isShowTip:false
+            isShowTip: false
           })
           wx.navigateBack({
             delta: 1
@@ -105,23 +106,31 @@ Page({
  * 保存
  */
   onFormSubmit: function (e) {
-     var that=this;
+    var that = this;
+    var text1 = e.detail.value
     //  var tokend = wx.getStorageSync('tokend')
-     var forrmData=e.detail.value;
-     var url = config.service.save
-     console.log("保存接口Url：" + url)
-     wx.request({
-       url: url,
-       data:forrmData,
-       method:'post',
-       header:{
-         'Content-Type': 'application/json',
-         "auth-token":"XXXlwp"
-       },
-       success:function(res){
-          console.log("request "+url+" is success!" )
-       }
-     })
+    var ops = {}
+    ops.url = config.service.diary_query
+    ops.data = text
+    if(text1==undefined){
+      return
+    }
+    console.log("请求参数：" + JSON.stringify(ops))
+    ajax.request(ops, function (res) {
+      console.log(res)
+    });
+    // wx.request({
+    //   url: url,
+    //   data: forrmData,
+    //   method: 'post',
+    //   header: {
+    //     'Content-Type': 'application/json',
+    //     "auth-token": "XXXlwp"
+    //   },
+    //   success: function (res) {
+    //     console.log("request " + url + " is success!")
+    //   }
+    // })
   },
   onbindKeyInput: function (e) {
     var value = e.detail.value
