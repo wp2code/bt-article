@@ -35,5 +35,5 @@ router.post("/message", controllers.message.post);
 router.post("/save", controllers.article.save);
 router.post("/diary/save", controllers.diary.save);
 router.post("/diary/query", controllers.diary.query);
-router.post("/diary/del", controllers.diary.del);
+router.get("/diary/del", controllers.diary.del);
 module.exports = router;
