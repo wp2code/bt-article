@@ -1,15 +1,18 @@
 const diaryopt = require("../utils/diaryopt");
 
-const save=async(ctx,next)=>{
-	diaryopt.insertDiary(ctx,next)
+const edit = (ctx, next) => {
+    const diaryInfo = ctx.request.body || {}
+    diaryopt.editDiary(ctx, diaryInfo);
 }
-const del=async(ctx,next)=>{
-	diaryopt.deleteDiary(ctx,next)
+const del = async (ctx, next) => {
+    const diaryInfo = {}
+    var {id} = ctx.request.query;
+    diaryInfo.diary_id = id
+    // diaryInfo.open_id = id
+    ctx.body = diaryopt.deleteDiary(ctx, diaryInfo)
 }
-const query=async(ctx,next)=>{
-	diaryopt.queryDiary(ctx,next)
+const query = async (ctx, next) => {
+    var diaryInfo=ctx.request.body || {}
+    diaryopt.queryDiary(ctx, diaryInfo)
 }
-const update=async(ctx,next)=>{
-	diaryopt.updateDiary(ctx,next)
-}
-module.exports={save,del,update,query}
+module.exports = {edit, query, del}

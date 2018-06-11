@@ -1,9 +1,8 @@
 // pages/article/create.js
 var config = require('../../config')
-// var util = require('../../utils/util.js')
 var ajax = require('../../utils/ajax.js')
+const app = getApp()
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -107,30 +106,23 @@ Page({
  */
   onFormSubmit: function (e) {
     var that = this;
-    var text1 = e.detail.value
-    //  var tokend = wx.getStorageSync('tokend')
-    var ops = {}
-    ops.url = config.service.diary_query
-    ops.data = text
-    if(text1==undefined){
+    var obj = e.detail.value
+    if (obj === undefined) {
       return
     }
+    var userInfo = wx.getStorageSync('userInfo')
+    console.log(userInfo)
+    // var userInfo=app.globalData.userInfo
+    if (userInfo == null) {
+      return
+    }
+    //  var tokend = wx.getStorageSync('tokend')
+    var ops = {}
+    obj.open_id = userInfo.nickName
+    ops.data = obj
+    ops.url = config.service.diary_edit
     console.log("请求参数：" + JSON.stringify(ops))
-    ajax.request(ops, function (res) {
-      console.log(res)
-    });
-    // wx.request({
-    //   url: url,
-    //   data: forrmData,
-    //   method: 'post',
-    //   header: {
-    //     'Content-Type': 'application/json',
-    //     "auth-token": "XXXlwp"
-    //   },
-    //   success: function (res) {
-    //     console.log("request " + url + " is success!")
-    //   }
-    // })
+    ajax.request(ops);
   },
   onbindKeyInput: function (e) {
     var value = e.detail.value

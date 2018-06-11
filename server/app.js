@@ -1,13 +1,12 @@
 const Koa = require("koa");
 const app = new Koa();
 const debug = require("debug")("koa-weapp-demo");
-const compose = require("./middlewares/compose");
+const response = require("./middlewares/response");
 const bodyParser = require("koa-bodyparser");
-// var MysqlStore = require('koa-mysql-session');
 const config = require("./config");
 
 // 使用组合处理中间件
-app.use(compose);
+app.use(response);
 
 // 解析请求体
 app.use(bodyParser());

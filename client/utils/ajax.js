@@ -9,12 +9,13 @@ const request = (ops, cb) => {
     dataType: ops.dataType || "json",
     responseType: ops.responseType || "text",
     success: function (res) {
-      if (res.data.code == 100) {
+      console.log(res);
+      if (res.data.code == 'success') {
         if (cb != null && 'function' === typeof cb) {
-          cb(res)
+          cb(res.data.data)
         }
       } else {
-        util.showModel(res.data.message, "")
+        util.showModel(res.data.code, "")
       }
     },
     fail: function (res) {

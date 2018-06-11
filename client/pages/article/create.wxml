@@ -15,7 +15,7 @@
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell">
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" name="diary_context" bindinput='onbindKeyInput' bindfocus="onbindfocus" focus="true" bindconfirm="onbindconfirm" placeholder="请输入文本" maxlength='{{maxTextNum}}' style="height: 12.3em" />
+            <textarea class="weui-textarea" name="content" bindinput='onbindKeyInput' bindfocus="onbindfocus" focus="true" bindconfirm="onbindconfirm" placeholder="请输入文本" maxlength='{{maxTextNum}}' style="height: 12.3em" />
             <view class="weui-textarea-counter" wx:if="{{textNum>maxTextNum}}" style="color:red;">{{textNum}}/{{maxTextNum}}</view>
             <view class="weui-textarea-counter" wx:else>{{textNum}}/{{maxTextNum}}</view>
           </view>

@@ -3,7 +3,7 @@
  */
 
 // 此处主机域名修改成腾讯云解决方案分配的域名
-var host = 'http://localhost:5757';
+var host = 'http://localhost:5009';
 // var host = 'https://taflgi5t.qcloud.la';
 var prefix ='weapp';
 var config = {
@@ -26,12 +26,10 @@ var config = {
 
         // 保存文章接口
         save: `${host}/${prefix}/save`,
-        //保存记录
-        diary_save: `${host}/${prefix}/diary/save`,
         //查询记录
         diary_query: `${host}/${prefix}/diary/query`,
         //更新记录
-        diary_update: `${host}/${prefix}/diary/update`,
+        diary_edit: `${host}/${prefix}/diary/edit`,
         //删除记录
         diary_del: `${host}/${prefix}/diary/del`
     }
