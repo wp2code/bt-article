@@ -5,7 +5,7 @@
       <view class='flex-item art-tp-head1'>
         <view>
           <label>
-            {{item.artTitle}}
+            {{item.title}}
           </label>
         </view>
         <view>
@@ -13,11 +13,11 @@
         </view>
       </view>
       <view class='flex-item art-tp-middle'>
-        <image src="{{item.artImagePath}}" mode='scaleToFill'></image>
+        <image src="{{item.title_pic}}" mode='scaleToFill'></image>
       </view>
       <view class='flex-item art-tp-bottom'>
-        <text space="nbsp">{{item.read!=null && item.read>0 ? item.read:0}}阅读  </text>
-        <text space="nbsp">{{item.comment!=null && item.comment>0 ? item.comment : 0}}评论</text>
+        <text space="nbsp">{{item.pv!=null && item.pv>0 ? item.pv:0}}阅读  </text>
+        <text space="nbsp">{{item.comments!=null && item.comments>0 ? item.comments : 0}}评论</text>
         <text>{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>
       </view>
     </view>

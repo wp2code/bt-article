@@ -5,9 +5,9 @@ const response = require("./middlewares/response");
 const bodyParser = require("koa-bodyparser");
 const config = require("./config");
 
+
 // 使用组合处理中间件
 app.use(response);
-
 // 解析请求体
 app.use(bodyParser());
 

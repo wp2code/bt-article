@@ -10,7 +10,11 @@ Page({
     maxTextNum: 150,
     textNum: 0,
     textContext: '',
-    isShowTip: true
+    isShowTip: true,
+    diaryInfo: {
+      title: "",
+      content: ""
+    }
   },
 
   /**
@@ -105,24 +109,28 @@ Page({
  * 保存
  */
   onFormSubmit: function (e) {
-    var that = this;
     var obj = e.detail.value
     if (obj === undefined) {
       return
     }
-    var userInfo = wx.getStorageSync('userInfo')
-    console.log(userInfo)
-    // var userInfo=app.globalData.userInfo
-    if (userInfo == null) {
-      return
-    }
-    //  var tokend = wx.getStorageSync('tokend')
-    var ops = {}
-    obj.open_id = userInfo.nickName
-    ops.data = obj
-    ops.url = config.service.diary_edit
+    this.setData({
+      diaryInfo: {
+        title: obj.title || "",
+        content: obj.content
+      }
+    })
+    //保存数据
+    onSaveDiary(this.diaryInfo);
+  },
+  onSaveDiary: function (ops) {
+    if (ops == null || typeof (callback) !== 'object') return
+    var userInfo = wx.getStorageSync('userInfo');
+    var nickName = userInfo != null ? userInfo.nickName : "";
+    ops.open_id = nickName;
     console.log("请求参数：" + JSON.stringify(ops))
-    ajax.request(ops);
+    ajax.postReq(diary_edit, ops, function (res) {
+      console.log("响应参数：" + JSON.stringify(res))
+    });
   },
   onbindKeyInput: function (e) {
     var value = e.detail.value

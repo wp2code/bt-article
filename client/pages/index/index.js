@@ -1,7 +1,6 @@
 //index.js
 //获取应用实例
 const app = getApp()
-var config = require('../../config')
 var ajax = require('../../utils/ajax.js')
 Page({
   data: {
@@ -52,16 +51,19 @@ Page({
         }
       })
     }
-    var ops = {}
-    var obj = {}
-    var userInfo = app.globalData.userInfo;
-    obj.open_id = userInfo.nickName|| ''
-    ops.data = obj
-    ops.url = config.service.diary_query
-    console.log("查询请求参数：" + JSON.stringify(ops))
-    ajax.request(ops,function(res){
-
-    });
+    var params = {}
+    var userInfo = wx.getStorageSync('userInfo');
+    params.open_id = userInfo != null ? userInfo.nickName : ''
+    console.log("查询请求参数：" + JSON.stringify(params))
+    var  that=this;
+    ajax.postReq("diary_query", params,function(res){
+      that.setData({
+        artItems:res
+      })
+    })
+    // ajax.request(ops,function(res){
+    //       console.log(res)
+    // });
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

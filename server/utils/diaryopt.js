@@ -22,17 +22,13 @@ const {SUCCESS, FAILED, CNF} = require('../constants');
  * @param diaryInfo
  * @returns {Promise<any> | Promise<T>}
  */
-function queryDiary(ctx, diaryInfo) {
+async function queryDiary(ctx, diaryInfo) {
     //查询条件
     const condition = JSON.stringify(diaryInfo);
     // condition.open_id=
-    let queryData='diary_id,open_id,visible_id,title,content,pv,comments,update_time';
-    mysql("diary_info").select('*').where(diaryInfo).then(res => {
-        console.log(res);
-        SUCCESS(ctx, res);
-        console.log("查询成功");
-    }).catch(e => {
-        FAILED(ctx,e.toString());
+    let queryData = 'diary_id,open_id,visible_id,title,content,pv,comments,update_time';
+    let result = mysql("diary_info").select('*').where(diaryInfo).catch(e => {
+        FAILED(ctx, e.toString());
         debug('%s: %O', CNF.ERRORS.ERR_WHEN_QUERY_FROM_DB, e);
         // throw new Error(`${CNF.ERRORS.ERR_WHEN_QUERY_FROM_DB}\n${e}`)
     });
@@ -99,4 +95,5 @@ function deleteDiary(ctx, diaryInfo) {
     });
     SUCCESS(ctx);
 }
+
 module.exports = {queryDiary, editDiary, deleteDiary};
