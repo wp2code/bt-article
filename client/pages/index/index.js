@@ -7,13 +7,9 @@ Page({
     motto: 'Hello World',
     userInfo: {},
     artItems: [{
-      artId: 1,
-      artTitle: "标题1",
-      artImagePath: null
-    }, {
-      artId: 2,
-      artTitle: "标题2",
-      artImagePath: null
+      diary_id: 1,
+      title: "模板1",
+      title_pic: null
     }],
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
@@ -51,19 +47,6 @@ Page({
         }
       })
     }
-    var params = {}
-    var userInfo = wx.getStorageSync('userInfo');
-    params.open_id = userInfo != null ? userInfo.nickName : ''
-    console.log("查询请求参数：" + JSON.stringify(params))
-    var  that=this;
-    ajax.postReq("diary_query", params,function(res){
-      that.setData({
-        artItems:res
-      })
-    })
-    // ajax.request(ops,function(res){
-    //       console.log(res)
-    // });
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -76,7 +59,15 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    // var params = {}
+    // var userInfo = wx.getStorageSync('userInfo');
+    // params.open_id = userInfo != null ? userInfo.nickName : ''
+    var that=this;
+    ajax.postReq("diary_query", null, function (res) {
+      that.setData({
+        artItems: res
+      })
+    })
   },
   /**
    * 生命周期函数--监听页面隐藏
@@ -94,6 +85,12 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+    var that = this;
+    ajax.postReq("diary_query", null, function (res) {
+      that.setData({
+        artItems: res
+      })
+    })
     console.log("当前页面 " + this.route)
   },
 

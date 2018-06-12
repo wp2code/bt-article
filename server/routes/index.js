@@ -33,6 +33,10 @@ router.get("/message", controllers.message.get);
 router.post("/message", controllers.message.post);
 //编辑日志
 router.post("/diary/edit", controllers.diary.edit);
+//创建
+router.post("/diary/create", controllers.diary.create);
+//更新
+router.post("/diary/update", controllers.diary.update);
 //查询日志
 router.post("/diary/query", controllers.diary.query);
 //删除日志

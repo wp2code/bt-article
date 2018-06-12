@@ -5,7 +5,7 @@
       <view class='flex-item art-tp-head1'>
         <view>
           <label>
-            {{item.title}}
+            {{item.title!=null ? item.title:""}}
           </label>
         </view>
         <view>
@@ -13,7 +13,8 @@
         </view>
       </view>
       <view class='flex-item art-tp-middle'>
-        <image src="{{item.title_pic}}" mode='scaleToFill'></image>
+         <image src="{{item.title_pic}}" mode='scaleToFill'></image> 
+        <!-- {{item.content}} -->
       </view>
       <view class='flex-item art-tp-bottom'>
         <text space="nbsp">{{item.pv!=null && item.pv>0 ? item.pv:0}}阅读  </text>

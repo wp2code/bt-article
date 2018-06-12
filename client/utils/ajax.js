@@ -1,8 +1,8 @@
-var config=require("../config.js")
+var config = require("../config.js")
 
 
 const request = (ops, cb) => {
-  util.showBusy('正在请求...')
+  util.showBusy('正在加载...')
   wx.request({
     url: ops.url,
     data: ops.data,
@@ -27,51 +27,51 @@ const request = (ops, cb) => {
 
 const getReq = (funKey, params, callback) => {
   wx.showToast({
-    title: '正在请求...',
+    title: '正在加载...',
     icon: 'loading',
     duration: 2000
   })
-  var url=
-  wx.request({
-    url: config.service[funKey],
-    data: params,
-    method: 'GET',
-    success: (res) => {
-      wx.hideToast()
-      const data = res.data
-      if (data.code) {
-        wx.showModal({
-          title: '提示',
-          showCancel: false,
-          confirmColor: '#993399',
-          content: data.message,
-          success: (res) => {
-          }
-        })
-        return
+  var url =
+    wx.request({
+      url: config.service[funKey],
+      data: params != null ? params : {},
+      method: 'GET',
+      success: (res) => {
+        wx.hideToast()
+        const data = res.data
+        if (typeof (callback) == 'function') {
+          callback(result.data)
+        } else {
+          wx.showModal({
+            title: '提示',
+            showCancel: false,
+            confirmColor: '#993399',
+            content: result.code,
+            success: (res) => {
+            }
+          })
+        }
       }
-      if (typeof (callback) == 'function')
-        callback(data.data)
-    }
-  })
+    })
 }
 
 const postReq = (funKey, params, callback) => {
   wx.showToast({
-    title: '正在请求...',
+    title: '正在加载...',
     icon: 'loading',
     duration: 2000
   })
   wx.request({
     url: config.service[funKey],
-    data: params,
+    data: params != null ? params : {},
     method: 'POST',
     success: (res) => {
+      wx.hideToast()
       console.log(res)
-      var result=res.data;
-      if (typeof (callback) == 'function'){
+      var result = res.data;
+      if (typeof (callback) == 'function') {
         callback(result.data)
-      }else{
+      } else {
         wx.showModal({
           title: '提示',
           showCancel: false,
@@ -81,7 +81,7 @@ const postReq = (funKey, params, callback) => {
           }
         })
       }
-       
+
     }
   })
 }

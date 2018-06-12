@@ -18,8 +18,8 @@ const CONF = {
 	 * pass: "dev88481989",
      */
 	mysql: {
-		host: "localhost",
-		port: 3306,
+		host: "192.168.11.16",
+		port: 5757,
 		user: "root",
 		db: "diary",
 		pass: "root",

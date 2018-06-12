@@ -30,6 +30,10 @@ var config = {
         diary_query: `${host}/${prefix}/diary/query`,
         //更新记录
         diary_edit: `${host}/${prefix}/diary/edit`,
+        //创建
+        diary_create: `${host}/${prefix}/diary/create`,
+        //更新
+        diary_update: `${host}/${prefix}/diary/update`,
         //删除记录
         diary_del: `${host}/${prefix}/diary/del`
     }

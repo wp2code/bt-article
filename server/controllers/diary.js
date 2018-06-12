@@ -3,18 +3,7 @@ const debug = require('debug');
 const uuidGenerator = require('uuid/v4');
 const moment = require('moment');
 const {SUCCESS, FAILED, CNF} = require('../constants');
-// const DB = require("knex")({
-// 	client: "mysql",
-// 	connection: {
-// 		host: config.host,
-// 		port: config.port,
-// 		user: config.user,
-// 		password: config.pass,
-// 		database: config.db,
-// 		charset: config.char,
-// 		multipleStatements: true
-// 	}
-// });
+
 
 /**
  * 查询日志信息
@@ -24,10 +13,10 @@ const {SUCCESS, FAILED, CNF} = require('../constants');
 async function query(ctx, next) {
     let diaryInfo = ctx.request.body || {}
     //查询条件
-    const condition = JSON.stringify(diaryInfo);
-    let queryData = 'diary_id,open_id,visible_id,title,content,pv,comments,update_time';
-    let result = await  mysql("diary_info").select('*').where(diaryInfo);
-    SUCCESS(ctx,result)
+    // const condition = JSON.stringify(diaryInfo);
+    // let queryData = 'diary_id,open_id,visible_id,title,content,pv,comments,update_time';
+    let result = await  mysql("diary_info").select('*');
+    SUCCESS(ctx, result)
     return result;
 }
 
@@ -44,7 +33,6 @@ async function edit(ctx, next) {
     // let update_time = moment().format('YYYY-MM-DD HH:mm:ss');
     let open_id = diaryInfo.open_id;
     diaryInfo.diary_id = diary_id;
-    // diaryInfo.update_time = update_time;
     diaryInfo.version = 0;
     diaryInfo.create_time = create_time;
     diaryInfo.diary_id = diary_id;
@@ -70,11 +58,44 @@ async function edit(ctx, next) {
             })
         }
     }).catch(e => {
-        FAILED(ctx, e)
+        FAILED(ctx, e.toString())
         debug('%s: %O', CNF.ERRORS.ERR_WHEN_EDIT_TO_DB, e);
         // throw new Error(`${CNF.ERRORS.ERR_WHEN_EDIT_TO_DB}\n${e}`)
     })
     SUCCESS(ctx);
+}
+async function update(ctx, next) {
+    let diaryInfo = ctx.request.body || {}
+   await  mysql('diary_info').select('version').where({
+        open_id
+    }).then(res => {
+         //版本+1
+         diaryInfo.version = res[0].version + 1;
+         mysql('diary_info').update(diaryInfo).where({
+             open_id
+         }).then(res => {
+             console.log("更新成功！【" + res + "】");
+         })
+     })
+    SUCCESS(ctx);
+}
+/**
+ * 新建日记
+ * @param ctx
+ * @param next
+ * @returns {Promise<any | T>}
+ */
+async function create(ctx, next) {
+    let diaryInfo = ctx.request.body || {}
+    diaryInfo.diary_id = uuidGenerator().replace(/-/g, "");
+    diaryInfo.visible_id = diaryInfo.visible_id || 0;
+    diaryInfo.create_time = Date.now() / 1000;
+    diaryInfo.open_id;
+    let result = await mysql('diary_info').insert(diaryInfo).then(res => {
+        console.log("保存成功");
+    });
+    SUCCESS(ctx, result);
+    return result;
 }
 
 /**
@@ -95,4 +116,4 @@ async function del(ctx, next) {
     SUCCESS(ctx);
 }
 
-module.exports = {edit, query, del}
+module.exports = {create, update,edit,query, del}
