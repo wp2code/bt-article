@@ -32,14 +32,15 @@ router.get("/message", controllers.message.get);
 // POST 用来处理微信转发过来的客服消息
 router.post("/message", controllers.message.post);
 //编辑日志
-router.post("/diary/edit", controllers.diary.edit);
+router.post("/letter/edit", controllers.diary.edit);
 //创建
-router.post("/diary/create", controllers.diary.create);
+router.post("/letter/create", controllers.diary.create);
 //更新
-router.post("/diary/update", controllers.diary.update);
+router.post("/letter/update", controllers.diary.update);
 //查询日志
-router.post("/diary/query", controllers.diary.query);
+router.post("/letter/query", controllers.diary.query);
+//获取用户创建的信息
+router.get("/letter/detail", controllers.diary.detail);
 //删除日志
-router.get("/diary/del", controllers.diary.del);
-
+router.get("/letter/del", controllers.diary.del);
 module.exports = router;

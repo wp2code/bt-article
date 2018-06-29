@@ -1,5 +1,6 @@
 // pages/article/create.js
 var ajax = require('../../utils/ajax.js')
+var util = require('../../utils/util.js')
 const app = getApp()
 Page({
   /**
@@ -10,7 +11,7 @@ Page({
     textNum: 0,
     textContext: '',
     isShowTip: true,
-    diaryInfo: {
+    letterInfo: {
       title: "",
       content: ""
     }
@@ -112,18 +113,18 @@ Page({
       return
     }
     this.setData({
-      diaryInfo: {
+      letterInfo: {
         title: ops.title || "",
         content: ops.content
       }
     })
-    console.log(ops)
     //保存数据
-    var userInfo = wx.getStorageSync('userInfo');
-    var nickName = userInfo != null ? userInfo.nickName : "";
-    ops.open_id = nickName;
-    console.log("请求参数：" + JSON.stringify(ops))
-    ajax.postReq("diary_create", ops);
+    ajax.postReq("diary_create", ops,function(res){
+      console.log("保存结果===>" + JSON.stringify(res));
+      if (res.code=='success'){
+        util.navigateTo('./save?relation_id=' + res.data.letter_id);
+      }
+    });
   },
   onbindKeyInput: function (e) {
     var value = e.detail.value
@@ -186,9 +187,7 @@ Page({
         }
       })
     } else if (len > 0) {
-      wx.navigateTo({
-        url: './save',
-      })
+      util.navigateTo('./save');
     }
 
   }

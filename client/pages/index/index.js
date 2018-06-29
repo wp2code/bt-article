@@ -59,9 +59,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    // var params = {}
-    // var userInfo = wx.getStorageSync('userInfo');
-    // params.open_id = userInfo != null ? userInfo.nickName : ''
     var that=this;
     ajax.postReq("diary_query", null, function (res) {
       that.setData({

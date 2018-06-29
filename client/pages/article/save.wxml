@@ -1,2 +1,16 @@
 <!--pages/article/save.wxml-->
-<text>pages/article/save.wxml</text>
+<view class='page'>
+  <form bindsubmit="onFormSubmit">
+    <view class='head'>
+        <label>点击设置标题</label>
+    </view>
+    <view class='body'>
+      <movable-area>
+        <movable-view direction="vertical">text</movable-view>
+      </movable-area>
+    </view>
+    <view class='bottom'>
+      <button form-type='submit' type='primary'>完 成</button>
+    </view>
+  </form>
+</view>

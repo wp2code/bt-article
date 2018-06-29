@@ -38,6 +38,17 @@ var showModel = (title, content) => {
     showCancel: false
   })
 }
+//路径跳转
+const navigateTo = (url) => {
+  wx.navigateTo({
+    url:url,
+  })
+}
 
-module.exports = { formatTime, showBusy, showSuccess, showModel }
-
+module.exports = {
+  formatTime,
+  showBusy,
+  showSuccess,
+  showModel,
+  navigateTo
+}
