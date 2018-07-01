@@ -11,7 +11,7 @@ Page({
     textNum: 0,
     textContext: '',
     isShowTip: true,
-    letterInfo: {
+    articleInfo: {
       title: "",
       content: ""
     }
@@ -113,16 +113,16 @@ Page({
       return
     }
     this.setData({
-      letterInfo: {
+      articleInfo: {
         title: ops.title || "",
         content: ops.content
       }
     })
     //保存数据
-    ajax.postReq("diary_create", ops,function(res){
+    ajax.postReq("article_create", ops,function(res){
       console.log("保存结果===>" + JSON.stringify(res));
       if (res.code=='success'){
-        util.navigateTo('./save?relation_id=' + res.data.letter_id);
+        util.navigateTo('./save?article_id=' + res.data.article_id);
       }
     });
   },

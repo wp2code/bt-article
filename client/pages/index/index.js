@@ -7,7 +7,7 @@ Page({
     motto: 'Hello World',
     userInfo: {},
     artItems: [{
-      diary_id: 1,
+      article_id: 1,
       title: "模板1",
       title_pic: null
     }],
@@ -60,7 +60,7 @@ Page({
    */
   onShow: function () {
     var that=this;
-    ajax.postReq("diary_query", null, function (res) {
+    ajax.postReq("article_query", null, function (res) {
       that.setData({
         artItems: res
       })
@@ -83,7 +83,7 @@ Page({
    */
   onPullDownRefresh: function () {
     var that = this;
-    ajax.postReq("diary_query", null, function (res) {
+    ajax.postReq("article_query", null, function (res) {
       that.setData({
         artItems: res
       })

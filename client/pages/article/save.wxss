@@ -1,1 +1,111 @@
 /* pages/article/save.wxss */
+
+.art-container {
+  background-color: #fbf9fe;
+}
+
+.s-head {
+  display: flex;
+  color: black;
+  background: gray;
+  height: 30%;
+}
+
+.s-body {
+  /* position: absolute; */
+  display: flex;
+  background: red;
+  flex-direction: column;
+  align-items: center;
+  height: 70%;
+  /* overflow: auto; */
+}
+
+.art-add {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background: rebeccapurple;
+  padding: 10rpx;
+  min-width: 60rpx;
+  min-height: 60rpx;
+}
+
+.art-add image {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.art-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  background: blue;
+  border: 2px;
+  /* box-sizing: border-box;
+  box-shadow: 1px 1px 1px #888; */
+  border-radius: 5px;
+  height: 100px;
+  width: 90%;
+  min-height: 100px;
+  padding: 10rpx;
+}
+
+.art-delete {
+  height: 100px;
+  width: 10%;
+  background: brown;
+}
+
+.art-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: green;
+  height: 100px;
+  min-width: 100px;
+  border-radius: 5px;
+  border: 2px;
+}
+
+.art-image image {
+  height: 100px;
+  width: 100px;
+  border-radius: 5px;
+}
+
+.art-text {
+  padding-left: 10rpx;
+  height: 100px;
+  padding-top: 0rpx;
+  padding-bottom: 0rpx;
+  overflow: hidden;
+  border-radius: 5px;
+  background: yellow;
+}
+
+.art-text text {
+  width: 100%;
+}
+
+.art-position {
+  display: flex;
+  flex-direction: column;
+  width: 10%;
+  height: 100%;
+  align-items: flex-end;
+  justify-content: space-between;
+  background: rebeccapurple;
+}
+
+.art-bottom {
+  width: 100%;
+  position: fixed;
+  background: blue;
+  height: 7%;
+  bottom: 0;
+  border-radius: 0px;
+}

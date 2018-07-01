@@ -12,15 +12,16 @@ module.exports = async function (ctx, next) {
         // 处理响应结果
         // 如果直接写入在 body 中，则不作处理
         // 如果写在 ctx.body 为空，则使用 state 作为响应
-        console.log("响应：" + ctx.body)
+
         ctx.body = ctx.body ? ctx.body : {
             code: ctx.state.code !== undefined ? ctx.state.code : 0,
             data: ctx.state.data !== undefined ? ctx.state.data : {}
         }
+        console.log("响应：" + JSON.stringify(ctx.body))
     } catch (e) {
         // catch 住全局的错误信息
         debug('Catch Error: %o', e)
-
+        console.error(e.toString());
         // 设置状态码为 200 - 服务端错误
         ctx.status = 200
 

@@ -24,17 +24,17 @@ var config = {
     // 上传图片接口
     uploadUrl: `${host}/${prefix}/upload`,
     //查询记录
-    diary_query: `${host}/${prefix}/letter/query`,
+    article_query: `${host}/${prefix}/article/query`,
     //更新记录
-    diary_edit: `${host}/${prefix}/letter/edit`,
+    article_edit: `${host}/${prefix}/article/edit`,
     //创建
-    diary_create: `${host}/${prefix}/letter/create`,
+    article_create: `${host}/${prefix}/article/create`,
     //更新
-    diary_update: `${host}/${prefix}/letter/update`,
+    article_update: `${host}/${prefix}/article/update`,
     //删除记录
-    diary_del: `${host}/${prefix}/letter/del`,
+    article_del: `${host}/${prefix}/article/del`,
     //获取用户创建的信息
-    letter_detail: `${host}/${prefix}/letter/detail`
+    article_detail: `${host}/${prefix}/article/detail`
   },
 };
 

@@ -1,11 +1,15 @@
 //app.js
 App({
-  onLaunch: function () {
+  onLaunch: function() {
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-
+    //手机信息
+    var phoneInfo = wx.getSystemInfoSync();
+    console.log(phoneInfo);
+    this.globalData.windowHeight = phoneInfo.windowHeight;
+    this.globalData.windowWidth = phoneInfo.windowWidth;
     // 登录
     wx.login({
       success: res => {
@@ -35,6 +39,8 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    windowHeight: 0,
+    windowWidth: 0
   }
 })
