@@ -1,16 +1,16 @@
 <!--pages/article/save.wxml-->
-<scroll-view style="height: {{windowHeight+'px'}};" scroll-y="true" bindscrolltolower="lower" bindscroll="scroll" scroll-top="{{scrollTop}}">
-  <form bindsubmit="onFormSubmit">
-    <view class='s-head'>
+<form bindsubmit="onFormSubmit">
+  <scroll-view style="height: {{windowHeight+'px'}};" scroll-y="true" bindscrolltolower="lower" bindscroll="scroll" scroll-top="{{scrollTop}}">
+    <view class='art-head'>
       <label>{{articleInfo.title!=null?articleInfo.title:'点击设置标题'}}</label>
     </view>
-    <view class='s-body'>
-      <view class='art-add' id="_" data-bindViewId="_" bindtap='onAddArt'>
+    <view class='art-body'>
+      <view class='art-add' id="_" data-bindViewId="_" data-artId="{{articleInfo.article_id}}" bindtap='addArt'>
         <image src='/resource/images/tabBar/添加.png'></image>
       </view>
-      <block wx:if="{{true}}" wx:for="{{articleInfo.detialList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
+      <block wx:if="{{true}}" wx:for="{{detialList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
         <view class='art-item' style="min-width:{{windowWidth*0.9}}px">
-          <view class='art-delete'>
+          <view class='art-delete' data-detailId="{{item.id}}" bindtap='deleteArt'>
             ×
           </view>
           <view class='art-image'>
@@ -21,18 +21,18 @@
               <text>{{item.content}}</text>
             </view>
           </navigator>
-          <view class='art-position'>
-            <view class='art-position-upper'>↑</view>
-            <view class='art-position-lower'>↓</view>
+          <view class="art-position">
+            <view class='art-position-upper'>{{index!=0 ?'↑':''}}</view>
+            <view class='art-position-lower'>{{index!=detialList.length-1?'↓':''}}</view>
           </view>
         </view>
-        <view class='art-add' id="{{'_'+index}}" data-bindViewId="{{'_'+index}}" bindtap='onAddArt'>
+        <view class='art-add' id="{{'_'+index}}" data-bindViewId="{{'_'+index}}" data-artId="{{item.article_id}}" bindtap='addArt'>
           <image src='/resource/images/tabBar/添加.png'></image>
         </view>
       </block>
     </view>
-  </form>
-</scroll-view>
-<view class='art-bottom'>
-  <button form-type='submit' type='primary'>完 成</button>
-</view>
+  </scroll-view>
+  <view class='art-bottom'>
+    <button form-type='submit' type='primary'>完 成</button>
+  </view>
+</form>

@@ -11,13 +11,12 @@ Page({
     articleInfo: {
       article_id: '',
       title: null,
-      author_name: '',
-      detialList: []
+      author_name: ''
     },
+    detialList: [],
     windowHeight: app.globalData.windowHeight,
     windowWidth: app.globalData.windowWidth,
     isHaveData: false, //判断是否有数据
-    timer: null,
     toView: '_'
   },
 
@@ -32,13 +31,14 @@ Page({
       if (res.code == 'success') {
         var data = res['data'];
         that.setData({
-          isHaveData: data != null && data['id'] != null,
           articleInfo: {
             article_id: data['id'],
             title: data['title'],
             author_name: data['author_name'],
-            detialList: data['detialList']
-          }
+
+          },
+          detialList: data['detialList'],
+          isHaveData: data['detialList'].length > 0,
         })
       }
     })
@@ -50,7 +50,9 @@ Page({
   onReady: function() {
 
   },
+  onCancel: function() {
 
+  },
   /**
    * 生命周期函数--监听页面显示
    */
@@ -61,13 +63,21 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function() {
+
     console.log("页面隐藏。。。")
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {},
+  onUnload: function() {
+    var pages = getCurrentPages();
+    var prevPage1 = pages[pages.length - 1]; //上一页面
+    var prevPage2 = pages[pages.length - 2]; //上一页面
+    wx.navigateBack({
+      delta: 1
+    })
+  },
   upper: function(e) {
     console.log(e)
   },
@@ -95,12 +105,6 @@ Page({
     // })
     console.log(e)
     console.log("滚动触发")
-    // clearTimeout(this.timer)
-    // if (e.detail.scrollTop < this.data.scrollTop) {
-    //   this.timer = setTimeout(() => {
-    //     this.refresh()
-    //   }, 350)
-    // }
   },
   refresh: function() { // 函数式触发开始下拉刷新。如可以绑定按钮点击事件来触发下拉刷新
     wx.startPullDownRefresh({
@@ -112,8 +116,30 @@ Page({
       }
     })
   },
-  onAddArt: function(event) {
+  deleteArt: function(event) {
+    var detail_id = event.currentTarget.dataset.detailid;
+    var that = this;
+    ajax.delReq("article_detail_del", "?detail_id=" + detail_id, function(res) {
+      console.log(res);
+      var list = that.data.detialList;
+      var newList = [];
+      if (list.length > 0) {
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].id !== detail_id) {
+            newList.push(list[i])
+          }
+        }
+      }
+      console.log(newList);
+      that.setData({
+        detialList: newList,
+      })
+    })
+    console.log(this.data.articleInfo.detialList);
+  },
+  addArt: function(event) {
     var id = event.currentTarget.dataset.bindviewid;
+    var artid = event.currentTarget.dataset.artid;
     console.log('当前id==' + id)
     wx.showActionSheet({
       itemList: ['文字', '图片'],
@@ -121,7 +147,7 @@ Page({
       success: function(res) {
         console.log(res.tapIndex)
         if (res.tapIndex == 0) {
-          util.navigateTo('./create');
+          util.navigateTo('./create?artId=' + artid);
         } else if (res.tapIndex == 1) {
           wx.chooseImage({
             count: 2, // 默认9

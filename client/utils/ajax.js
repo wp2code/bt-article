@@ -1,73 +1,23 @@
 var config = require("../config.js")
-
-
-const request = (ops, cb) => {
-  util.showBusy('正在加载...')
-  ops.data.userInfo = nickName;
-  wx.request({
-    url: ops.url,
-    data: ops.data,
-    method: ops.method || "POST",
-    dataType: ops.dataType || "json",
-    responseType: ops.responseType || "text",
+const delReq = (funKey, urlParams, callback) => {
+  wx.showModal({
+    content: "确定删除此段？",
     success: function(res) {
-      console.log(res);
-      if (res.data.code == 'success') {
-        if (cb != null && 'function' === typeof cb) {
-          cb(res.data.data)
-        }
-      } else {
-        util.showModel(res.data.code, "")
+      if (res.confirm) {
+        request_get(funKey, urlParams, callback);
+      } else if (res.cancel) {
       }
-    },
-    fail: function(res) {
-
     }
   })
-}
 
+}
 const getReq = (funKey, urlParams, callback) => {
   wx.showToast({
     title: '正在加载...',
     icon: 'loading',
     duration: 2000
   })
-  var url = config.service[funKey];
-  if (urlParams != undefined && urlParams != null) {
-    if (typeof (urlParams) == 'array') {
-      for (var i = 0; i < urlParams.length; i++) {
-        var up = urlParams[i]['key'] + "=" + urlParams[i]['value'] + "&";
-        if (i == 0) {
-          url += ("?" + up);
-        } else {
-          url += up;
-        }
-      }
-    } else if (typeof(urlParams) == 'string') {
-      url += urlParams
-    }
-  }
-  console.info("Get请求路径：" + url);
-  wx.request({
-    url: url,
-    method: 'GET',
-    success: (res) => {
-      wx.hideToast()
-      console.log(res)
-      const result = res['data'];
-      if (typeof(callback) == 'function') {
-        callback(result)
-      } else {
-        wx.showModal({
-          title: '提示',
-          showCancel: false,
-          confirmColor: '#993399',
-          content: result['code'],
-          success: (res) => {}
-        })
-      }
-    }
-  })
+  request_get(funKey, urlParams, callback);
 }
 
 const postReq = (funKey, params, callback) => {
@@ -112,7 +62,47 @@ const postReq = (funKey, params, callback) => {
     }
   })
 }
+
+function request_get(funKey, urlParams, callback) {
+  var url = config.service[funKey];
+  if (urlParams != undefined && urlParams != null) {
+    if (typeof(urlParams) == 'array') {
+      for (var i = 0; i < urlParams.length; i++) {
+        var up = urlParams[i]['key'] + "=" + urlParams[i]['value'] + "&";
+        if (i == 0) {
+          url += ("?" + up);
+        } else {
+          url += up;
+        }
+      }
+    } else if (typeof(urlParams) == 'string') {
+      url += urlParams
+    }
+  }
+  console.info("Get请求路径：" + url);
+  wx.request({
+    url: url,
+    method: 'GET',
+    success: (res) => {
+      wx.hideToast()
+      console.log(res)
+      const result = res['data'];
+      if (typeof(callback) == 'function') {
+        callback(result)
+      } else {
+        wx.showModal({
+          title: '提示',
+          showCancel: false,
+          confirmColor: '#993399',
+          content: result['code'],
+          success: (res) => {}
+        })
+      }
+    }
+  })
+}
 module.exports = {
   getReq,
-  postReq
+  postReq,
+  delReq
 }

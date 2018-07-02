@@ -11,6 +11,7 @@ Page({
     textNum: 0,
     textContext: '',
     isShowTip: true,
+    artId: null,
     articleInfo: {
       title: "",
       content: ""
@@ -19,35 +20,37 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-
+  onLoad: function(options) {
+    var artId = options.artId;
+    console.log("创建页面加载。。。");
+    this.data.artId = artId;
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
     var textContext = this.data.textContext;
     if (this.data.isShowTip && textContext != null && textContext.length != 0) {
       wx.showModal({
@@ -55,7 +58,7 @@ Page({
         content: '是否保存当前内容为草稿?',
         confirmText: "保存草稿",
         cancelText: "不保存",
-        success: function (res) {
+        success: function(res) {
           if (res.confirm) {
             console.log("保存")
           } else if (res.cancel) {
@@ -69,13 +72,13 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   },
   /**
    * 取消
    */
-  onCancel: function () {
+  onCancel: function() {
     var textContext = this.data.textContext;
     if (textContext != null && textContext.length != 0) {
       var that = this;
@@ -84,7 +87,7 @@ Page({
         content: '保留当前编辑?',
         confirmText: "保留",
         cancelText: "不保留",
-        success: function (res) {
+        success: function(res) {
           if (res.confirm) {
             console.log(textContext + "保存")
           } else if (res.cancel) {
@@ -105,9 +108,9 @@ Page({
     }
   },
   /**
- * 保存
- */
-  onFormSubmit: function (e) {
+   * 保存
+   */
+  onFormSubmit: function(e) {
     var ops = e.detail.value
     if (ops === undefined) {
       return
@@ -118,15 +121,19 @@ Page({
         content: ops.content
       }
     })
+    var artId = this.data.artId;
+    if (artId != undefined && artId != null) {
+      ops.article_id = artId;
+    }
     //保存数据
-    ajax.postReq("article_create", ops,function(res){
+    ajax.postReq("article_create", ops, function(res) {
       console.log("保存结果===>" + JSON.stringify(res));
-      if (res.code=='success'){
+      if (res.code == 'success') {
         util.navigateTo('./save?article_id=' + res.data.article_id);
       }
     });
   },
-  onbindKeyInput: function (e) {
+  onbindKeyInput: function(e) {
     var value = e.detail.value
     var textlen = value.length
 
@@ -160,17 +167,17 @@ Page({
       })
     }
   },
-  bindHideKeyboard: function (e) {
+  bindHideKeyboard: function(e) {
     // if (e.detail.value === '123') {
     // 收起键盘
     wx.hideKeyboard()
     // }
   },
-  onbindfocus: function (e) {
+  onbindfocus: function(e) {
     console.log("获取的了光标")
     // wx.showKeyboard();
   },
-  onbindconfirm: function (e) {
+  onbindconfirm: function(e) {
     console.log(e.detail.value)
     console.log(e.detail.value.length)
     console.log(this.data.maxTextNum)
@@ -180,7 +187,7 @@ Page({
       wx.showModal({
         content: "修复字数长度！",
         showCancel: false,
-        success: function (res) {
+        success: function(res) {
           if (res.confirm) {
             console.log('用户点击确定')
           }

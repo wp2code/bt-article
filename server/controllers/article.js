@@ -69,9 +69,9 @@ async function create(ctx, next) {
 async function detail(ctx, next) {
     let {article_id} = ctx.query;
     await mysql(CNF.DB_TABLE.article_info).select('*').where({id: article_id}).then(async (res) => {
-        let result={};
+        let result = {};
         if (res != null && res.length > 0) {
-            result=res[0];
+            result = res[0];
             result['detialList'] = [];
             await  mysql(CNF.DB_TABLE.article_detail_info).select("*").where({article_id: article_id}).then(res => {
                 result['detialList'] = res;
@@ -155,7 +155,7 @@ async function updateDetail(ctx, next) {
 
 
 /**
- * 删除日志信息
+ * 删除 文章信息
  * @param diaryInfo
  * @returns {Promise<any>}
  */
@@ -172,6 +172,27 @@ async function del(ctx, next) {
     });
 }
 
+/**
+ *  删除 文章明细
+ * @param ctx
+ * @param next
+ * @returns {Promise<void>}
+ */
+async function del_detail(ctx, next) {
+    let {detail_id} = ctx.query;
+    if (detail_id) {
+        await  mysql(CNF.DB_TABLE.article_detail_info).del().where({id: detail_id}).then(res => {
+            SUCCESS(ctx, res);
+        }).catch(e => {
+            FAILED(ctx, e.toString())
+            debug('%s: %O', CNF.ERRORS.ERR_WHEN_DELETED_FROM_DB, e);
+            // throw new Error(`${CNF.ERRORS.ERR_WHEN_DELETED_FROM_DB}\n${e}`)
+        });
+    } else {
+        FAILED(ctx, "id为空！")
+    }
+
+}
 
 /**
  * 查询可访问的信件id
@@ -184,4 +205,4 @@ async function queryVisit(open_id, callback) {
     });
 }
 
-module.exports = {detail, create, update, query, del}
+module.exports = {detail, del_detail,create, update, query, del}

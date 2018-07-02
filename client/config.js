@@ -33,6 +33,8 @@ var config = {
     article_update: `${host}/${prefix}/article/update`,
     //删除记录
     article_del: `${host}/${prefix}/article/del`,
+    //删除明细
+    article_detail_del: `${host}/${prefix}/article/del_detail`,
     //获取用户创建的信息
     article_detail: `${host}/${prefix}/article/detail`
   },
