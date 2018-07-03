@@ -9,21 +9,27 @@ Page({
   data: {
     maxTextNum: 150,
     textNum: 0,
-    textContext: '',
-    isShowTip: true,
-    artId: null,
-    articleInfo: {
-      title: "",
-      content: ""
-    }
+    textContent: "",
+    textIdentify: 0, //0:文本：1：标题,
+    isShowTip: true
+
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    var artId = options.artId;
     console.log("创建页面加载。。。");
-    this.data.artId = artId;
+    var textIdentify = options.type;
+    console.log("创建页面Type=" + textIdentify)
+    if (textIdentify!=undefined){
+      var pages = getCurrentPages();
+      var prevPage = pages[pages.length - 2]; // 上一页面
+      this.setData({
+        textContent: prevPage.data.textContent,
+        textIdentify: textIdentify
+      })
+    }
+
   },
 
   /**
@@ -51,8 +57,8 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
-    var textContext = this.data.textContext;
-    if (this.data.isShowTip && textContext != null && textContext.length != 0) {
+    var textContent = this.data.textContent;
+    if (this.data.isShowTip && textContent != null && textContent.length != 0) {
       wx.showModal({
         title: '退出编辑',
         content: '是否保存当前内容为草稿?',
@@ -79,8 +85,8 @@ Page({
    * 取消
    */
   onCancel: function() {
-    var textContext = this.data.textContext;
-    if (textContext != null && textContext.length != 0) {
+    var textContent = this.data.textContent;
+    if (textContent != null && textContent.length != 0) {
       var that = this;
       wx.showModal({
         title: '',
@@ -89,9 +95,9 @@ Page({
         cancelText: "不保留",
         success: function(res) {
           if (res.confirm) {
-            console.log(textContext + "保存")
+            console.log(textContent + "保存")
           } else if (res.cancel) {
-            console.log(textContext + "不保存")
+            console.log(textContent + "不保存")
           }
           that.setData({
             isShowTip: false
@@ -111,27 +117,27 @@ Page({
    * 保存
    */
   onFormSubmit: function(e) {
-    var ops = e.detail.value
-    if (ops === undefined) {
-      return
-    }
-    this.setData({
-      articleInfo: {
-        title: ops.title || "",
-        content: ops.content
-      }
-    })
-    var artId = this.data.artId;
-    if (artId != undefined && artId != null) {
-      ops.article_id = artId;
-    }
+    // var ops = e.detail.value
+    // if (ops === undefined) {
+    //   return
+    // }
+    // this.setData({
+    //   articleInfo: {
+    //     title: ops.title || "",
+    //     content: ops.content
+    //   }
+    // })
+    // var artId = this.data.artId;
+    // if (artId != undefined && artId != null) {
+    //   ops.article_id = artId;
+    // }
     //保存数据
-    ajax.postReq("article_create", ops, function(res) {
-      console.log("保存结果===>" + JSON.stringify(res));
-      if (res.code == 'success') {
-        util.navigateTo('./save?article_id=' + res.data.article_id);
-      }
-    });
+    // ajax.postReq("article_create", ops, function(res) {
+    //   console.log("保存结果===>" + JSON.stringify(res));
+    //   if (res.code == 'success') {
+    //     util.navigateTo('./save?article_id=' + res.data.article_id);
+    //   }
+    // });
   },
   onbindKeyInput: function(e) {
     var value = e.detail.value
@@ -163,7 +169,7 @@ Page({
     } else {
       this.setData({
         textNum: textlen,
-        textContext: value
+        textContent: value
       })
     }
   },
@@ -178,11 +184,13 @@ Page({
     // wx.showKeyboard();
   },
   onbindconfirm: function(e) {
-    console.log(e.detail.value)
-    console.log(e.detail.value.length)
-    console.log(this.data.maxTextNum)
-    console.log(e.detail.value.length > this.data.maxTextNum)
-    var len = e.detail.value.length
+    console.log("onbindconfirm....");
+    var value = e.detail.value;
+    console.log(value);
+    console.log(value.length);
+    console.log(this.data.maxTextNum);
+    var len = value.length;
+    console.log(len > this.data.maxTextNum)
     if (len > this.data.maxTextNum) {
       wx.showModal({
         content: "修复字数长度！",
@@ -195,6 +203,9 @@ Page({
       })
     } else if (len > 0) {
       util.navigateTo('./save');
+      this.setData({
+        textContent: value
+      });
     }
 
   }

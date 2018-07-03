@@ -16,7 +16,6 @@ Page({
     detialList: [],
     windowHeight: app.globalData.windowHeight,
     windowWidth: app.globalData.windowWidth,
-    isHaveData: false, //判断是否有数据
     toView: '_'
   },
 
@@ -24,24 +23,45 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    var article_id = options.article_id;
-    var that = this;
-    console.log("article_id===>" + article_id)
-    ajax.getReq('article_detail', "?article_id=" + article_id, function(res) {
-      if (res.code == 'success') {
-        var data = res['data'];
-        that.setData({
+    var pages = getCurrentPages();
+    var currentPage = pages[pages.length - 1]; // 当前页面
+    var prevPage = pages[pages.length - 2]; // 上一页面
+    console.log(pages)
+    var textIdentify = prevPage.data.textIdentify;
+    var textContent = prevPage.data.textContent;
+    if (prevPage.data.textContent != '') {
+      if (textIdentify == 0) { //文章内容
+        var detialList = [];
+        var contentItem = {}
+        contentItem.content = prevPage.data.textContent;
+        detialList.push(contentItem);
+        console.log(detialList);
+        this.setData({
+          detialList: detialList,
+        })
+      } else if (textIdentify == 1) { //标题
+        this.setData({
           articleInfo: {
-            article_id: data['id'],
-            title: data['title'],
-            author_name: data['author_name'],
-
+            title: textContent
           },
-          detialList: data['detialList'],
-          isHaveData: data['detialList'].length > 0,
         })
       }
-    })
+    }
+    // ajax.getReq('article_detail', "?article_id=" + article_id, function(res) {
+    //   if (res.code == 'success') {
+    //     var data = res['data'];
+    //     that.setData({
+    //       articleInfo: {
+    //         article_id: data['id'],
+    //         title: data['title'],
+    //         author_name: data['author_name'],
+
+    //       },
+    //       detialList: data['detialList'],
+    //       isHaveData: data['detialList'].length > 0,
+    //     })
+    //   }
+    // })
   },
 
   /**
@@ -63,7 +83,6 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function() {
-
     console.log("页面隐藏。。。")
   },
 
@@ -71,9 +90,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
-    var pages = getCurrentPages();
-    var prevPage1 = pages[pages.length - 1]; //上一页面
-    var prevPage2 = pages[pages.length - 2]; //上一页面
     wx.navigateBack({
       delta: 1
     })
@@ -116,6 +132,9 @@ Page({
       }
     })
   },
+  editTitle: function(event) {
+    util.navigateTo('./create?type=1');
+  },
   deleteArt: function(event) {
     var detail_id = event.currentTarget.dataset.detailid;
     var that = this;
@@ -141,22 +160,33 @@ Page({
     var id = event.currentTarget.dataset.bindviewid;
     var artid = event.currentTarget.dataset.artid;
     console.log('当前id==' + id)
+    var that = this;
     wx.showActionSheet({
       itemList: ['文字', '图片'],
       itemColor: "#00abff",
       success: function(res) {
         console.log(res.tapIndex)
         if (res.tapIndex == 0) {
-          util.navigateTo('./create?artId=' + artid);
+          util.navigateTo('./create?type=0');
         } else if (res.tapIndex == 1) {
           wx.chooseImage({
-            count: 2, // 默认9
+            count: 9, // 默认9
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
             sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: function(res) {
               // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
               var tempFilePaths = res.tempFilePaths
               console.log(tempFilePaths);
+              var detialList = [];
+              for (var i = 0, h = tempFilePaths.length; i < h; i++) {
+                var item = {};
+                item.picture_url = tempFilePaths[i];
+                item.article_id = artid;
+                detialList.push(item);
+              }
+              that.setData({
+                detialList: detialList
+              })
             }
           })
         }

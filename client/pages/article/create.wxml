@@ -3,19 +3,11 @@
   <form bindsubmit="onFormSubmit">
     <view class="page__bd page__bd_spacing">
       <view class="weui-flex weui-btn-area">
-        <view class="weui-flex__item">
-          <button bindtap='onCancel' size='mini'>取 消</button>
-          <!-- <view class="placeholder cancel" bindtap='onCancel'>取消</view>  -->
-        </view>
-        <view class="weui-flex__item flex-right">
-          <button form-type='submit' type='primary' size='mini'>保 存</button>
-          <!-- <view class="placeholder save" >保存</view>  -->
-        </view>
       </view>
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell">
           <view class="weui-cell__bd">
-            <textarea class="weui-textarea" name="content" bindinput='onbindKeyInput' bindfocus="onbindfocus" focus="true" bindconfirm="onbindconfirm" placeholder="请输入文本" maxlength='{{maxTextNum}}' style="height: 12.3em" />
+            <textarea class="weui-textarea" name="content" value="{{textContent}}" bindinput='onbindKeyInput' bindfocus="onbindfocus" focus="true" bindconfirm="onbindconfirm" placeholder="请输入文本" maxlength='{{maxTextNum}}' style="height: 12.3em" />
             <view class="weui-textarea-counter" wx:if="{{textNum>maxTextNum}}" style="color:red;">{{textNum}}/{{maxTextNum}}</view>
             <view class="weui-textarea-counter" wx:else>{{textNum}}/{{maxTextNum}}</view>
           </view>

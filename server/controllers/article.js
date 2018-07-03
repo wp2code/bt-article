@@ -24,9 +24,10 @@ async function create(ctx, next) {
     articleDetailInfo.article_id = article_id;
     articleDetailInfo.create_time = create_time;
     articleDetailInfo.content = condition.content;
-    articleDetailInfo.author_name = nickName
+    articleDetailInfo.author_name = nickName;
     articleDetailInfo.author_id = nickName;
     articleDetailInfo.order_num = 1;//默认是1
+    articleDetailInfo.picture_url=condition.picture_url;
     await mysql(CNF.DB_TABLE.article_detail_info).select('order_num').where({
         article_id: article_id, author_id: nickName
     }).orderBy('order_num', 'desc').then(async (res) => {
