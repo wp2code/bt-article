@@ -3,16 +3,18 @@ var ajax = require('../../utils/ajax.js')
 var util = require('../../utils/util.js')
 var app = getApp();
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
     articleInfo: {
       article_id: '',
-      title: null,
+      title: '',
       author_name: ''
     },
+    textContent: "", //文本内容
+    textIdentify: 0, //编辑类型 0:文本：1：标题,
+    index: -1, //集合索引
     detialList: [],
     windowHeight: app.globalData.windowHeight,
     windowWidth: app.globalData.windowWidth,
@@ -23,30 +25,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    var pages = getCurrentPages();
-    var currentPage = pages[pages.length - 1]; // 当前页面
-    var prevPage = pages[pages.length - 2]; // 上一页面
-    console.log(pages)
-    var textIdentify = prevPage.data.textIdentify;
-    var textContent = prevPage.data.textContent;
-    if (prevPage.data.textContent != '') {
-      if (textIdentify == 0) { //文章内容
-        var detialList = [];
-        var contentItem = {}
-        contentItem.content = prevPage.data.textContent;
-        detialList.push(contentItem);
-        console.log(detialList);
-        this.setData({
-          detialList: detialList,
-        })
-      } else if (textIdentify == 1) { //标题
-        this.setData({
-          articleInfo: {
-            title: textContent
-          },
-        })
-      }
-    }
     // ajax.getReq('article_detail', "?article_id=" + article_id, function(res) {
     //   if (res.code == 'success') {
     //     var data = res['data'];
@@ -77,7 +55,26 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
+    var pages = getCurrentPages();
+    var prevPage = pages[pages.length - 2]; // 上一页面
+    var textIdentify = "";
+    var textContent = "";
+    if (prevPage._route_ == "pages/article/create") {
+      if (prevPage.data.textContent != undefined) {
+        textContent = prevPage.data.textContent;
+      }
+      if (prevPage.data.textIdentify != undefined) {
+        textIdentify = prevPage.data.textIdentify;
+        if (textContent != "") {
+          if (textIdentify == 1) {
+            this.data.articleInfo.title = textContent;
+          } else {
+            var detialList = this.data.detialList;
+          }
+        }
 
+      }
+    }
   },
   /**
    * 生命周期函数--监听页面隐藏
@@ -116,9 +113,6 @@ Page({
     // }
   },
   scroll: function(e) {
-    // this.setData({
-    //   toView: '_1',
-    // })
     console.log(e)
     console.log("滚动触发")
   },
@@ -133,7 +127,17 @@ Page({
     })
   },
   editTitle: function(event) {
-    util.navigateTo('./create?type=1');
+    this.data.textContent = this.data.articleInfo.title;
+    this.data.textIdentify = 1;
+    util.navigateTo('./create');
+  },
+  editContent: function(event) {
+    var index = event.currentTarget.dataset.index;
+    var content = event.currentTarget.dataset.content;
+    this.data.textIdentify = 0;
+    this.data.index = index;
+    this.data.textContent = content;
+    util.navigateTo('./create');
   },
   deleteArt: function(event) {
     var detail_id = event.currentTarget.dataset.detailid;
@@ -167,7 +171,8 @@ Page({
       success: function(res) {
         console.log(res.tapIndex)
         if (res.tapIndex == 0) {
-          util.navigateTo('./create?type=0');
+          this.data.textIdentify = 0;
+          util.navigateTo('./create');
         } else if (res.tapIndex == 1) {
           wx.chooseImage({
             count: 9, // 默认9

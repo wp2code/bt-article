@@ -4,13 +4,8 @@ const app = getApp()
 var ajax = require('../../utils/ajax.js')
 Page({
   data: {
-    motto: 'Hello World',
     userInfo: {},
-    artItems: [{
-      article_id: 1,
-      title: "模板1",
-      title_pic: null
-    }],
+    articleList: [],
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
@@ -61,9 +56,11 @@ Page({
   onShow: function () {
     var that=this;
     ajax.postReq("article_query", null, function (res) {
-      that.setData({
-        artItems: res
-      })
+      if(res.code=='success'){
+        that.setData({
+          articleList: res['data']
+        })
+      }
     })
   },
   /**
@@ -107,7 +104,6 @@ Page({
     // }
   },
   getUserInfo: function (e) {
-    console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,

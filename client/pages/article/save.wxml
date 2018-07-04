@@ -2,13 +2,13 @@
 <form bindsubmit="onFormSubmit">
   <scroll-view style="height: {{windowHeight+'px'}};" scroll-y="true" bindscrolltolower="lower" bindscroll="scroll" scroll-top="{{scrollTop}}">
     <view class='art-head'>
-      <label bindtap="editTitle" >{{articleInfo.title!=null?articleInfo.title:'点击设置标题'}}</label>
+      <label bindtap="editTitle">{{articleInfo.title!=null?articleInfo.title:'点击设置标题'}}</label>
     </view>
     <view class='art-body'>
       <view class='art-add' id="_" data-bindViewId="_" data-artId="{{articleInfo.article_id}}" bindtap='addArt'>
         <image src='/resource/images/tabBar/添加.png'></image>
       </view>
-      <block  wx:for="{{detialList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
+      <block wx:for="{{detialList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
         <view class='art-item' style="min-width:{{windowWidth*0.9}}px">
           <view class='art-delete' data-detailId="{{item.id}}" bindtap='deleteArt'>
             ×
@@ -17,11 +17,9 @@
             <image lazy-load="true" src="{{item.picture_url}}" mode="scaleToFill"></image>
             <!-- <image lazy-load="true" src='/resource/images/icons/test.jpg' mode="scaleToFill"></image> -->
           </view>
-          <navigator url='../article/create' open-type="navigate">
-            <view class='art-text' style="min-width:{{windowWidth*0.9*0.6}}px">
-              <text>{{item.content}}</text>
-            </view>
-          </navigator>
+          <view class='art-text' bindtap='editContent' data-index="{{index}}" data-content="{{item.content}}" style="min-width:{{windowWidth*0.9*0.6}}px">
+            <text>{{item.content}}</text>
+          </view>
           <view class="art-position">
             <view class='art-position-upper'>{{index!=0 ?'↑':''}}</view>
             <view class='art-position-lower'>{{index!=detialList.length-1?'↓':''}}</view>

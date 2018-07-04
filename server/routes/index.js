@@ -31,17 +31,20 @@ router.post("/tunnel", controllers.tunnel.post);
 router.get("/message", controllers.message.get);
 // POST 用来处理微信转发过来的客服消息
 router.post("/message", controllers.message.post);
-//创建
+
+//创建文章信息【明细，主表】
 router.post("/article/create", controllers.article.create);
-//更新
+//更新文章
 router.post("/article/update", controllers.article.update);
 //查询日志
 router.post("/article/query", controllers.article.query);
-//获取用户创建的信息
-router.get("/article/detail", controllers.article.detail);
-//删除日志
+//查询文章信息
+router.get("/article/get", controllers.article.get);
+//删除文章信息
 router.get("/article/del", controllers.article.del);
 //删除文章明细
-router.get("/article/del_detail", controllers.article.del_detail);
+router.get("/article/detail/del", controllers.article.delDetail);
+//更新文章明细
+router.post("/article/detail/update", controllers.article.updateDetail);
 
 module.exports = router;

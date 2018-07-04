@@ -13,8 +13,7 @@
         </view>
       </view>
       <view class='flex-item art-tp-middle'>
-         <image src="{{item.title_pic}}" mode='scaleToFill'></image> 
-        <!-- {{item.content}} -->
+         <image src="{{item.cover_pic_url}}" mode='scaleToFill'></image> 
       </view>
       <view class='flex-item art-tp-bottom'>
         <text space="nbsp">{{item.pv!=null && item.pv>0 ? item.pv:0}}阅读  </text>
@@ -36,7 +35,7 @@
         <label>{{item.remark2}}</label>
       </view>
     </view>
-    <navigator url='../article/create' open-type="navigate">
+    <navigator url='../article/create?type=0' open-type="navigate">
       <view class='tp-prd-beg'>
         <view class='prd-icon'>
           <image src='../../resource/images/icons/加号.png'></image>
@@ -46,6 +45,8 @@
     </navigator>
   </view>
 </template>
+
+
 <!-- 我的小文章模板 -->
 <template name="ownArticleTp">
   <navigator url='../article/article?artId={{item.artId}}'>

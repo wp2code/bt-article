@@ -7,30 +7,17 @@ Page({
    * 页面的初始数据
    */
   data: {
-    maxTextNum: 150,
+    maxTextNum: 500, //最大输入字数
     textNum: 0,
-    textContent: "",
-    textIdentify: 0, //0:文本：1：标题,
-    isShowTip: true
-
+    textContent: "", //文本内容
+    textIdentify: 0, //编辑类型 0:文本：1：标题
+    index: -1,
+    isShowTip: true,
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
-    console.log("创建页面加载。。。");
-    var textIdentify = options.type;
-    console.log("创建页面Type=" + textIdentify)
-    if (textIdentify!=undefined){
-      var pages = getCurrentPages();
-      var prevPage = pages[pages.length - 2]; // 上一页面
-      this.setData({
-        textContent: prevPage.data.textContent,
-        textIdentify: textIdentify
-      })
-    }
-
-  },
+  onLoad: function(options) {},
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -43,7 +30,40 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    console.log("监听页面显示...");
+    var barTitle = "编辑文本";
+    this.data.maxTextNum = 500;
+    var pages = getCurrentPages();
+    var prevPage = pages[pages.length - 2]; // 上一页面
+    var textIdentify = "";
+    var textContent = "";
+    var index = -1;
+    if (prevPage._route_ == "pages/article/save") {
+      if (prevPage.data.textContent != undefined) {
+        textContent = prevPage.data.textContent;
+      }
+      if (prevPage.data.textIdentify != undefined) {
+        textIdentify = prevPage.data.textIdentify;
+        if (textIdentify == 1) {
+          barTitle = "编辑标题";
+          this.data.maxTextNum = 50;
+        }
+      }
+      if (prevPage.data.index != undefined) {
+        index = prevPage.data.index;
+      }
+      console.log("监听页面显示textIdentify=" + textIdentify)
+      console.log("监听页面显示index=" + index)
+      this.setData({
+        textContent: textContent,
+        textIdentify: textIdentify,
+        index: index
+      })
+    }
+    //更改标题
+    wx.setNavigationBarTitle({
+      title: barTitle
+    })
   },
 
   /**
@@ -202,10 +222,8 @@ Page({
         }
       })
     } else if (len > 0) {
+      this.data.textContent = value;
       util.navigateTo('./save');
-      this.setData({
-        textContent: value
-      });
     }
 
   }

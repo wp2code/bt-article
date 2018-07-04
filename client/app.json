@@ -6,7 +6,9 @@
     "pages/own/own",
     "pages/article/article",
     "pages/article/create",
-    "pages/article/save"
+    "pages/article/save",
+    "pages/article/edit_title",
+    "pages/article/edit_content"
   ],
   "window": {
     "backgroundTextStyle": "dark",

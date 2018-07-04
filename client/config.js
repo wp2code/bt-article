@@ -20,23 +20,23 @@ var config = {
 
     // 测试的信道服务地址
     tunnelUrl: `${host}/${prefix}/tunnel`,
-
     // 上传图片接口
     uploadUrl: `${host}/${prefix}/upload`,
-    //查询记录
-    article_query: `${host}/${prefix}/article/query`,
-    //更新记录
-    article_edit: `${host}/${prefix}/article/edit`,
-    //创建
+    
+    //新增信息
     article_create: `${host}/${prefix}/article/create`,
-    //更新
-    article_update: `${host}/${prefix}/article/update`,
+    //查询信息列表
+    article_query: `${host}/${prefix}/article/query`,
+    //查询信息
+    article_detail: `${host}/${prefix}/article/get`,
     //删除记录
     article_del: `${host}/${prefix}/article/del`,
+    //更新信息
+    article_update: `${host}/${prefix}/article/update`,
     //删除明细
-    article_detail_del: `${host}/${prefix}/article/del_detail`,
-    //获取用户创建的信息
-    article_detail: `${host}/${prefix}/article/detail`
+    article_detail_del: `${host}/${prefix}/article/detail/del`,
+    //更新明细
+    article_detail_update: `${host}/${prefix}/article/detail/update`
   },
 };
 

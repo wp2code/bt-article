@@ -13,34 +13,36 @@ const {SUCCESS, FAILED, CNF} = require('../constants');
 async function create(ctx, next) {
     let condition = ctx.request.body || {}
     let userInfo = condition.userInfo;
+    let coverPicUrl = userInfo.cover_pic_url;
     let nickName = userInfo.nickName;
-    let create_time = Date.now() / 1000;
+    let createTime = Date.now() / 1000;
     let articleDetailInfo = {};
-    let article_id = condition.article_id;
-    if (article_id == undefined || article_id == null) {
-        article_id = uuidGenerator().replace(/-/g, "");
+    let articleId = condition.article_id;
+    if (articleId == undefined || articleId == null) {
+        articleId = uuidGenerator().replace(/-/g, "");
     }
     articleDetailInfo.id = uuidGenerator().replace(/-/g, "");
-    articleDetailInfo.article_id = article_id;
-    articleDetailInfo.create_time = create_time;
+    articleDetailInfo.article_id = articleId;
+    articleDetailInfo.create_time = createTime;
     articleDetailInfo.content = condition.content;
     articleDetailInfo.author_name = nickName;
     articleDetailInfo.author_id = nickName;
     articleDetailInfo.order_num = 1;//默认是1
-    articleDetailInfo.picture_url=condition.picture_url;
+    articleDetailInfo.picture_url = condition.picture_url;
     await mysql(CNF.DB_TABLE.article_detail_info).select('order_num').where({
-        article_id: article_id, author_id: nickName
+        article_id: articleId, author_id: nickName
     }).orderBy('order_num', 'desc').then(async (res) => {
         if (res != null && res.length > 0) {
             articleDetailInfo.order_num = res[0]['order_num'] + 1;
         } else {
             //创建主表信息
             let articleInfo = {};
-            articleInfo.id = article_id;
+            articleInfo.id = articleId;
             articleInfo.author_id = nickName;
             articleInfo.author_name = nickName;
             articleInfo.title = condition.title || null;
-            articleInfo.create_time = create_time;
+            articleInfo.cover_pic_url = coverPicUrl || null;
+            articleInfo.create_time = createTime;
             mysql(CNF.DB_TABLE.article_info).insert(articleInfo).then(res => {
                 console.log("文章主表创建成功！")
             }).catch(error => {
@@ -67,7 +69,7 @@ async function create(ctx, next) {
  * @param next
  * @returns {Promise<void>}
  */
-async function detail(ctx, next) {
+async function get(ctx, next) {
     let {article_id} = ctx.query;
     await mysql(CNF.DB_TABLE.article_info).select('*').where({id: article_id}).then(async (res) => {
         let result = {};
@@ -117,7 +119,6 @@ async function query(ctx, next) {
     });
 }
 
-
 /**
  *  更新
  * @param ctx
@@ -146,15 +147,6 @@ async function update(ctx, next) {
     }
 }
 
-async function updateDetail(ctx, next) {
-    let condition = ctx.request.body || {}
-    let userInfo = condition.userInfo;
-    let nickName = userInfo.nickName;
-    let article_detail_id = condition.did;
-    await mysql(CNF.DB_TABLE.article_detail_info);
-}
-
-
 /**
  * 删除 文章信息
  * @param diaryInfo
@@ -174,12 +166,26 @@ async function del(ctx, next) {
 }
 
 /**
+ *  更新 文章明细信息
+ * @param ctx
+ * @param next
+ * @returns {Promise<void>}
+ */
+async function updateDetail(ctx, next) {
+    let condition = ctx.request.body || {}
+    let userInfo = condition.userInfo;
+    let nickName = userInfo.nickName;
+    let article_detail_id = condition.did;
+    await mysql(CNF.DB_TABLE.article_detail_info);
+}
+
+/**
  *  删除 文章明细
  * @param ctx
  * @param next
  * @returns {Promise<void>}
  */
-async function del_detail(ctx, next) {
+async function delDetail(ctx, next) {
     let {detail_id} = ctx.query;
     if (detail_id) {
         await  mysql(CNF.DB_TABLE.article_detail_info).del().where({id: detail_id}).then(res => {
@@ -196,7 +202,8 @@ async function del_detail(ctx, next) {
 }
 
 /**
- * 查询可访问的信件id
+ *  查询可以访问文章的人
+ * 【开放权限校验】
  * @param open_id
  * @param callback
  */
@@ -206,4 +213,4 @@ async function queryVisit(open_id, callback) {
     });
 }
 
-module.exports = {detail, del_detail,create, update, query, del}
+module.exports = {create, get, delDetail, query, update, del, updateDetail, delDetail}
