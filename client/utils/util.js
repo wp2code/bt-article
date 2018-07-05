@@ -42,9 +42,9 @@ var showModel = (title, content) => {
 const navigateTo = (url, callback) => {
   wx.navigateTo({
     url: url,
-    success: function(res) {
+    success: function() {
       if (typeof(callback) == 'function') {
-        callback(res)
+        callback()
       }
     }
   })
@@ -53,9 +53,9 @@ const navigateTo = (url, callback) => {
 const redirectTo = (url, callback) => {
   wx.redirectTo({
     url: url,
-    success: function(res) {
+    success: function() {
       if (typeof(callback) == 'function') {
-        callback(res)
+        callback()
       }
     }
   })

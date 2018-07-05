@@ -6,8 +6,10 @@ CNF = {
 		"article_visitable_info": "article_visitable_info"
 	},
 	OPT_STATE: {
+		SUCCESS_CODE: 1,
 		SUCCESS: "success",  // 操作成功
-		FAILED: "failed"    // 操作失败
+		FAILED: "failed",    // 操作失败
+		FAILED_CODE: -1
 	},
 	ERRORS: {
 		ERR_WHEN_INSERT_TO_DB: "ERR_WHEN_INSERT_TO_DB",
@@ -20,7 +22,8 @@ CNF = {
 function SUCCESS(ctx, result) {
 	console.log("Success 结果：" + result);
 	const body = {};
-	body.code = CNF.OPT_STATE.SUCCESS;
+	body.message = CNF.OPT_STATE.SUCCESS;
+	body.code = CNF.OPT_STATE.SUCCESS_CODE;
 	body.data = result !== undefined ? result : {};
 	ctx.body = body;
 }
@@ -28,7 +31,8 @@ function SUCCESS(ctx, result) {
 function FAILED(ctx, result) {
 	console.log("Failed 结果：" + result);
 	const body = {};
-	body.code = CNF.OPT_STATE.FAILED;
+	body.message = result["errorMsg"] != undefined ? result.error != undefined : CNF.OPT_STATE.FAILED;
+	body.code = CNF.OPT_STATE.FAILED_CODE;
 	body.data = result !== undefined ? result : {};
 	ctx.body = body;
 }

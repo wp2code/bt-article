@@ -16,6 +16,7 @@ Page({
     textIdentify: 0, //编辑类型 0:文本：1：标题,
     index: -1, //集合索引
     detialList: [],
+    optType: 0,
     detailInfo: {
       index: -1,
       content: '',
@@ -72,6 +73,13 @@ Page({
     console.log("--------articleInfo--------");
     var articleInfo = wx.getStorageSync("articleInfo");
     console.log(articleInfo);
+    if (!articleInfo) {
+      articleInfo = {
+        article_id: '',
+        title: '',
+        author_name: ''
+      }
+    }
     this.setData({
       articleInfo: articleInfo,
       detialList: detialList
@@ -126,8 +134,9 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
+    console.log("onUnload");
     wx.showModal({
-      title: '退出编辑',
+      title: '退出编辑页',
       content: '是否保存当前内容为草稿?',
       confirmText: "保存草稿",
       cancelText: "不保存",
@@ -137,10 +146,8 @@ Page({
         } else if (res.cancel) {
           wx.removeStorageSync("detialList");
           wx.removeStorageSync("articleInfo");
-          console.log("不保存")
-          util.redirectTo('../produce/produce');
+          console.log("不保存");
         }
-
       }
     })
   },
@@ -185,6 +192,7 @@ Page({
     var index = event.currentTarget.dataset.index;
     var content = event.currentTarget.dataset.content;
     this.setData({
+      optType: 1,
       textIdentify: 0,
       detailInfo: {
         index: index,
@@ -217,12 +225,12 @@ Page({
         })
       })
     } else {
-      var that=this;
+      var that = this;
       wx.showModal({
         content: "确定删除此段2？",
         success: function(res) {
           if (res.confirm) {
-            detialList.pop("index============"+index);
+            detialList.pop("index============" + index);
             console.log(detialList);
             detialList.pop(index);
             console.log(detialList);
@@ -248,6 +256,7 @@ Page({
         console.log(res.tapIndex)
         if (res.tapIndex == 0) {
           that.data.textIdentify = 0;
+          that.data.optType = 0;
           util.navigateTo('./create');
         } else if (res.tapIndex == 1) {
           wx.chooseImage({

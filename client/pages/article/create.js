@@ -43,9 +43,10 @@ Page({
     var pages = getCurrentPages();
     var prevPage = pages[pages.length - 2]; // 上一页面
     console.log(prevPage);
-    if (prevPage.__route__ == "pages/article/save") {
+    if (prevPage.route == "pages/article/save") {
       if (prevPage.data.textIdentify != undefined) {
         var textIdentify = prevPage.data.textIdentify;
+        this.data.textIdentify = prevPage.data.textIdentify
         if (textIdentify == 1) {
           var articleInfo = prevPage.data.articleInfo;
           this.data.textContent = articleInfo.title;
@@ -55,6 +56,8 @@ Page({
         } else if (textIdentify == 0) {
           var detailInfo = prevPage.data.detailInfo;
           this.data.textContent = detailInfo.content;
+          this.data.index = detailInfo.index;
+          this.data.optType = prevPage.data.optType;
           this.data.detailInfo = detailInfo;
         }
       }
@@ -240,7 +243,7 @@ Page({
         articleInfo.title = value;
         wx.setStorageSync("articleInfo", articleInfo);
       }
-      util.navigateTo('./save');
+      util.redirectTo('./save');
     }
 
   }

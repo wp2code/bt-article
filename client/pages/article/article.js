@@ -11,7 +11,7 @@ Page({
     articleInfo: {
       create_time: '',
       article_id: '',
-      title: null,
+      title: '',
       author_name: '',
       pv: 0
     },
