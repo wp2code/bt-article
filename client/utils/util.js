@@ -39,9 +39,25 @@ var showModel = (title, content) => {
   })
 }
 //路径跳转
-const navigateTo = (url) => {
+const navigateTo = (url, callback) => {
   wx.navigateTo({
-    url:url,
+    url: url,
+    success: function(res) {
+      if (typeof(callback) == 'function') {
+        callback(res)
+      }
+    }
+  })
+}
+//路径重定向
+const redirectTo = (url, callback) => {
+  wx.redirectTo({
+    url: url,
+    success: function(res) {
+      if (typeof(callback) == 'function') {
+        callback(res)
+      }
+    }
   })
 }
 
@@ -50,5 +66,6 @@ module.exports = {
   showBusy,
   showSuccess,
   showModel,
-  navigateTo
+  navigateTo,
+  redirectTo
 }

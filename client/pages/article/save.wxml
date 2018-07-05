@@ -8,9 +8,9 @@
       <view class='art-add' id="_" data-bindViewId="_" data-artId="{{articleInfo.article_id}}" bindtap='addArt'>
         <image src='/resource/images/tabBar/添加.png'></image>
       </view>
-      <block wx:for="{{detialList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
+      <block wx:for="{{detialList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
         <view class='art-item' style="min-width:{{windowWidth*0.9}}px">
-          <view class='art-delete' data-detailId="{{item.id}}" bindtap='deleteArt'>
+          <view class='art-delete' data-detailId="{{item.id}}" data-index="{{index}}" bindtap='deleteArt'>
             ×
           </view>
           <view class='art-image'>

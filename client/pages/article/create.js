@@ -8,10 +8,19 @@ Page({
    */
   data: {
     maxTextNum: 500, //最大输入字数
+    barTitle: "编辑文本",
     textNum: 0,
-    textContent: "", //文本内容
+    textContent: '', //文本内容
     textIdentify: 0, //编辑类型 0:文本：1：标题
-    index: -1,
+    optType: 0, //操作类型 0：新增 1：编辑
+    detailInfo: {
+      index: -1,
+      content: '',
+    },
+    articleInfo: {
+      index: '',
+      title: '',
+    },
     isShowTip: true,
   },
   /**
@@ -31,38 +40,28 @@ Page({
    */
   onShow: function() {
     console.log("监听页面显示...");
-    var barTitle = "编辑文本";
-    this.data.maxTextNum = 500;
     var pages = getCurrentPages();
     var prevPage = pages[pages.length - 2]; // 上一页面
-    var textIdentify = "";
-    var textContent = "";
-    var index = -1;
-    if (prevPage._route_ == "pages/article/save") {
-      if (prevPage.data.textContent != undefined) {
-        textContent = prevPage.data.textContent;
-      }
+    console.log(prevPage);
+    if (prevPage.__route__ == "pages/article/save") {
       if (prevPage.data.textIdentify != undefined) {
-        textIdentify = prevPage.data.textIdentify;
+        var textIdentify = prevPage.data.textIdentify;
         if (textIdentify == 1) {
-          barTitle = "编辑标题";
+          var articleInfo = prevPage.data.articleInfo;
+          this.data.textContent = articleInfo.title;
+          this.data.barTitle = "编辑标题";
           this.data.maxTextNum = 50;
+          this.data.articleInfo = articleInfo;
+        } else if (textIdentify == 0) {
+          var detailInfo = prevPage.data.detailInfo;
+          this.data.textContent = detailInfo.content;
+          this.data.detailInfo = detailInfo;
         }
       }
-      if (prevPage.data.index != undefined) {
-        index = prevPage.data.index;
-      }
-      console.log("监听页面显示textIdentify=" + textIdentify)
-      console.log("监听页面显示index=" + index)
-      this.setData({
-        textContent: textContent,
-        textIdentify: textIdentify,
-        index: index
-      })
     }
     //更改标题
     wx.setNavigationBarTitle({
-      title: barTitle
+      title: this.data.barTitle
     })
   },
 
@@ -77,22 +76,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
-    var textContent = this.data.textContent;
-    if (this.data.isShowTip && textContent != null && textContent.length != 0) {
-      wx.showModal({
-        title: '退出编辑',
-        content: '是否保存当前内容为草稿?',
-        confirmText: "保存草稿",
-        cancelText: "不保存",
-        success: function(res) {
-          if (res.confirm) {
-            console.log("保存")
-          } else if (res.cancel) {
-            console.log("不保存")
-          }
-        }
-      })
-    }
+
   },
 
   /**
@@ -206,11 +190,7 @@ Page({
   onbindconfirm: function(e) {
     console.log("onbindconfirm....");
     var value = e.detail.value;
-    console.log(value);
-    console.log(value.length);
-    console.log(this.data.maxTextNum);
     var len = value.length;
-    console.log(len > this.data.maxTextNum)
     if (len > this.data.maxTextNum) {
       wx.showModal({
         content: "修复字数长度！",
@@ -221,8 +201,45 @@ Page({
           }
         }
       })
-    } else if (len > 0) {
-      this.data.textContent = value;
+    } else if (len >= 0) {
+      console.log("onbindconfirm to save...")
+      var textIdentify = this.data.textIdentify;
+      if (textIdentify == 0) { //文章信息
+        //编辑或新增
+        var detialList = wx.getStorageSync("detialList");
+        console.log("-----------create-------")
+        console.log(detialList)
+        if (!detialList) {
+          detialList = [];
+          var detailInfo = {
+            id: '',
+            content: value,
+            picture_url: ''
+          };
+          detialList.push(detailInfo);
+        } else {
+          var optType = this.data.optType;
+          if (optType == 0) { //新增文本
+            var detailInfo = {
+              id: '',
+              content: value,
+              picture_url: ''
+            };
+            detialList.push(detailInfo);
+          } else if (optType == 1) { //编辑文本
+            var detailInfo = this.data.detailInfo;
+            detialList[detailInfo.index]['content'] = value;
+          }
+        }
+        wx.setStorageSync("detialList", detialList);
+      } else if (textIdentify == 1) { //标题信息
+        var articleInfo = wx.getStorageSync("articleInfo");
+        console.log("-----------create-------")
+        console.log(articleInfo)
+        var articleInfo = this.data.articleInfo;
+        articleInfo.title = value;
+        wx.setStorageSync("articleInfo", articleInfo);
+      }
       util.navigateTo('./save');
     }
 

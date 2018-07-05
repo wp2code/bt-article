@@ -12,10 +12,14 @@ Page({
       title: '',
       author_name: ''
     },
-    textContent: "", //文本内容
+    textContent: '', //文本内容
     textIdentify: 0, //编辑类型 0:文本：1：标题,
     index: -1, //集合索引
     detialList: [],
+    detailInfo: {
+      index: -1,
+      content: '',
+    },
     windowHeight: app.globalData.windowHeight,
     windowWidth: app.globalData.windowWidth,
     toView: '_'
@@ -25,6 +29,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    console.log("save onLoad.......")
     // ajax.getReq('article_detail', "?article_id=" + article_id, function(res) {
     //   if (res.code == 'success') {
     //     var data = res['data'];
@@ -55,26 +60,61 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-    var pages = getCurrentPages();
-    var prevPage = pages[pages.length - 2]; // 上一页面
-    var textIdentify = "";
-    var textContent = "";
-    if (prevPage._route_ == "pages/article/create") {
-      if (prevPage.data.textContent != undefined) {
-        textContent = prevPage.data.textContent;
-      }
-      if (prevPage.data.textIdentify != undefined) {
-        textIdentify = prevPage.data.textIdentify;
-        if (textContent != "") {
-          if (textIdentify == 1) {
-            this.data.articleInfo.title = textContent;
-          } else {
-            var detialList = this.data.detialList;
-          }
-        }
-
-      }
-    }
+    console.log("save onShow...")
+    // var pages = getCurrentPages();
+    // var prevPage = pages[pages.length - 2]; // 上一页面
+    // var textIdentify = "";
+    // var textContent = "";
+    // console.log(prevPage);
+    console.log("--------detialList--------");
+    var detialList = wx.getStorageSync("detialList");
+    console.log(detialList);
+    console.log("--------articleInfo--------");
+    var articleInfo = wx.getStorageSync("articleInfo");
+    console.log(articleInfo);
+    this.setData({
+      articleInfo: articleInfo,
+      detialList: detialList
+    })
+    // if (prevPage.__route__ == "pages/article/create") {
+    //   if (prevPage.data.textContent != undefined) {
+    //     textContent = prevPage.data.textContent;
+    //     console.log("textContent==" + textContent);
+    //   }
+    //   if (prevPage.data.textIdentify != undefined) {
+    //     textIdentify = prevPage.data.textIdentify;
+    //     console.log("textIdentify==" + textIdentify);
+    //     if (textContent != "") {
+    //       if (textIdentify == 1) {
+    //         articleInfo.title = textContent;
+    //         this.setData({
+    //           articleInfo: articleInfo,
+    //           detialList: detialList
+    //         })
+    //       } else if (textIdentify == 0) {
+    //         var index = prevPage.data.index;
+    //         var item = {};
+    //         if (detialList.length <= 0) {
+    //           item.content = textContent;
+    //           this.data.index = 0;
+    //           item.picture_url = '';
+    //           item.id = '';
+    //           detialList.push(item)
+    //         } else {
+    //           item = detialList[index];
+    //           item.content = textContent;
+    //           detialList[index] = item;
+    //         }
+    //         this.setData({
+    //           articleInfo: articleInfo,
+    //           detialList: detialList
+    //         })
+    //       }
+    //     }
+    //   }
+    // }
+    // wx.setStorageSync("detialList", this.data.detialList);
+    // wx.setStorageSync("articleInfo", this.data.articleInfo);
   },
   /**
    * 生命周期函数--监听页面隐藏
@@ -82,13 +122,26 @@ Page({
   onHide: function() {
     console.log("页面隐藏。。。")
   },
-
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
-    wx.navigateBack({
-      delta: 1
+    wx.showModal({
+      title: '退出编辑',
+      content: '是否保存当前内容为草稿?',
+      confirmText: "保存草稿",
+      cancelText: "不保存",
+      success: function(res) {
+        if (res.confirm) {
+          console.log("保存")
+        } else if (res.cancel) {
+          wx.removeStorageSync("detialList");
+          wx.removeStorageSync("articleInfo");
+          console.log("不保存")
+          util.redirectTo('../produce/produce');
+        }
+
+      }
     })
   },
   upper: function(e) {
@@ -100,17 +153,13 @@ Page({
     console.log(this.data.windowHeight);
     // this.data.windowHeight = this.data.windowHeight + this.data.scrollTop
     console.log(this.data.windowHeight);
-    var detialList = this.data.articleInfo['detialList'];
-    var index = detialList.length - 1;
-    console.log(index);
-    this.setData({
-      toView: '_' + index,
-    })
-    console.log(this.data.toView);
-    // if (e.detail.scrollTop < this.data.scrollTop) {
-
-    //   this.data.windowHeight = windowHeight+ this.data.scrollTop;
-    // }
+    // var detialList = this.data.articleInfo['detialList'];
+    // var index = detialList.length - 1;
+    // console.log(index);
+    // this.setData({
+    //   toView: '_' + index,
+    // // })
+    // console.log(this.data.toView);
   },
   scroll: function(e) {
     console.log(e)
@@ -127,38 +176,65 @@ Page({
     })
   },
   editTitle: function(event) {
-    this.data.textContent = this.data.articleInfo.title;
-    this.data.textIdentify = 1;
+    this.setData({
+      textIdentify: 1
+    })
     util.navigateTo('./create');
   },
   editContent: function(event) {
     var index = event.currentTarget.dataset.index;
     var content = event.currentTarget.dataset.content;
-    this.data.textIdentify = 0;
-    this.data.index = index;
-    this.data.textContent = content;
+    this.setData({
+      textIdentify: 0,
+      detailInfo: {
+        index: index,
+        content: content
+      }
+    })
     util.navigateTo('./create');
   },
   deleteArt: function(event) {
     var detail_id = event.currentTarget.dataset.detailid;
-    var that = this;
-    ajax.delReq("article_detail_del", "?detail_id=" + detail_id, function(res) {
-      console.log(res);
-      var list = that.data.detialList;
-      var newList = [];
-      if (list.length > 0) {
-        for (var i = 0; i < list.length; i++) {
-          if (list[i].id !== detail_id) {
-            newList.push(list[i])
+    var index = event.currentTarget.dataset.index;
+    var detialList = wx.getStorageSync("detialList");
+    var articleInfo = wx.getStorageSync("articleInfo");
+    if (detail_id != '') {
+      var that = this;
+      ajax.delReq("article_detail_del", "?detail_id=" + detail_id, function(res) {
+        console.log(res);
+        var newList = [];
+        if (list.length > 0) {
+          for (var i = 0; i < list.length; i++) {
+            if (list[i].id !== detail_id) {
+              newList.push(list[i])
+            }
           }
         }
-      }
-      console.log(newList);
-      that.setData({
-        detialList: newList,
+        console.log(newList);
+        that.setData({
+          articleInfo: articleInfo,
+          detialList: newList,
+        })
       })
-    })
-    console.log(this.data.articleInfo.detialList);
+    } else {
+      var that=this;
+      wx.showModal({
+        content: "确定删除此段2？",
+        success: function(res) {
+          if (res.confirm) {
+            detialList.pop("index============"+index);
+            console.log(detialList);
+            detialList.pop(index);
+            console.log(detialList);
+            that.setData({
+              articleInfo: articleInfo,
+              detialList: detialList
+            })
+          } else if (res.cancel) {}
+        }
+      })
+    }
+    wx.setStorageSync("detialList", detialList);
   },
   addArt: function(event) {
     var id = event.currentTarget.dataset.bindviewid;
@@ -171,7 +247,7 @@ Page({
       success: function(res) {
         console.log(res.tapIndex)
         if (res.tapIndex == 0) {
-          this.data.textIdentify = 0;
+          that.data.textIdentify = 0;
           util.navigateTo('./create');
         } else if (res.tapIndex == 1) {
           wx.chooseImage({
