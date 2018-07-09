@@ -2,10 +2,10 @@
 <form bindsubmit="onFormSubmit">
   <scroll-view style="height: {{windowHeight+'px'}};" scroll-y="true" bindscrolltolower="lower" bindscroll="scroll" scroll-top="{{scrollTop}}">
     <view class='art-head'>
-      <label bindtap="editTitle">{{articleInfo.title!=null?articleInfo.title:'点击设置标题'}}</label>
+      <label bindtap="editTitle">{{articleInfo.title!=''?articleInfo.title:'点击设置标题'}}</label>
     </view>
     <view class='art-body'>
-      <view class='art-add' id="_" data-bindViewId="_" data-artId="{{articleInfo.article_id}}" bindtap='addArt'>
+      <view class='art-add' id="_" data-bindViewId="_" data-artId="{{articleInfo.article_id}}" data-index="{{0}}" bindtap='addArt'>
         <image src='/resource/images/tabBar/添加.png'></image>
       </view>
       <block wx:for="{{detialList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
@@ -25,7 +25,7 @@
             <view class='art-position-lower'>{{index!=detialList.length-1?'↓':''}}</view>
           </view>
         </view>
-        <view class='art-add' id="{{'_'+index}}" data-bindViewId="{{'_'+index}}" data-artId="{{item.article_id}}" bindtap='addArt'>
+        <view class='art-add' id="{{'_'+index}}" data-bindViewId="{{'_'+index}}" data-artId="{{item.article_id}}" data-index="{{index+1}}" bindtap='addArt'>
           <image src='/resource/images/tabBar/添加.png'></image>
         </view>
       </block>

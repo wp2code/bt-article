@@ -12,15 +12,7 @@ Page({
       title: '',
       author_name: ''
     },
-    textContent: '', //文本内容
-    textIdentify: 0, //编辑类型 0:文本：1：标题,
-    index: -1, //集合索引
     detialList: [],
-    optType: 0,
-    detailInfo: {
-      index: -1,
-      content: '',
-    },
     windowHeight: app.globalData.windowHeight,
     windowWidth: app.globalData.windowWidth,
     toView: '_'
@@ -62,11 +54,6 @@ Page({
    */
   onShow: function() {
     console.log("save onShow...")
-    // var pages = getCurrentPages();
-    // var prevPage = pages[pages.length - 2]; // 上一页面
-    // var textIdentify = "";
-    // var textContent = "";
-    // console.log(prevPage);
     console.log("--------detialList--------");
     var detialList = wx.getStorageSync("detialList");
     console.log(detialList);
@@ -80,49 +67,28 @@ Page({
         author_name: ''
       }
     }
+    var editInfo = wx.getStorageSync("editInfo");
+    if (editInfo) {
+      if (editInfo.textIdentify == 0) { //文本
+        if (detialList && detialList.length > 0) {
+          detialList[editInfo.index]['content'] = editInfo.content;
+        } else {
+          var detialList = [{
+            id: '',
+            content: editInfo.content,
+            picture_url: ''
+          }];
+        }
+      } else if (editInfo.textIdentify == 1) { //标题
+        articleInfo.title = editInfo.content;
+      }
+    }
     this.setData({
       articleInfo: articleInfo,
       detialList: detialList
     })
-    // if (prevPage.__route__ == "pages/article/create") {
-    //   if (prevPage.data.textContent != undefined) {
-    //     textContent = prevPage.data.textContent;
-    //     console.log("textContent==" + textContent);
-    //   }
-    //   if (prevPage.data.textIdentify != undefined) {
-    //     textIdentify = prevPage.data.textIdentify;
-    //     console.log("textIdentify==" + textIdentify);
-    //     if (textContent != "") {
-    //       if (textIdentify == 1) {
-    //         articleInfo.title = textContent;
-    //         this.setData({
-    //           articleInfo: articleInfo,
-    //           detialList: detialList
-    //         })
-    //       } else if (textIdentify == 0) {
-    //         var index = prevPage.data.index;
-    //         var item = {};
-    //         if (detialList.length <= 0) {
-    //           item.content = textContent;
-    //           this.data.index = 0;
-    //           item.picture_url = '';
-    //           item.id = '';
-    //           detialList.push(item)
-    //         } else {
-    //           item = detialList[index];
-    //           item.content = textContent;
-    //           detialList[index] = item;
-    //         }
-    //         this.setData({
-    //           articleInfo: articleInfo,
-    //           detialList: detialList
-    //         })
-    //       }
-    //     }
-    //   }
-    // }
-    // wx.setStorageSync("detialList", this.data.detialList);
-    // wx.setStorageSync("articleInfo", this.data.articleInfo);
+    //删除编辑的缓存
+    wx.removeStorageSync("editInfo");
   },
   /**
    * 生命周期函数--监听页面隐藏
@@ -183,30 +149,44 @@ Page({
     })
   },
   editTitle: function(event) {
-    this.setData({
-      textIdentify: 1
-    })
+    var content = event.target.dataset.content || '';
+    var editInfo = {
+      textIdentify: 1,
+      optType: 1,
+      index: 0,
+      content: content
+    }
+    wx.setStorageSync("editInfo", editInfo);
     util.navigateTo('./create');
   },
   editContent: function(event) {
-    var index = event.currentTarget.dataset.index;
-    var content = event.currentTarget.dataset.content;
-    this.setData({
-      optType: 1,
+    var dataSet = event.target.dataset;
+    var index = dataSet.index;
+    var content = dataSet.content;
+    // this.setData({
+    //   optType: 1,
+    //   textIdentify: 0,
+    //   detailInfo: {
+    //     index: index,
+    //     content: content
+    //   }
+    // })
+    var editInfo = {
       textIdentify: 0,
-      detailInfo: {
-        index: index,
-        content: content
-      }
-    })
+      optType: 1,
+      index: index,
+      content: content
+    }
+    wx.setStorageSync("editInfo", editInfo);
     util.navigateTo('./create');
   },
   deleteArt: function(event) {
     var detail_id = event.currentTarget.dataset.detailid;
     var index = event.currentTarget.dataset.index;
     var detialList = wx.getStorageSync("detialList");
-    var articleInfo = wx.getStorageSync("articleInfo");
-    if (detail_id != '') {
+    // var articleInfo = wx.getStorageSync("articleInfo");
+    if (detail_id) {
+      console.log("删除数据库【" + detail_id + "】")
       var that = this;
       ajax.delReq("article_detail_del", "?detail_id=" + detail_id, function(res) {
         console.log(res);
@@ -220,32 +200,32 @@ Page({
         }
         console.log(newList);
         that.setData({
-          articleInfo: articleInfo,
           detialList: newList,
         })
+        wx.setStorageSync("detialList", detialList);
       })
     } else {
       var that = this;
       wx.showModal({
-        content: "确定删除此段2？",
+        content: "确定删除此段？" + index,
         success: function(res) {
           if (res.confirm) {
-            detialList.pop("index============" + index);
             console.log(detialList);
-            detialList.pop(index);
+            detialList.splice(index, 1);
             console.log(detialList);
             that.setData({
-              articleInfo: articleInfo,
               detialList: detialList
             })
+            wx.setStorageSync("detialList", detialList);
           } else if (res.cancel) {}
         }
       })
     }
-    wx.setStorageSync("detialList", detialList);
+
   },
   addArt: function(event) {
     var id = event.currentTarget.dataset.bindviewid;
+    var index = event.currentTarget.dataset.index;
     var artid = event.currentTarget.dataset.artid;
     console.log('当前id==' + id)
     var that = this;
@@ -255,8 +235,13 @@ Page({
       success: function(res) {
         console.log(res.tapIndex)
         if (res.tapIndex == 0) {
-          that.data.textIdentify = 0;
-          that.data.optType = 0;
+          var editInfo = {
+            textIdentify: 0,
+            optType: 0,
+            index: index == 0 ? 0 : index - 1,
+            content: ''
+          }
+          wx.setStorageSync("editInfo", editInfo);
           util.navigateTo('./create');
         } else if (res.tapIndex == 1) {
           wx.chooseImage({
