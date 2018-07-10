@@ -13,22 +13,24 @@ const {SUCCESS, FAILED, CNF} = require('../constants');
 async function create(ctx, next) {
     let condition = ctx.request.body || {}
     let userInfo = condition.userInfo;
-    let coverPicUrl = userInfo.cover_pic_url;
+    let coverPicUrl = condition.cover_pic_url;
     let nickName = userInfo.nickName;
     let createTime = Date.now() / 1000;
     let articleDetailInfo = {};
     let articleId = condition.article_id;
-    if (articleId == undefined || articleId == null) {
+    if (articleId == undefined || articleId == '') {
         articleId = uuidGenerator().replace(/-/g, "");
     }
-    articleDetailInfo.id = uuidGenerator().replace(/-/g, "");
-    articleDetailInfo.article_id = articleId;
-    articleDetailInfo.create_time = createTime;
-    articleDetailInfo.content = condition.content;
-    articleDetailInfo.author_name = nickName;
-    articleDetailInfo.author_id = nickName;
-    articleDetailInfo.order_num = 1;//默认是1
-    articleDetailInfo.picture_url = condition.picture_url;
+    let detailList = condition.detailList;
+    // detailList.forEach(function (item, index) {
+    //     item.id = uuidGenerator().replace(/-/g, "");
+    //     item.article_id = articleId;
+    //     item.create_time = createTime;
+    //     item.author_name = nickName;
+    //     item.author_id = nickName;
+    //     item.order_num = index + 1;//默认是1
+    // })
+
     await mysql(CNF.DB_TABLE.article_detail_info).select('order_num').where({
         article_id: articleId, author_id: nickName
     }).orderBy('order_num', 'desc').then(async (res) => {
@@ -49,16 +51,26 @@ async function create(ctx, next) {
                 console.log(error.toString())
             });
         }
-        await mysql(CNF.DB_TABLE.article_detail_info).insert(articleDetailInfo).then(res => {
-            if (res != null && res.length > 0) {
-                SUCCESS(ctx, {article_id: article_id, article_detail_id: articleDetailInfo.id});
-            } else {
-                FAILED(ctx);
-            }
-        }).catch(error => {
-            FAILED(ctx, error.toString());
-            debug('%s: %O', CNF.ERRORS.ERR_WHEN_INSERT_TO_DB, e);
-        });
+        detailList.forEach(async function (item, index) {
+            item.id = uuidGenerator().replace(/-/g, "");
+            item.article_id = articleId;
+            item.create_time = createTime;
+            item.author_name = nickName;
+            item.author_id = nickName;
+            item.order_num = index + 1;//默认是1
+            await mysql(CNF.DB_TABLE.article_detail_info).insert(item).then(res => {
+                if (res != null && res.length > 0) {
+                    console.log("文章明细创建成功！")
+                    SUCCESS(ctx, {article_id: articleId});
+                } else {
+                    FAILED(ctx);
+                }
+            }).catch(error => {
+                FAILED(ctx, error.toString());
+                debug('%s: %O', CNF.ERRORS.ERR_WHEN_INSERT_TO_DB, e);
+            });
+        })
+
     })
 
 }

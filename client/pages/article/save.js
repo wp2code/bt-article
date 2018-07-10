@@ -10,12 +10,15 @@ Page({
     articleInfo: {
       article_id: '',
       title: '',
-      author_name: ''
+      author_name: '',
+      cover_pic_url: '',
+      detialList: []
     },
     detialList: [],
     windowHeight: app.globalData.windowHeight,
     windowWidth: app.globalData.windowWidth,
-    toView: '_'
+    toView: '_',
+    nextPageFlag: 0,
   },
 
   /**
@@ -55,37 +58,33 @@ Page({
   onShow: function() {
     console.log("save onShow...")
     console.log("--------detialList--------");
-    var detialList = wx.getStorageSync("detialList");
+    var detialList = wx.getStorageSync("detialList") || this.data.detialList;
     console.log(detialList);
     console.log("--------articleInfo--------");
-    var articleInfo = wx.getStorageSync("articleInfo");
+    var articleInfo = wx.getStorageSync("articleInfo") || this.data.articleInfo;
     console.log(articleInfo);
-    if (!articleInfo) {
-      articleInfo = {
-        article_id: '',
-        title: '',
-        author_name: ''
-      }
-    }
     var editInfo = wx.getStorageSync("editInfo");
     if (editInfo) {
       if (editInfo.textIdentify == 0) { //文本
-        if (detialList && detialList.length > 0) {
+        if (detialList && detialList.length > 0 && editInfo.optType == 1) {
           detialList[editInfo.index]['content'] = editInfo.content;
         } else {
-          var detialList = [{
+          var newDetail = {
             id: '',
             content: editInfo.content,
-            picture_url: ''
-          }];
+            pictrue_url: ''
+          };
+          detialList.splice(editInfo.index, 0, newDetail);
         }
+        wx.setStorageSync("detialList", detialList);
       } else if (editInfo.textIdentify == 1) { //标题
-        articleInfo.title = editInfo.content;
+        articleInfo['title'] = editInfo.content;
+        wx.setStorageSync("articleInfo", articleInfo);
       }
     }
     this.setData({
       articleInfo: articleInfo,
-      detialList: detialList
+      detialList: wx.getStorageSync("detialList")
     })
     //删除编辑的缓存
     wx.removeStorageSync("editInfo");
@@ -101,21 +100,24 @@ Page({
    */
   onUnload: function() {
     console.log("onUnload");
-    wx.showModal({
-      title: '退出编辑页',
-      content: '是否保存当前内容为草稿?',
-      confirmText: "保存草稿",
-      cancelText: "不保存",
-      success: function(res) {
-        if (res.confirm) {
-          console.log("保存")
-        } else if (res.cancel) {
-          wx.removeStorageSync("detialList");
-          wx.removeStorageSync("articleInfo");
-          console.log("不保存");
+    if (this.data.nextPageFlag == 0) {
+      wx.showModal({
+        title: '退出编辑页',
+        content: '是否保存当前内容为草稿?',
+        confirmText: "保存草稿",
+        cancelText: "不保存",
+        success: function(res) {
+          if (res.confirm) {
+            console.log("保存")
+          } else if (res.cancel) {
+            wx.removeStorageSync("detialList");
+            wx.removeStorageSync("articleInfo");
+            console.log("不保存");
+          }
         }
-      }
-    })
+      })
+    }
+
   },
   upper: function(e) {
     console.log(e)
@@ -149,28 +151,26 @@ Page({
     })
   },
   editTitle: function(event) {
-    var content = event.target.dataset.content || '';
+    this.setData({
+      nextPageFlag: -1
+    })
+    var title = event.target.dataset.title || '';
     var editInfo = {
       textIdentify: 1,
       optType: 1,
       index: 0,
-      content: content
+      content: title
     }
     wx.setStorageSync("editInfo", editInfo);
-    util.navigateTo('./create');
+    util.redirectTo('./create');
   },
-  editContent: function(event) {
+  editDetail: function(event) {
+    this.setData({
+      nextPageFlag: -1
+    })
     var dataSet = event.target.dataset;
     var index = dataSet.index;
     var content = dataSet.content;
-    // this.setData({
-    //   optType: 1,
-    //   textIdentify: 0,
-    //   detailInfo: {
-    //     index: index,
-    //     content: content
-    //   }
-    // })
     var editInfo = {
       textIdentify: 0,
       optType: 1,
@@ -178,72 +178,50 @@ Page({
       content: content
     }
     wx.setStorageSync("editInfo", editInfo);
-    util.navigateTo('./create');
+    util.redirectTo('./create');
   },
-  deleteArt: function(event) {
-    var detail_id = event.currentTarget.dataset.detailid;
+  deleteDetail: function(event) {
     var index = event.currentTarget.dataset.index;
     var detialList = wx.getStorageSync("detialList");
-    // var articleInfo = wx.getStorageSync("articleInfo");
-    if (detail_id) {
-      console.log("删除数据库【" + detail_id + "】")
-      var that = this;
-      ajax.delReq("article_detail_del", "?detail_id=" + detail_id, function(res) {
-        console.log(res);
-        var newList = [];
-        if (list.length > 0) {
-          for (var i = 0; i < list.length; i++) {
-            if (list[i].id !== detail_id) {
-              newList.push(list[i])
-            }
-          }
-        }
-        console.log(newList);
-        that.setData({
-          detialList: newList,
-        })
-        wx.setStorageSync("detialList", detialList);
-      })
-    } else {
-      var that = this;
-      wx.showModal({
-        content: "确定删除此段？" + index,
-        success: function(res) {
-          if (res.confirm) {
-            console.log(detialList);
-            detialList.splice(index, 1);
-            console.log(detialList);
-            that.setData({
-              detialList: detialList
-            })
-            wx.setStorageSync("detialList", detialList);
-          } else if (res.cancel) {}
-        }
-      })
-    }
-
+    var that = this;
+    wx.showModal({
+      content: "确定删除此段？" + index,
+      success: function(res) {
+        if (res.confirm) {
+          console.log(detialList);
+          detialList.splice(index, 1);
+          console.log(detialList);
+          that.setData({
+            detialList: detialList
+          })
+          wx.setStorageSync("detialList", detialList);
+        } else if (res.cancel) {}
+      }
+    })
   },
-  addArt: function(event) {
-    var id = event.currentTarget.dataset.bindviewid;
-    var index = event.currentTarget.dataset.index;
-    var artid = event.currentTarget.dataset.artid;
-    console.log('当前id==' + id)
+  addDetail: function(event) {
+    var index = event.currentTarget.dataset.index; //位置索引从0开始
+    var artid = event.currentTarget.dataset.artid; //文章信息主键
+    console.log('当前新增索引==' + index)
+    this.setData({
+      nextPageFlag: -1
+    })
     var that = this;
     wx.showActionSheet({
       itemList: ['文字', '图片'],
       itemColor: "#00abff",
       success: function(res) {
         console.log(res.tapIndex)
-        if (res.tapIndex == 0) {
+        if (res.tapIndex == 0) { //新增文字
           var editInfo = {
             textIdentify: 0,
             optType: 0,
-            index: index == 0 ? 0 : index - 1,
+            index: index, //最上一个新增 索引是0，其他的索引要减1
             content: ''
           }
           wx.setStorageSync("editInfo", editInfo);
-          util.navigateTo('./create');
-        } else if (res.tapIndex == 1) {
+          util.redirectTo('./create');
+        } else if (res.tapIndex == 1) { //新增图片
           wx.chooseImage({
             count: 9, // 默认9
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -255,7 +233,7 @@ Page({
               var detialList = [];
               for (var i = 0, h = tempFilePaths.length; i < h; i++) {
                 var item = {};
-                item.picture_url = tempFilePaths[i];
+                item.pictrue_url = tempFilePaths[i];
                 item.article_id = artid;
                 detialList.push(item);
               }
@@ -268,6 +246,43 @@ Page({
       },
       fail: function(res) {
         console.log(res.errMsg)
+      }
+    })
+  },
+  changeImage: function(event) {
+    var index = event.currentTarget.dataset.index; //位置索引从0开始
+    var that = this;
+    console.info("changeImage==" + index)
+    wx.chooseImage({
+      count: 1, // 默认9
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function(res) {
+        var detialList = wx.getStorageSync("detialList");
+        var tempFilePath = res.tempFilePaths[0]
+        console.log(tempFilePath);
+        detialList[index]['pictrue_url'] = tempFilePath;
+        var articleInfo = wx.getStorageSync("articleInfo");
+        if (articleInfo.cover_pic_url == '') {
+          articleInfo.cover_pic_url = tempFilePath;
+        }
+        that.setData({
+          detialList: detialList,
+          articleInfo: articleInfo
+        })
+        console.log(that.data.detialList);
+        console.log(that.data.articleInfo);
+        wx.setStorageSync("articleInfo", articleInfo);
+        wx.setStorageSync("detialList", detialList);
+      }
+    })
+  },
+  onFormSubmit: function(e) {
+    var articleInfo = wx.getStorageSync("articleInfo") || {};
+    articleInfo.detialList = wx.getStorageSync("detialList") || [];
+    ajax.postReq('article_create', articleInfo, function(res) {
+      if (res.code == 1) {
+        util.redirectTo('../own/own');
       }
     })
   }
