@@ -1,6 +1,6 @@
 // pages/article/article.js
-var ajax = require('../../utils/ajax.js')
-var util = require('../../utils/util.js')
+var ajax = require('../../utils/ajax.js');
+var util = require('../../utils/util.js');
 Page({
 
   /**
@@ -24,7 +24,7 @@ Page({
   onLoad: function(options) {
     var article_id = options.article_id;
     var that = this;
-    console.log("article_id===>" + article_id)
+    console.log("article_id===>" + article_id);
     ajax.getReq('article_detail', "?article_id=" + article_id, function(res) {
       if (res.code == 'success') {
         var data = res['data'];
@@ -91,4 +91,4 @@ Page({
   onShareAppMessage: function() {
 
   }
-})
+});

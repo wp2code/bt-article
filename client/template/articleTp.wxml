@@ -13,7 +13,7 @@
         </view>
       </view>
       <view class='flex-item art-tp-middle'>
-         <image src="{{item.cover_pic_url}}" mode='scaleToFill'></image> 
+        <image src="{{item.cover_pic_url}}" mode='scaleToFill'></image>
       </view>
       <view class='flex-item art-tp-bottom'>
         <text space="nbsp">{{item.pv!=null && item.pv>0 ? item.pv:0}}阅读  </text>
@@ -54,15 +54,25 @@
       <!-- 模板头部信息 -->
       <view class='flex-item art-tp-head'>
         <view>
-          <view>
+          <view wx:if="{{item.status==-1}}">
             <label>
-              {{item.artLimit}}
+              作废
+            </label>
+          </view>
+          <view wx:elif="{{item.status==1}}">
+            <label>
+              公开
+            </label>
+          </view>
+          <view wx:else>
+            <label>
+              草稿
             </label>
           </view>
         </view>
         <view>
           <label>
-            {{item.artTitle}}
+            {{item.title!=null?item.title:""}}
           </label>
         </view>
         <view>
@@ -71,7 +81,7 @@
       </view>
       <!-- 模板中部图片 -->
       <view class='flex-item art-tp-middle'>
-        <image src="{{item.artImagePath}}" mode='scaleToFill'></image>
+        <image lazy-load="true" src="{{item.cover_pic_url}}" mode='scaleToFill'></image>
       </view>
       <!-- 模板底部信息 -->
       <view class='flex-item ownart-tp-bottom'>
@@ -86,12 +96,12 @@
           </view>
         </bar> -->
         <view>
-          <text>{{item.updateTime}}2018-09-09</text>
+          <text>{{item.update_time}}</text>
         </view>
         <view>
-          <text space="nbsp">{{item.read!=null && item.read>0 ? item.read:0}}阅读  </text>
-          <text space="nbsp">{{item.comment!=null && item.comment>0 ? item.comment : 0}}评论</text>
-          <text>{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>
+          <text space="nbsp">{{item.pv!=null && item.pv>0 ? item.pv:0}}阅读  </text>
+          <text space="nbsp">{{item.comments!=null && item.comments>0 ? item.comments : 0}}评论 </text>
+          <text space="nbsp">{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>
         </view>
       </view>
     </view>

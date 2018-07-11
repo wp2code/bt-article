@@ -11,7 +11,7 @@ const {SUCCESS, FAILED, CNF} = require('../constants');
  * @returns {Promise<any | T>}
  */
 async function create(ctx, next) {
-    let condition = ctx.request.body || {}
+    let condition = ctx.request.body || {};
     let userInfo = condition.userInfo;
     let coverPicUrl = condition.cover_pic_url;
     let nickName = userInfo.nickName;
@@ -22,14 +22,16 @@ async function create(ctx, next) {
         articleId = uuidGenerator().replace(/-/g, "");
     }
     let detailList = condition.detailList;
-    // detailList.forEach(function (item, index) {
-    //     item.id = uuidGenerator().replace(/-/g, "");
-    //     item.article_id = articleId;
-    //     item.create_time = createTime;
-    //     item.author_name = nickName;
-    //     item.author_id = nickName;
-    //     item.order_num = index + 1;//默认是1
-    // })
+    if (detailList && Array.isArray(detailList)) {
+        detailList.forEach(function (item, index) {
+            item.id = uuidGenerator().replace(/-/g, "");
+            item.article_id = articleId;
+            item.create_time = createTime;
+            item.author_name = nickName;
+            item.author_id = nickName;
+            item.order_num = index + 1;//默认是1
+        })
+    }
 
     await mysql(CNF.DB_TABLE.article_detail_info).select('order_num').where({
         article_id: articleId, author_id: nickName
@@ -45,31 +47,25 @@ async function create(ctx, next) {
             articleInfo.title = condition.title || null;
             articleInfo.cover_pic_url = coverPicUrl || null;
             articleInfo.create_time = createTime;
+            articleInfo.status = condition.status || 0;
             mysql(CNF.DB_TABLE.article_info).insert(articleInfo).then(res => {
                 console.log("文章主表创建成功！")
             }).catch(error => {
                 console.log(error.toString())
             });
         }
-        detailList.forEach(async function (item, index) {
-            item.id = uuidGenerator().replace(/-/g, "");
-            item.article_id = articleId;
-            item.create_time = createTime;
-            item.author_name = nickName;
-            item.author_id = nickName;
-            item.order_num = index + 1;//默认是1
-            await mysql(CNF.DB_TABLE.article_detail_info).insert(item).then(res => {
-                if (res != null && res.length > 0) {
-                    console.log("文章明细创建成功！")
-                    SUCCESS(ctx, {article_id: articleId});
-                } else {
-                    FAILED(ctx);
-                }
-            }).catch(error => {
-                FAILED(ctx, error.toString());
-                debug('%s: %O', CNF.ERRORS.ERR_WHEN_INSERT_TO_DB, e);
-            });
-        })
+        await mysql(CNF.DB_TABLE.article_detail_info).insert(detailList).then(res => {
+            if (res != null && res.length > 0) {
+                console.log("文章明细创建成功！");
+                SUCCESS(ctx, {article_id: articleId});
+            } else {
+                FAILED(ctx);
+            }
+        }).catch(error => {
+            FAILED(ctx, error.toString());
+            debug('%s: %O', CNF.ERRORS.ERR_WHEN_INSERT_TO_DB, e);
+        });
+
 
     })
 
@@ -105,7 +101,7 @@ async function get(ctx, next) {
  * @returns {Promise<any> | Promise<T>}
  */
 async function query(ctx, next) {
-    let condition = ctx.request.body || {}
+    let condition = ctx.request.body || {};
     let userInfo = condition.userInfo;
     let nickName = userInfo.nickName;
     // 登录信息会被存储到 ctx.state.$wxInfo
@@ -117,7 +113,7 @@ async function query(ctx, next) {
                 const article_id_arr = [];
                 res.forEach(res => {
                     article_id_arr.push(res.article_id);
-                })
+                });
                 await mysql(CNF.DB_TABLE.article_info).select('*').whereIn('article_id', article_id_arr).andWhere({'status': 1}).orderBy('create_time', 'desc').then(res => {
                     SUCCESS(ctx, res);
                 })
@@ -137,7 +133,7 @@ async function query(ctx, next) {
  * @param next
  */
 async function update(ctx, next) {
-    let condition = ctx.request.body || {}
+    let condition = ctx.request.body || {};
     let userInfo = condition.userInfo;
     let nickName = userInfo.nickName;
     let article_id = condition.id;
@@ -165,13 +161,13 @@ async function update(ctx, next) {
  * @returns {Promise<any>}
  */
 async function del(ctx, next) {
-    let condition = ctx.request.body || {}
+    let condition = ctx.request.body || {};
     let article_id = condition.article_id;
     await  mysql(CNF.DB_TABLE.article_info).del().where({article_id}).then(res => {
-        console.log("删除成功！")
+        console.log("删除成功！");
         SUCCESS(ctx, res);
     }).catch(e => {
-        FAILED(ctx, e.toString())
+        FAILED(ctx, e.toString());
         debug('%s: %O', CNF.ERRORS.ERR_WHEN_DELETED_FROM_DB, e);
         // throw new Error(`${CNF.ERRORS.ERR_WHEN_DELETED_FROM_DB}\n${e}`)
     });
@@ -184,7 +180,7 @@ async function del(ctx, next) {
  * @returns {Promise<void>}
  */
 async function updateDetail(ctx, next) {
-    let condition = ctx.request.body || {}
+    let condition = ctx.request.body || {};
     let userInfo = condition.userInfo;
     let nickName = userInfo.nickName;
     let article_detail_id = condition.did;
@@ -203,7 +199,7 @@ async function delDetail(ctx, next) {
         await  mysql(CNF.DB_TABLE.article_detail_info).del().where({id: detail_id}).then(res => {
             SUCCESS(ctx, res);
         }).catch(e => {
-            FAILED(ctx, e.toString())
+            FAILED(ctx, e.toString());
             debug('%s: %O', CNF.ERRORS.ERR_WHEN_DELETED_FROM_DB, e);
             // throw new Error(`${CNF.ERRORS.ERR_WHEN_DELETED_FROM_DB}\n${e}`)
         });
@@ -211,6 +207,22 @@ async function delDetail(ctx, next) {
         FAILED(ctx, "id为空！")
     }
 
+}
+
+/**
+ *  查询自己的文章信息
+ * @param ctx
+ * @param next
+ * @returns {Promise<void>}
+ */
+async function queryOwnList(ctx, next) {
+    let condition = ctx.request.body || {};
+    let userInfo = condition.userInfo;
+    let nickName = userInfo.nickName;
+    await mysql(CNF.DB_TABLE.article_info).select("*").where({"author_id": nickName}).then(res => {
+        console.log("查询自己的文章信息。。。")
+        SUCCESS(ctx, res);
+    })
 }
 
 /**
@@ -225,4 +237,4 @@ async function queryVisit(open_id, callback) {
     });
 }
 
-module.exports = {create, get, delDetail, query, update, del, updateDetail, delDetail}
+module.exports = {create, get, delDetail, query, update, del, updateDetail, queryOwnList};

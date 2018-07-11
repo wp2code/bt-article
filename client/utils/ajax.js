@@ -1,4 +1,4 @@
-var config = require("../config.js")
+var config = require("../config.js");
 const delReq = (funKey, urlParams, callback) => {
   wx.showModal({
     content: "确定删除此段？",
@@ -10,23 +10,23 @@ const delReq = (funKey, urlParams, callback) => {
     }
   })
 
-}
+};
 const getReq = (funKey, urlParams, callback) => {
   wx.showToast({
     title: '正在加载...',
     icon: 'loading',
     duration: 2000
-  })
+  });
   request_get(funKey, urlParams, callback);
-}
+};
 
 const postReq = (funKey, params, callback) => {
   wx.showToast({
     title: '正在加载...',
     icon: 'loading',
     duration: 2000
-  })
-  var params = params != undefined && params != null ? params : {}
+  });
+  var params = params != undefined && params != null ? params : {};
   var userInfo = wx.getStorageSync('userInfo');
   if (userInfo == undefined || userInfo == null) {
     wx.showToast({
@@ -44,8 +44,8 @@ const postReq = (funKey, params, callback) => {
     data: params != null ? params : {},
     method: 'POST',
     success: (res) => {
-      wx.hideToast()
-      console.log(res)
+      wx.hideToast();
+      console.log(res);
       var result = res['data'];
       if (typeof(callback) == 'function') {
         callback(result)
@@ -61,7 +61,7 @@ const postReq = (funKey, params, callback) => {
 
     }
   })
-}
+};
 
 function request_get(funKey, urlParams, callback) {
   var url = config.service[funKey];
@@ -84,8 +84,8 @@ function request_get(funKey, urlParams, callback) {
     url: url,
     method: 'GET',
     success: (res) => {
-      wx.hideToast()
-      console.log(res)
+      wx.hideToast();
+      console.log(res);
       const result = res['data'];
       if (typeof(callback) == 'function') {
         callback(result)
@@ -105,4 +105,4 @@ module.exports = {
   getReq,
   postReq,
   delReq
-}
+};

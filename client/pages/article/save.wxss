@@ -67,7 +67,7 @@
   background: green;
   height: 100px;
   min-width: 100px;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   border: 2px;
 }
 

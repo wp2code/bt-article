@@ -1,23 +1,15 @@
 // pages/own/own.js
 //获取应用实例
-const app = getApp()
+const app = getApp();
+var ajax = require('../../utils/ajax.js');
+var util = require('../../utils/util.js');
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    userInfo:{},
-    artItems: [{
-      artId: 1,
-      artLimit:"公开",
-      artTitle: "标题1",
-      artImagePath: null
-    }, {
-      artId: 2,
-      artLimit: "公开",
-      artTitle: "标题2",
-      artImagePath: null
-    }],
+    userInfo: {},
+    artItems: [],
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
@@ -25,7 +17,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -44,7 +36,7 @@ Page({
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
         success: res => {
-          app.globalData.userInfo = res.userInfo
+          app.globalData.userInfo = res.userInfo;
           this.setData({
             userInfo: res.userInfo,
             hasUserInfo: true
@@ -57,59 +49,68 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
-  
+  onReady: function() {
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-  
+  onShow: function() {
+    console.log("own onShow...")
+    var that = this;
+    ajax.postReq('article_queryOwnList', null, function(res) {
+      console.log(res)
+      if (res.code == 1) {
+        that.setData({
+          artItems: res.data
+        })
+      }
+    })
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
-  
+  onHide: function() {
+
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
-  
+  onUnload: function() {
+
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-  
+  onPullDownRefresh: function() {
+
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
-  
+  onReachBottom: function() {
+
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-  
+  onShareAppMessage: function() {
+
   },
-  onGetUserInfo:function(e){
-    console.log(e.detail.errMsg)
-    console.log(e.detail.userInfo)
-    console.log(e.detail.rawData)
-    app.globalData.userInfo = e.detail.userInfo
+  onGetUserInfo: function(e) {
+    console.log(e.detail.errMsg);
+    console.log(e.detail.userInfo);
+    console.log(e.detail.rawData);
+    app.globalData.userInfo = e.detail.userInfo;
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
   }
-})
+});

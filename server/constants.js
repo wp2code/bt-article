@@ -2,7 +2,7 @@ CNF = {
 	DB_TABLE: {
 		"article_detail_info": "article_detail_info",
 		"article_info": "article_info",
-		"article_picture_info": "article_picture_info",
+		"article_user_info": "article_user_info",
 		"article_visitable_info": "article_visitable_info"
 	},
 	OPT_STATE: {

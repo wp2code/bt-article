@@ -1,7 +1,7 @@
 //index.js
-var qcloud = require('../../vendor/wafer2-client-sdk/index')
-var config = require('../../config')
-var util = require('../../utils/util.js')
+var qcloud = require('../../vendor/wafer2-client-sdk/index');
+var config = require('../../config');
+var util = require('../../utils/util.js');
 
 Page({
     data: {
@@ -10,13 +10,13 @@ Page({
     },
 
     testCgi: function () {
-        util.showBusy('请求中...')
-        var that = this
+        util.showBusy('请求中...');
+        var that = this;
         qcloud.request({
             url: `${config.service.host}/weapp/demo`,
             login: false,
             success (result) {
-                util.showSuccess('请求成功完成')
+                util.showSuccess('请求成功完成');
                 that.setData({
                     requestResult: JSON.stringify(result.data)
                 })
@@ -29,7 +29,7 @@ Page({
     },
 
     copyCode: function (e) {
-        var codeId = e.target.dataset.codeId
+        var codeId = e.target.dataset.codeId;
         wx.setClipboardData({
             data: code[codeId - 1],
             success: function () {
@@ -37,7 +37,7 @@ Page({
             }
         })
     }
-})
+});
 
 var code = [
 `router.get('/demo', controllers.demo)`,
@@ -46,4 +46,4 @@ var code = [
         msg: 'Hello World'
     }
 }`
-]
+];

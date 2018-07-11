@@ -1,6 +1,6 @@
 // pages/own/own.js
 //获取应用实例
-const app = getApp()
+const app = getApp();
 Page({
   /**
    * 页面的初始数据
@@ -68,4 +68,4 @@ Page({
 
   },
 
-})
+});

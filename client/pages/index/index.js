@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
-const app = getApp()
-var ajax = require('../../utils/ajax.js')
+const app = getApp();
+var ajax = require('../../utils/ajax.js');
 Page({
   data: {
     userInfo: {},
@@ -34,7 +34,7 @@ Page({
       // 在没有 open-type=getUserInfo 版本的兼容处理
       wx.getUserInfo({
         success: res => {
-          app.globalData.userInfo = res.userInfo
+          app.globalData.userInfo = res.userInfo;
           this.setData({
             userInfo: res.userInfo,
             hasUserInfo: true
@@ -84,7 +84,7 @@ Page({
       that.setData({
         artItems: res
       })
-    })
+    });
     console.log("当前页面 " + this.route)
   },
 
@@ -104,10 +104,10 @@ Page({
     // }
   },
   getUserInfo: function (e) {
-    app.globalData.userInfo = e.detail.userInfo
+    app.globalData.userInfo = e.detail.userInfo;
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
   }
-})
+});

@@ -72,10 +72,10 @@ function editDiary(ctx, diaryInfo) {
             })
         }
     }).catch(e => {
-        FAILED(ctx, e)
+        FAILED(ctx, e);
         debug('%s: %O', CNF.ERRORS.ERR_WHEN_EDIT_TO_DB, e);
         // throw new Error(`${CNF.ERRORS.ERR_WHEN_EDIT_TO_DB}\n${e}`)
-    })
+    });
     SUCCESS(ctx);
 }
 
@@ -89,7 +89,7 @@ function deleteDiary(ctx, diaryInfo) {
     mysql("diary_info").del().where({diary_id}).then(res => {
         console.log("删除成功！")
     }).catch(e => {
-        FAILED(ctx, e.toString())
+        FAILED(ctx, e.toString());
         debug('%s: %O', CNF.ERRORS.ERR_WHEN_DELETED_FROM_DB, e);
         // throw new Error(`${CNF.ERRORS.ERR_WHEN_DELETED_FROM_DB}\n${e}`)
     });

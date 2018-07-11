@@ -94,7 +94,7 @@ function request(options) {
                     error = new RequestError(data.error, message);
 
                     callFail(error);
-                    return;
+
                 } else {
                     callSuccess.apply(null, arguments);
                 }
@@ -103,10 +103,8 @@ function request(options) {
             fail: callFail,
             complete: noop,
         }));
-    };
-
-};
-
+    }
+}
 module.exports = {
     RequestError: RequestError,
     request: request,

@@ -1,5 +1,4 @@
 <!--pages/article/save.wxml-->
-<form bindsubmit="onFormSubmit">
   <scroll-view style="height: {{windowHeight}}px;" scroll-y="true" bindscrolltolower="lower" bindscroll="scroll" scroll-top="{{scrollTop}}">
     <view class='art-head'>
       <label bindtap="editTitle">{{articleInfo.title!=''?articleInfo.title:'点击编辑标题'}}</label>
@@ -8,7 +7,7 @@
       <view class='art-add' id="_" data-bindViewId="_" data-artId="{{articleInfo.article_id}}" data-index="{{0}}" bindtap='addDetail'>
         <image src='/resource/images/tabBar/添加.png'></image>
       </view>
-      <block wx:for="{{detialList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+      <block wx:for="{{detailList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
         <view class='art-item' style="min-width:{{windowWidth*0.9}}px">
           <view class='art-delete' data-index="{{index}}" bindtap='deleteDetail'>
             ×
@@ -22,7 +21,7 @@
           </view>
           <view class="art-position">
             <view class='art-position-upper'>{{index!=0 ?'↑':''}}</view>
-            <view class='art-position-lower'>{{index!=detialList.length-1?'↓':''}}</view>
+            <view class='art-position-lower'>{{index!=detailList.length-1?'↓':''}}</view>
           </view>
         </view>
         <view class='art-add' data-artId="{{item.article_id}}" data-index="{{index+1}}" bindtap='addDetail'>
@@ -31,7 +30,7 @@
       </block>
     </view>
     <view class='art-bottom'>
-      <button form-type='submit' type='primary'>完 成</button>
+      <button bindtap='save' data-status='1' type='primary'>发 布</button>
+      <button bindtap='save' data-status='0' type='primary'>草 稿</button>
     </view>
   </scroll-view>
-</form>

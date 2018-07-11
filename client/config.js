@@ -22,7 +22,7 @@ var config = {
     tunnelUrl: `${host}/${prefix}/tunnel`,
     // 上传图片接口
     uploadUrl: `${host}/${prefix}/upload`,
-    
+
     //新增信息
     article_create: `${host}/${prefix}/article/create`,
     //查询信息列表
@@ -33,6 +33,8 @@ var config = {
     article_del: `${host}/${prefix}/article/del`,
     //更新信息
     article_update: `${host}/${prefix}/article/update`,
+    //查询自己文章信息
+    article_queryOwnList: `${host}/${prefix}/article/queryOwnList`,
     //删除明细
     article_detail_del: `${host}/${prefix}/article/detail/del`,
     //更新明细

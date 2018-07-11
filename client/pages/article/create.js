@@ -8,6 +8,8 @@ Page({
    */
   data: {
     maxTextNum: 500, //最大输入字数
+    placeholder: '请输入文本',
+    barTitle: "编辑文本",
     textNum: 0,
     textContent: '', //文本内容
     editInfo: {
@@ -36,15 +38,18 @@ Page({
   onShow: function() {
     console.log("监听页面显示...");
     var editInfo = wx.getStorageSync("editInfo");
-    var barTitle = "编辑文本";
+    var barTitle = this.data.barTitle;
+    var placeholder = this.data.placeholder;
     if (editInfo) {
       var maxTextNum = 500;
       if (editInfo.textIdentify == 1) {
         barTitle = "编辑标题";
+        placeholder = "请输入标题"
         maxTextNum = 50;
       }
       this.setData({
         textContent: editInfo.content,
+        placeholder: placeholder,
         maxTextNum: maxTextNum
       })
     }
@@ -73,38 +78,6 @@ Page({
    */
   onShareAppMessage: function() {
 
-  },
-  /**
-   * 取消
-   */
-  onCancel: function() {
-    var textContent = this.data.textContent;
-    if (textContent != null && textContent.length != 0) {
-      var that = this;
-      wx.showModal({
-        title: '',
-        content: '保留当前编辑?',
-        confirmText: "保留",
-        cancelText: "不保留",
-        success: function(res) {
-          if (res.confirm) {
-            console.log(textContent + "保存")
-          } else if (res.cancel) {
-            console.log(textContent + "不保存")
-          }
-          that.setData({
-            isShowTip: false
-          })
-          wx.navigateBack({
-            delta: 1
-          })
-        }
-      })
-    } else {
-      wx.navigateBack({
-        delta: 1
-      })
-    }
   },
   onbindKeyInput: function(e) {
     var value = e.detail.value

@@ -40,11 +40,14 @@ router.post("/article/update", controllers.article.update);
 router.post("/article/query", controllers.article.query);
 //查询文章信息
 router.get("/article/get", controllers.article.get);
+//查询自己文章信息
+router.post("/article/queryOwnList", controllers.article.queryOwnList);
 //删除文章信息
 router.get("/article/del", controllers.article.del);
 //删除文章明细
 router.get("/article/detail/del", controllers.article.delDetail);
 //更新文章明细
 router.post("/article/detail/update", controllers.article.updateDetail);
+
 
 module.exports = router;
