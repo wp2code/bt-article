@@ -269,7 +269,7 @@ Page({
         console.log(tempFilePath);
         detailList[index]['picture_url'] = tempFilePath;
         // if (articleInfo.cover_pic_url == '') {
-          articleInfo.cover_pic_url = tempFilePath;
+        articleInfo.cover_pic_url = tempFilePath;
         // }
         that.setData({
           detailList: detailList,
@@ -285,6 +285,7 @@ Page({
   save: function(event) { //提交数据
     var status = event.currentTarget.dataset.status;
     console.log("status=====" + status);
+    if (status != 0 && status != 1) return;
     var articleInfo = wx.getStorageSync("articleInfo") || {};
     articleInfo.status = status;
     articleInfo.detailList = wx.getStorageSync("detailList") || [];
@@ -299,8 +300,8 @@ Page({
             url: '/pages/own/own'
           })
         }
-      })
-    }else{
+      }, status == 0 ? "保存草稿..." : "正在发布...")
+    } else {
       wx.showToast({
         title: '没找到你的文章内容哦~^-^',
         icon: 'none',

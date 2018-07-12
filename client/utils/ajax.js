@@ -5,8 +5,7 @@ const delReq = (funKey, urlParams, callback) => {
     success: function(res) {
       if (res.confirm) {
         request_get(funKey, urlParams, callback);
-      } else if (res.cancel) {
-      }
+      } else if (res.cancel) {}
     }
   })
 
@@ -20,9 +19,9 @@ const getReq = (funKey, urlParams, callback) => {
   request_get(funKey, urlParams, callback);
 };
 
-const postReq = (funKey, params, callback) => {
+const postReq = (funKey, params, callback, tip) => {
   wx.showToast({
-    title: '正在加载...',
+    title: tip || '正在加载...',
     icon: 'loading',
     duration: 2000
   });

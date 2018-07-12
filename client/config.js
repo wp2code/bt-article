@@ -7,7 +7,6 @@ var host = 'http://localhost:5009';
 // var host = 'https://taflgi5t.qcloud.la';
 var prefix = 'weapp';
 var config = {
-
   // 下面的地址配合云端 Demo 工作
   service: {
     host,
