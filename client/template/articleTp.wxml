@@ -1,24 +1,31 @@
 <!-- 发现小文章模板 -->
 <template name="articleTp">
   <navigator url='../article/article?artId={{item.artId}}'>
-    <view class='fa fa-border art-tp-container'>
+    <view class='art-tp-container'>
+      <!-- 模板头部信息 -->
       <view class='flex-item art-tp-head1'>
-        <view>
-          <label>
-            {{item.title!=null ? item.title:""}}
-          </label>
-        </view>
-        <view>
-          <label class='fa-angle-double-right-at'></label>
+        <view class='art-head-bar'>
+            <label>
+              {{item.title!=null?item.title:""}}
+            </label>
         </view>
       </view>
+      <!-- 模板中部图片 -->
       <view class='flex-item art-tp-middle'>
-        <image src="{{item.cover_pic_url}}" mode='scaleToFill'></image>
+        <view class='art-image'>
+          <image lazy-load="true" mode='scaleToFill' src="{{item.cover_pic_url}}" mode='scaleToFill'></image>
+        </view>
       </view>
-      <view class='flex-item art-tp-bottom'>
-        <text space="nbsp">{{item.pv!=null && item.pv>0 ? item.pv:0}}阅读  </text>
-        <text space="nbsp">{{item.comments!=null && item.comments>0 ? item.comments : 0}}评论</text>
-        <text>{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>
+      <!-- 模板底部信息 -->
+      <view class='flex-item ownart-tp-bottom'>
+        <view>
+          <text>{{item.author_name}}</text>
+        </view>
+        <view>
+          <text space="nbsp">{{item.pv!=null && item.pv>0 ? item.pv:0}}阅读  </text>
+          <text space="nbsp">{{item.comments!=null && item.comments>0 ? item.comments : 0}}评论 </text>
+          <text space="nbsp">{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>
+        </view>
       </view>
     </view>
   </navigator>
@@ -50,7 +57,7 @@
 <!-- 我的小文章模板 -->
 <template name="ownArticleTp">
   <navigator url='../article/article?artId={{item.artId}}'>
-    <view class='fa fa-border art-tp-container'>
+    <view class='art-tp-container'>
       <!-- 模板头部信息 -->
       <view class='flex-item art-tp-head'>
         <view>
@@ -81,20 +88,12 @@
       </view>
       <!-- 模板中部图片 -->
       <view class='flex-item art-tp-middle'>
-        <image lazy-load="true" src="{{item.cover_pic_url}}" mode='scaleToFill'></image>
+        <view class='art-image'>
+          <image lazy-load="true" mode='scaleToFill' src="{{item.cover_pic_url}}" mode='scaleToFill'></image>
+        </view>
       </view>
       <!-- 模板底部信息 -->
       <view class='flex-item ownart-tp-bottom'>
-        <!-- <bar bar-model='m1' bar-background="green">
-          <view slot="left">
-            <text>{{item.updateTime}}2018-09-09</text>
-          </view>
-          <view slot="right">
-            <text space="nbsp">{{item.read!=null && item.read>0 ? item.read:0}}阅读  </text>
-            <text space="nbsp">{{item.comment!=null && item.comment>0 ? item.comment : 0}}评论</text>
-            <text>{{item.star!=null && item.star>0 ? item.star : 0}}点赞</text>
-          </view>
-        </bar> -->
         <view>
           <text>{{item.update_time}}</text>
         </view>

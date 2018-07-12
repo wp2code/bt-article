@@ -10,12 +10,12 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   //事件处理函数
-  bindViewTap: function () {
+  bindViewTap: function() {
     wx.navigateTo({
       url: '../logs/logs'
     })
   },
-  onLoad: function () {
+  onLoad: function() {
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -46,17 +46,17 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    var that=this;
-    ajax.postReq("article_query", null, function (res) {
-      if(res.code=='success'){
+  onShow: function() {
+    var that = this;
+    ajax.postReq("article_query", null, function(res) {
+      if (res.code == 1) {
         that.setData({
           articleList: res['data']
         })
@@ -66,21 +66,21 @@ Page({
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
     var that = this;
-    ajax.postReq("article_query", null, function (res) {
+    ajax.postReq("article_query", null, function(res) {
       that.setData({
         artItems: res
       })
@@ -97,13 +97,13 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
     // return {
     //   title: '自定义转发标题',
     //   path: '/pages/index/index'
     // }
   },
-  getUserInfo: function (e) {
+  getUserInfo: function(e) {
     app.globalData.userInfo = e.detail.userInfo;
     this.setData({
       userInfo: e.detail.userInfo,

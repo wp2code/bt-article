@@ -7,14 +7,14 @@
 .art-head {
   display: flex;
   color: black;
-  background: gray;
+  background: #dcdcdc;
   height: 30%;
 }
 
 .art-body {
   /* position: absolute; */
   display: flex;
-  background: red;
+  /* background: red; */
   flex-direction: column;
   align-items: center;
   height: 70%;
@@ -25,7 +25,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background: rebeccapurple;
+  /* background: rebeccapurple; */
   padding: 10rpx;
   min-width: 60rpx;
   min-height: 60rpx;
@@ -42,10 +42,10 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap;
-  background: blue;
+  /* background: blue; */
   border: 2px;
   box-sizing: border-box;
-  /* box-shadow: 1px 1px 1px #888;  */
+   box-shadow: 1px 1px 1px #dcdcdc;  
   border-radius: 5px;
   height: 100px;
   width: 95%;
@@ -56,7 +56,7 @@
 .art-delete {
   height: 100px;
   width: 10%;
-  background: brown;
+  /* background: brown; */
 }
 
 .art-image {
@@ -64,7 +64,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: green;
+  background: #dcdcdc;
   height: 100px;
   min-width: 100px;
   /* border-radius: 5px; */
@@ -84,7 +84,7 @@
   padding-bottom: 0rpx;
   overflow: hidden;
   border-radius: 5px;
-  background: yellow;
+  /* background: yellow; */
 }
 
 .art-text text {
@@ -98,7 +98,7 @@
   height: 100%;
   align-items: flex-end;
   justify-content: space-between;
-  background: rebeccapurple;
+  /* background: rebeccapurple; */
 }
 
 .art-bottom {

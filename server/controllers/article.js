@@ -219,7 +219,7 @@ async function queryOwnList(ctx, next) {
     let condition = ctx.request.body || {};
     let userInfo = condition.userInfo;
     let nickName = userInfo.nickName;
-    await mysql(CNF.DB_TABLE.article_info).select("*").where({"author_id": nickName}).then(res => {
+    await mysql(CNF.DB_TABLE.article_info).select("*").where({"author_id": nickName}).orderByRaw("status asc,update_time desc").then(res => {
         console.log("查询自己的文章信息。。。")
         SUCCESS(ctx, res);
     })
