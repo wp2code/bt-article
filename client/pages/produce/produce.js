@@ -6,8 +6,8 @@ Page({
    */
   data: {
     item: {
-      remark1: "XXX",
-      remark2: "可以添加文字和图片哦~~~^-^"
+      weclome: '',
+      remark: ""
     }
   },
 
@@ -29,6 +29,14 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
+    var userInfo = wx.getStorageSync('userInfo');
+    console.log(userInfo);
+    this.setData({
+      item: {
+        weclome: "欢迎！" + userInfo.nickName,
+        remark:"可以添加文字和图片哦~~~^-^"
+      }
+    })
 
   },
 

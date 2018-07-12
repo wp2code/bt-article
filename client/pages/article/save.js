@@ -50,14 +50,14 @@ Page({
     console.log(articleInfo);
     var editInfo = wx.getStorageSync("editInfo");
     if (editInfo) {
-      if (editInfo.textIdentify == 0) { //文本
+      if (editInfo.textIdentify == 0 && editInfo.content) { //文本
         if (detailList && detailList.length > 0 && editInfo.optType == 1) {
           detailList[editInfo.index]['content'] = editInfo.content;
         } else {
           var newDetail = {
             id: '',
             content: editInfo.content || '',
-            pictrue_url: ''
+            picture_url: ''
           };
           detailList.splice(editInfo.index, 0, newDetail);
         }
@@ -85,22 +85,40 @@ Page({
    */
   onUnload: function() {
     console.log("页面卸载onUnload。。。");
+    console.log(this.data.detailList)
     if (this.data.nextPageFlag == 0) {
-      wx.showModal({
-        title: '退出编辑页',
-        content: '是否保存当前内容为草稿?',
-        confirmText: "保存草稿",
-        cancelText: "不保存",
-        success: function(res) {
-          if (res.confirm) {
-            console.log("保存")
-          } else if (res.cancel) {
-            wx.removeStorageSync("detailList");
-            wx.removeStorageSync("articleInfo");
-            console.log("不保存");
+      var detailList = wx.getStorageSync("detailList");
+      if (detailList.length > 0) {
+        wx.showModal({
+          title: '退出编辑页',
+          content: '是否保存当前内容为草稿?',
+          confirmText: "保存草稿",
+          cancelText: "不保存",
+          success: function(res) {
+            if (res.confirm) {
+              console.log("保存")
+              var articleInfo = wx.getStorageSync("articleInfo") || {};
+              articleInfo.status = 0;
+              articleInfo.detailList = detailList;
+              ajax.postReq('article_create', articleInfo, function(res) {
+                if (res.code == 1) {
+                  wx.switchTab({
+                    url: '/pages/own/own'
+                  })
+                }
+              })
+            } else if (res.cancel) {
+              console.log("不保存");
+              wx.removeStorageSync("detailList");
+              wx.removeStorageSync("articleInfo");
+            }
+
           }
-        }
-      })
+        })
+      } else {
+        wx.removeStorageSync("detailList");
+        wx.removeStorageSync("articleInfo");
+      }
     } else if (this.data.nextPageFlag == -2) { //跳转到我的 要删除缓存
       wx.removeStorageSync("detailList");
       wx.removeStorageSync("articleInfo");
@@ -172,7 +190,7 @@ Page({
     var detailList = wx.getStorageSync("detailList");
     var that = this;
     wx.showModal({
-      content: "确定删除此段？" + index,
+      content: "确定删除此段？",
       success: function(res) {
         if (res.confirm) {
           console.log(detailList);
@@ -220,7 +238,7 @@ Page({
               var detailList = [];
               for (var i = 0, h = tempFilePaths.length; i < h; i++) {
                 var item = {};
-                item.pictrue_url = tempFilePaths[i];
+                item.picture_url = tempFilePaths[i];
                 item.article_id = artid;
                 detailList.push(item);
               }
@@ -249,10 +267,10 @@ Page({
         var articleInfo = wx.getStorageSync("articleInfo") || that.data.articleInfo;
         var tempFilePath = res.tempFilePaths[0];
         console.log(tempFilePath);
-        detailList[index]['pictrue_url'] = tempFilePath;
-        if (articleInfo.cover_pic_url == '') {
+        detailList[index]['picture_url'] = tempFilePath;
+        // if (articleInfo.cover_pic_url == '') {
           articleInfo.cover_pic_url = tempFilePath;
-        }
+        // }
         that.setData({
           detailList: detailList,
           articleInfo: articleInfo
@@ -271,15 +289,23 @@ Page({
     articleInfo.status = status;
     articleInfo.detailList = wx.getStorageSync("detailList") || [];
     var that = this;
-    ajax.postReq('article_create', articleInfo, function(res) {
-      that.setData({
-        nextPageFlag: -2
-      });
-      if (res.code == 1) {
-        wx.switchTab({
-          url: '/pages/own/own'
-        })
-      }
-    })
+    if (articleInfo.detailList.length > 0) {
+      ajax.postReq('article_create', articleInfo, function(res) {
+        that.setData({
+          nextPageFlag: -2
+        });
+        if (res.code == 1) {
+          wx.switchTab({
+            url: '/pages/own/own'
+          })
+        }
+      })
+    }else{
+      wx.showToast({
+        title: '没找到你的文章内容哦~^-^',
+        icon: 'none',
+        duration: 2000
+      })
+    }
   }
 });

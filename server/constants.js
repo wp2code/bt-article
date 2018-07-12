@@ -31,7 +31,7 @@ function SUCCESS(ctx, result) {
 function FAILED(ctx, result) {
 	console.log("Failed 结果：" + result);
 	const body = {};
-	body.message = result["errorMsg"] != undefined ? result.error != undefined : CNF.OPT_STATE.FAILED;
+	body.message = result != null && result != "" ? result : CNF.OPT_STATE.FAILED;
 	body.code = CNF.OPT_STATE.FAILED_CODE;
 	body.data = result !== undefined ? result : {};
 	ctx.body = body;

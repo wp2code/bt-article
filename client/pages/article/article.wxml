@@ -12,8 +12,8 @@
     <block wx:if="{{isHaveData}}">
       <view wx:for="{{detialList}}" wx:for-item="{{item}}" wx:for-index="{{index}}" wx:for-key="{{item.id}}">
         <view wx:if="{{item.content!=null}}">{{item.content}}</view>
-        <view wx:if="{{item.pictrue_url!=null}}">
-          <image src="{{item.pictrue_url}}" lazy-load='true'></image>
+        <view wx:if="{{item.picture_url!=null}}">
+          <image src="{{item.picture_url}}" lazy-load='true'></image>
         </view>
       </view>
     </block>

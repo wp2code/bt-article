@@ -8,7 +8,7 @@ Page({
    */
   data: {
     maxTextNum: 500, //最大输入字数
-    placeholder: '请输入文本',
+    placeholder: '',
     barTitle: "编辑文本",
     textNum: 0,
     textContent: '', //文本内容
@@ -44,7 +44,7 @@ Page({
       var maxTextNum = 500;
       if (editInfo.textIdentify == 1) {
         barTitle = "编辑标题";
-        placeholder = "请输入标题"
+        placeholder = "输入文章标题"
         maxTextNum = 50;
       }
       this.setData({
@@ -53,6 +53,7 @@ Page({
         maxTextNum: maxTextNum
       })
     }
+
     //更改标题
     wx.setNavigationBarTitle({
       title: barTitle

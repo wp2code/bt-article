@@ -36,36 +36,46 @@ async function create(ctx, next) {
     await mysql(CNF.DB_TABLE.article_detail_info).select('order_num').where({
         article_id: articleId, author_id: nickName
     }).orderBy('order_num', 'desc').then(async (res) => {
+        let isFlag=false;
         if (res != null && res.length > 0) {
             articleDetailInfo.order_num = res[0]['order_num'] + 1;
         } else {
-            //创建主表信息
-            let articleInfo = {};
-            articleInfo.id = articleId;
-            articleInfo.author_id = nickName;
-            articleInfo.author_name = nickName;
-            articleInfo.title = condition.title || null;
-            articleInfo.cover_pic_url = coverPicUrl || null;
-            articleInfo.create_time = createTime;
-            articleInfo.status = condition.status || 0;
-            mysql(CNF.DB_TABLE.article_info).insert(articleInfo).then(res => {
-                console.log("文章主表创建成功！")
-            }).catch(error => {
-                console.log(error.toString())
-            });
+            isFlag=true;
         }
-        await mysql(CNF.DB_TABLE.article_detail_info).insert(detailList).then(res => {
+        await mysql(CNF.DB_TABLE.article_detail_info).insert(detailList).then(async (res) => {
             if (res != null && res.length > 0) {
                 console.log("文章明细创建成功！");
+                if(isFlag) {
+                    //创建主表信息
+                    let articleInfo = {};
+                    articleInfo.id = articleId;
+                    articleInfo.author_id = nickName;
+                    articleInfo.author_name = nickName;
+                    articleInfo.title = condition.title || null;
+                    articleInfo.cover_pic_url = coverPicUrl || null;
+                    articleInfo.create_time = createTime;
+                    articleInfo.status = condition.status || 0;
+                    await mysql(CNF.DB_TABLE.article_info).insert(articleInfo).then(res => {
+                        if (res != null && res.length > 0) {
+                            console.log("文章主表创建成功！")
+                            SUCCESS(ctx, {article_id: articleId});
+                        } else {
+                            console.log("文章主表创建失败！")
+                            FAILED(ctx, "文章信息创建失败");
+                        }
+                    }).catch(error => {
+                        console.log(error.toString())
+                    });
+                }
                 SUCCESS(ctx, {article_id: articleId});
             } else {
-                FAILED(ctx);
+                FAILED(ctx,"文章信息创建失败");
             }
         }).catch(error => {
+            console.log(error);
             FAILED(ctx, error.toString());
-            debug('%s: %O', CNF.ERRORS.ERR_WHEN_INSERT_TO_DB, e);
+            debug('%s: %O', CNF.ERRORS.ERR_WHEN_INSERT_TO_DB, error);
         });
-
 
     })
 

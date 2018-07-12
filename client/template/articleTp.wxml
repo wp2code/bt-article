@@ -36,10 +36,10 @@
   <view class='art-tp-prd'>
     <view class='tp-prd-rk'>
       <view>
-        <label>{{item.remark1}}</label>
+        <label>{{item.weclome}}</label>
       </view>
       <view>
-        <label>{{item.remark2}}</label>
+        <label>{{item.remark}}</label>
       </view>
     </view>
     <navigator url='../article/create?type=0' open-type="navigate">

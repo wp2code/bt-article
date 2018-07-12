@@ -1,16 +1,16 @@
 /* pages/article/save.wxss */
 
-.art-container {
-  background-color: #fbf9fe;
-}
-
 .art-head {
   display: flex;
   color: black;
   background: #dcdcdc;
   height: 30%;
 }
-
+.art-head label{
+  padding: 10px;
+  color:darkslategray;
+  font-size:large;
+}
 .art-body {
   /* position: absolute; */
   display: flex;
@@ -45,7 +45,7 @@
   /* background: blue; */
   border: 2px;
   box-sizing: border-box;
-   box-shadow: 1px 1px 1px #dcdcdc;  
+  box-shadow: 1px 1px 1px #dcdcdc;
   border-radius: 5px;
   height: 100px;
   width: 95%;
@@ -102,10 +102,33 @@
 }
 
 .art-bottom {
+  display: flex;
+  flex-direction: row;
   width: 100%;
   position: fixed;
-  background: blue;
+  /* background: blue; */
   height: 7%;
   bottom: 0;
   border-radius: 0px;
+}
+
+.btn {
+  border-radius: 0px;
+  width: 100%;
+}
+
+.btn-default-left {
+  border-right: #fff 1rpx solid;
+  background-color: #00abff;
+  color: #fff;
+}
+
+.btn-default-right {
+  border-left: #fff 1rpx solid;
+  background-color: #00abff;
+  color: #fff;
+}
+
+button::after {
+  border: none;
 }
