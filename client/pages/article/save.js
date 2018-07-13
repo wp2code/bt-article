@@ -106,7 +106,7 @@ Page({
                     url: '/pages/own/own'
                   })
                 }
-              })
+              },'保存草稿...')
             } else if (res.cancel) {
               console.log("不保存");
               wx.removeStorageSync("detailList");

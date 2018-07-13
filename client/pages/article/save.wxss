@@ -6,11 +6,13 @@
   background: #dcdcdc;
   height: 30%;
 }
-.art-head label{
+
+.art-head label {
   padding: 10px;
-  color:darkslategray;
-  font-size:large;
+  color: darkslategray;
+  font-size: large;
 }
+
 .art-body {
   /* position: absolute; */
   display: flex;

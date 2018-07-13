@@ -1,6 +1,6 @@
 <!-- 发现小文章模板 -->
 <template name="articleTp">
-  <navigator url='../article/article?artId={{item.artId}}'>
+  <navigator url="../article/article?artId={{item.id}}">
     <view class='art-tp-container'>
       <!-- 模板头部信息 -->
       <view class='flex-item art-tp-head1'>
@@ -13,7 +13,7 @@
       <!-- 模板中部图片 -->
       <view class='flex-item art-tp-middle'>
         <view class='art-image'>
-          <image lazy-load="true" mode='scaleToFill' src="{{item.cover_pic_url}}" mode='scaleToFill'></image>
+          <image lazy-load="true" mode='scaleToFill' src="{{item.cover_pic_url}}"></image>
         </view>
       </view>
       <!-- 模板底部信息 -->
@@ -56,7 +56,7 @@
 
 <!-- 我的小文章模板 -->
 <template name="ownArticleTp">
-  <navigator url='../article/article?artId={{item.artId}}'>
+  <navigator url='../article/article?artId={{item.id}}'>
     <view class='art-tp-container'>
       <!-- 模板头部信息 -->
       <view class='flex-item art-tp-head'>

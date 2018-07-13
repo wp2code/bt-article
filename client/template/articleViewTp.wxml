@@ -1,0 +1,29 @@
+<!--template/articleViewTp.wxml-->
+<template name="defaultViewTp">
+      <view>{{title}}</view>
+</template>
+<!-- <template name="defaultViewTp">
+  <view class='temp-containe'>
+    <view class='default-view temp-head'> 12323232ddd
+      <view class='art-title'>{{articleInfo.title}}</view>
+      <view class='art-tip'>
+        <label>{{articleInfo.create_time}}</label>
+        <label>{{articleInfo.author_name}}</label>
+        <label>{{articleInfo.pv}}</label>
+      </view>
+    </view>
+    <view class='default-view temp-body'>
+      <block wx:if="{{articleInfo.detialList>0}}" wx:for="{{articleInfo.detialList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class='art-content'>
+          <text>{{articleInfo.content}}</text>
+        </view>
+        <view class='art-image'>
+          <image src="{{articleInfo.picture_url}}" lazy-load="true" mode='scaleToFill'></image>
+        </view>
+      </block>
+    </view>
+    <view class='temp-footer'>
+        <view></view>
+    </view>
+  </view>
+</template> -->

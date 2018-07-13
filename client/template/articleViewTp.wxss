@@ -1,0 +1,24 @@
+/* template/articleViewTp.wxss */
+
+.temp-containe {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+
+.default-view {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.art-title {
+  padding: 10px;
+  font-size: large;
+}
+
+.art-tip {
+  font-size: 10px;
+  padding: 25px;
+  color: #dcdcdc;
+}

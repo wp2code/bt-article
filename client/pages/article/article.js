@@ -7,37 +7,40 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isHaveData: false, //判断是否有明细数据
+    item: {
+      title: "fdfdffd"
+    },
+    title: "",
     articleInfo: {
       create_time: '',
-      article_id: '',
+      id: '',
       title: '',
       author_name: '',
-      pv: 0
-    },
-    detialList: [],
+      pv: 0,
+      detialList: [],
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    var article_id = options.article_id;
+    var article_id = options.artId;
     var that = this;
     console.log("article_id===>" + article_id);
     ajax.getReq('article_detail', "?article_id=" + article_id, function(res) {
-      if (res.code == 'success') {
+      if (res.code == 1) {
         var data = res['data'];
+        console.log(data);
         that.setData({
           articleInfo: {
             create_time: data['create_time'],
-            article_id: data['id'],
+            id: data['id'],
             title: data['title'],
             author_name: data['author_name'],
             pv: data['pv'],
-          },
-          detialList: data['detialList'],
-          isHaveData: data['detialList'].length > 0,
+            detialList: data['detialList'],
+          }
         })
       }
     })
@@ -54,7 +57,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    console.log(this.data.articleInfo);
   },
 
   /**

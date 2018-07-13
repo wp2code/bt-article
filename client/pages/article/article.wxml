@@ -1,21 +1,3 @@
 <!--pages/article/article.wxml-->
-<view class='art-contioner'>
-  <view class='art-title'>
-    <text>{{articleInfo.title}}</text>
-  </view>
-  <view class='art-label'>
-    <text>{{articleInfo.author_name}}</text>
-    <text>{{articleInfo.author_name}}</text>
-    <text>{{articleInfo.pv}}</text>
-  </view>
-  <view class='art-info'>
-    <block wx:if="{{isHaveData}}">
-      <view wx:for="{{detialList}}" wx:for-item="{{item}}" wx:for-index="{{index}}" wx:for-key="{{item.id}}">
-        <view wx:if="{{item.content!=null}}">{{item.content}}</view>
-        <view wx:if="{{item.picture_url!=null}}">
-          <image src="{{item.picture_url}}" lazy-load='true'></image>
-        </view>
-      </view>
-    </block>
-  </view>
-</view>
+<import src="../../template/articleViewTp.wxml" />
+<template is="defaultViewTp" data="{{title}}"></template>
