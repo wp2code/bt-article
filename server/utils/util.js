@@ -17,6 +17,23 @@ const formatNumber = n => {
 const nowTime = () => {
 	return formatTime(new Date());
 };
+const formatUnixTime = (time, format) => {
+	var formateArr = ["Y", "M", "D", "h", "m", "s"];
+	var returnArr = [];
+	console.log(time);
+	var date = new Date(time * 1000);
+	returnArr.push(date.getFullYear());
+	returnArr.push(formatNumber(date.getMonth() + 1));
+	returnArr.push(formatNumber(date.getDate()));
 
+	returnArr.push(formatNumber(date.getHours()));
+	returnArr.push(formatNumber(date.getMinutes()));
+	returnArr.push(formatNumber(date.getSeconds()));
 
-module.exports = {formatTime, nowTime};
+	for (var i in returnArr) {
+		format = format.replace(formateArr[i], returnArr[i]);
+	}
+	return format;
+};
+
+module.exports = {formatTime,formatUnixTime, nowTime};

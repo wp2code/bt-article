@@ -1,11 +1,16 @@
 <!--pages/article/save.wxml-->
 <scroll-view style="height: {{windowHeight}}px;" scroll-y="true" bindscrolltolower="lower" bindscroll="scroll" scroll-top="{{scrollTop}}">
-  <view class='art-head' style='background-image: url("{{articleInfo.cover_pic_url}}"); background-repeat:no-repeat;background-size: 100% 100%;-moz-background-size: 100% 100%;-webkit-background-size: 100% 100%;'>
-    <label bindtap="editTitle" data-title='{{articleInfo.title}}'>{{articleInfo.title!=''?articleInfo.title:'点击编辑标题'}}</label>
+  <view class='art-head'  style='background-image: url("{{articleInfo.cover_pic_url!=null?articleInfo.cover_pic_url:""}}"); background-repeat:no-repeat;background-size: 100% 100%;-moz-background-size: 100% 100%;-webkit-background-size: 100% 100%;'>
+    <view class='head-top'>
+      <label class='title' bindtap="editTitle" data-title='{{articleInfo.title}}'>{{articleInfo.title!=''&& articleInfo.title!=null?articleInfo.title:'点击编辑标题'}}</label>
+    </view>
+    <view class='head-bottom'>
+      <view class='head-c-btn' bindtap='changeCoverPic'>更换封面</view>
+    </view>
   </view>
   <view class='art-body'>
     <view class='art-add' id="_" data-bindViewId="_" data-artId="{{articleInfo.article_id}}" data-index="{{0}}" bindtap='addDetail'>
-      <image src='/resource/images/tabBar/添加.png'></image>
+      <image src='../images/new.png'></image>
     </view>
     <block wx:for="{{detailList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
       <view class='art-item' style="min-width:{{windowWidth*0.9}}px">
@@ -25,12 +30,34 @@
         </view>
       </view>
       <view class='art-add' data-artId="{{item.article_id}}" data-index="{{index+1}}" bindtap='addDetail'>
-        <image src='/resource/images/tabBar/添加.png'></image>
+        <image src='../images/new.png'></image>
       </view>
     </block>
   </view>
 </scroll-view>
-<view class='art-bottom'>
-  <button bindtap='save' data-status='1' class='btn btn-default-left ' hover-class="none">发 布</button>
-  <button bindtap='save' data-status='0' class='btn btn-default-right' hover-class="none">草 稿</button>
+<view class="view-footer" wx:if="{{opt=='own'}}">
+  <view class='footer-btn' bindtap='del' data-artId='{{articleInfo.id}}'>
+    <text>删 除</text>
+  </view>
+  <view class='split-line'>
+    <text>|</text>
+  </view>
+  <view class='footer-btn' bindtap='update'>
+    <text>完 成</text>
+  </view>
 </view>
+<view class='view-footer' wx:else>
+  <view class='footer-btn' data-status='1' bindtap='save'>
+    <text>发 布</text>
+  </view>
+  <view class='split-line'>
+    <text>|</text>
+  </view>
+  <view class='footer-btn' data-status='0' bindtap='save'>
+    <text>草 稿</text>
+  </view>
+</view>
+
+<!-- <view class='art-bottom' wx:else><button bindtap='save' data-status='1' class='btn btn-default-left ' hover-class="none">发 布</button>
+  <button bindtap='save' data-status='0' class='btn btn-default-right' hover-class="none">草 稿</button> -->
+<!-- </view> -->

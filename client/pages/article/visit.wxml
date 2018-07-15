@@ -1,0 +1,45 @@
+<!--pages/article/visit.wxml-->
+<view class='box-head'>
+  <import src="../../template/articleTp.wxml" />
+  <template wx:for="{{articleList}}" is="articleTp" wx:key="key" data="{{item}}"></template>
+</view>
+<view class='box-list'>
+  <view class='box'>
+    <view class='image-icon'>
+      <image src='../images/location.png'></image>
+    </view>
+    <view class='box-item'>
+      <text>我的位置</text>
+    </view>
+    <view class='box-qt'>
+
+      <text>＞</text>
+    </view>
+  </view>
+  <view class='box'>
+    <view class='image-icon'>
+      <image lazy-load='true' src='../images/user.png' mode="scaleToFill"></image>
+    </view>
+    <view class='box-item'>
+      <text>谁可以看</text>
+      <text>公开</text>
+    </view>
+    <view class='box-qt'>
+      <text>＞</text>
+    </view>
+  </view>
+  <view class='box'>
+    <view class='image-icon'>
+      <image src='../images/at.png'></image>
+    </view>
+    <view class='box-item'>
+      <text>提醒谁看</text>
+    </view>
+    <view class='box-qt'>
+      <text>＞</text>
+    </view>
+  </view>
+</view>
+<view class='save-btn' bindtap='save'>
+  <text>完 成</text>
+</view>

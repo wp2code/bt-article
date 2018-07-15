@@ -5,9 +5,9 @@
       <!-- 模板头部信息 -->
       <view class='flex-item art-tp-head1'>
         <view class='art-head-bar'>
-            <label>
-              {{item.title!=null?item.title:""}}
-            </label>
+          <label>
+            {{item.title!=null?item.title:""}}
+          </label>
         </view>
       </view>
       <!-- 模板中部图片 -->
@@ -45,7 +45,7 @@
     <navigator url='../article/create?type=0' open-type="navigate">
       <view class='tp-prd-beg'>
         <view class='prd-icon'>
-          <image src='../../resource/images/icons/加号.png'></image>
+          <image src='../../resource/images/icons/add_pd.png'></image>
         </view>
         <label>开始创作</label>
       </view>
@@ -56,7 +56,7 @@
 
 <!-- 我的小文章模板 -->
 <template name="ownArticleTp">
-  <navigator url='../article/article?artId={{item.id}}'>
+  <navigator url='../article/article?artId={{item.id}}&isOwn=y'>
     <view class='art-tp-container'>
       <!-- 模板头部信息 -->
       <view class='flex-item art-tp-head'>
@@ -106,6 +106,7 @@
     </view>
   </navigator>
 </template>
+
 <!-- 编辑小文章模板 -->
 <template name="editArtTp">
   <view class='art-tp-panel'>
@@ -115,5 +116,34 @@
     <view class='art-tp-cxt'>
       <textarea>{{item.artContext}}</textarea>
     </view>
+  </view>
+</template>
+
+<!-- 文章浏览视图模板 -->
+<template name="defaultViewTp">
+  <view class='tp-view'>
+    <view class='default-view tp-view-head'>
+      <view wx:if="{{articleInfo.title!=null}}" class='head-title'>{{articleInfo.title}}</view>
+      <view class='head-tip'>
+        <text decode="true">{{articleInfo.create_time}} &emsp;</text>
+        <text decode="true">{{articleInfo.author_name}}&emsp;</text>
+        <text decode="true">阅读 {{articleInfo.pv}}</text>
+      </view>
+    </view>
+    <view class='default-view tp-view-body'>
+      <block wx:for="{{articleInfo.detailList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <block wx:if="{{item.content !=''}}">
+          <view class='art-content'>
+            <text class='content-info' decode="true">&emsp;&emsp;{{item.content}}</text>
+          </view>
+        </block>
+        <block wx:if="{{item.picture_url !=''}}">
+          <view class='tp-view-image'>
+            <image src="{{item.picture_url}}" lazy-load="true" mode='scaleToFill'></image>
+          </view>
+        </block>
+      </block>
+    </view>
+    <view class='tp-view-footer'></view>
   </view>
 </template>

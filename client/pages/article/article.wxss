@@ -1,1 +1,88 @@
 /* pages/article/article.wxss */
+
+.circle-view {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  background: #00abff;
+  border-radius: 50%;
+  border: #fff 1px solid;
+  opacity: 0.7;
+}
+
+.opt-view {
+  top: 10px;
+  right: 1%;
+}
+
+.circle-view > text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  margin: 12.5px auto;
+  color: #fff;
+  font-size: 16px;
+}
+
+.view-footer {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: 0;
+  height: 40px;
+  width: 100%;
+  background: #fff;
+  justify-content: space-between;
+  border-top: #dcdcdc 1px solid;
+  text-align: center;
+  align-items: center;
+}
+
+.footer-btn image {
+  height: 20px;
+  width: 20px;
+}
+
+.footer-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  width: 45%;
+}
+
+.footer-btn text {
+  padding: 3px;
+}
+
+.split-line {
+  width: 10%;
+  color: #dcdcdc;
+}
+
+.btn {
+  background-color: #fff;
+  position: relative;
+  display: flex;
+  padding-left: 0 rpx;
+  padding-right: 0 rpx;
+  line-height: 0;
+  overflow: visible;
+  flex-direction: row;
+  border: none;
+  border-radius: 0;
+  width: 100%;
+  height: 40 px;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.btn::after {
+  border: none;
+  border-radius: 0;
+}

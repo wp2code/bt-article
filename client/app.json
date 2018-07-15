@@ -6,7 +6,8 @@
     "pages/own/own",
     "pages/article/article",
     "pages/article/create",
-    "pages/article/save"
+    "pages/article/save",
+    "pages/article/visit"
   ],
   "window": {
     "backgroundTextStyle": "dark",
@@ -34,8 +35,8 @@
       },
       {
         "pagePath": "pages/produce/produce",
-        "iconPath": "resource/images/tabBar/添加.png",
-        "selectedIconPath": "resource/images/tabBar/添加.png",
+        "iconPath": "resource/images/tabBar/add.png",
+        "selectedIconPath": "resource/images/tabBar/add_fill.png",
         "text": "开始创作"
       },
       {

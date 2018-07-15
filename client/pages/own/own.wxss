@@ -64,3 +64,34 @@
 .bar-ct{
   color: yellow;
 }
+.circle-view {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  background: #00abff;
+  border-radius: 50%;
+  border: #fff 1px solid;
+  /* opacity:0.5;  */
+}
+
+.share-view {
+  bottom: 15px;
+  right: 1%;
+}
+
+.index-view {
+  bottom: 75px;
+  right: 1%;
+}
+
+.circle-view > text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  margin: 12.5px auto;
+  color: #fff;
+  font-size: 16px;
+}

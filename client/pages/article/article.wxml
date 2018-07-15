@@ -1,3 +1,31 @@
 <!--pages/article/article.wxml-->
-<import src="../../template/articleViewTp.wxml" />
-<template is="defaultViewTp" data="{{title}}"></template>
+<!-- <dialog id='dialog' title='我是标题' content='恭喜你，学会了小程序组件' flow="left" cancelText='知道了' confirm='谢谢你' bind:cancelEvent="_cancelEvent" bind:confirmEvent="_confirmEvent">
+</dialog> -->
+<block wx:if="{{isOwn}}">
+  <import src="../../components/toastDialog/toastDialog.wxml" />
+  <template is="weMenuDialog" data="{{...menuDialog}}" />
+  <view bindtap="showMenuDialogEvent" data-artId='{{articleInfo.id}}' class='circle-view opt-view'>
+    <text>操作</text>
+  </view>
+</block>
+
+
+<import src="../../template/articleTp.wxml" />
+<template is="defaultViewTp" data="{{articleInfo}}"></template>
+<view class="view-footer">
+  <view class='footer-btn'>
+    <button class='btn' bindtap='queryMore'>
+      <image src='../images/more.png' class='button-image'></ image>
+        <text class='button-text'>发现更多</ text>
+    </button>
+  </view>
+  <view class='split-line'>
+    <text>|</text>
+  </view>
+  <view class='footer-btn' bindtap='share'>
+    <button class='btn' open-type="share">
+      <image src='../images/share.png' class='button-image'></ image>
+        <text class='button-text'>分享好友</ text>
+    </button>
+  </view>
+</view>

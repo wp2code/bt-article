@@ -6,6 +6,28 @@ const debug = require('debug')('koa-weapp-demo');
 module.exports = async function (ctx, next) {
     try {
         console.info("request is running start");
+        console.log("GET 请求解码参数之前。。。")
+        console.log(ctx.querystring)
+        console.log(ctx.query);
+        // if (ctx.request.method == "GET") {
+        //     console.log("GET 请求解码参数。。。")
+        //     let paramsStr = ctx.querystring;
+        //     var paramsArr = paramsStr.split("&");
+        //     var decodeParams = "";
+        //     var decodeObj = {};
+        //     for (var i = 0; i < paramsArr.length; i++) {
+        //         var _PStr = paramsArr[i];
+        //         var key = _PStr.substring(0, _PStr.indexOf("=") + 1)
+        //         var value = decodeURIComponent(_PStr.substring(_PStr.indexOf("=") + 1));
+        //         decodeParams += (key + value);
+        //         if (i != paramsArr.length - 1) {
+        //             decodeParams+="&"
+        //         }
+        //         decodeObj[_PStr.substring(0, _PStr.indexOf("="))] = value;
+        //     }
+        //     ctx.querystring = decodeParams;
+        //     ctx.query = decodeObj;
+        // }
         // 调用下一个 middleware
         await next();
 

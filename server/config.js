@@ -18,11 +18,11 @@ const CONF = {
 	 * pass: "dev88481989",
      */
 	mysql: {
-		host: "localhost",
+    host: "taflgi5t.qcloud.la",
 		port: 3306,
 		user: "root",
 		db: "article",
-		pass: "root",
+		pass: "admin123",
 		char: "utf8mb4"
 	},
 

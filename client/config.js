@@ -3,8 +3,8 @@
  */
 
 // 此处主机域名修改成腾讯云解决方案分配的域名
-var host = 'http://localhost:5009';
-// var host = 'https://taflgi5t.qcloud.la';
+// var host = 'http://214x4436i7.51mypc.cn:20977';
+var host = 'https://taflgi5t.qcloud.la';
 var prefix = 'weapp';
 var config = {
   // 下面的地址配合云端 Demo 工作

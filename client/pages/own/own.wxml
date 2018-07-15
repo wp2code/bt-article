@@ -24,3 +24,9 @@
 </view>
 <import src="../../template/articleTp.wxml" />
 <template wx:for="{{artItems}}" is="ownArticleTp"  wx:key="key" data="{{item}}"></template>
+<!-- <view class='circle-view share-view'>
+  <text>分享</text>
+</view>
+<view class='circle-view index-view'>
+  <text>首页</text>
+</view> -->

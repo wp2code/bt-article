@@ -46,8 +46,7 @@ router.post("/article/queryOwnList", controllers.article.queryOwnList);
 router.get("/article/del", controllers.article.del);
 //删除文章明细
 router.get("/article/detail/del", controllers.article.delDetail);
-//更新文章明细
-router.post("/article/detail/update", controllers.article.updateDetail);
+
 
 
 module.exports = router;

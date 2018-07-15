@@ -1,0 +1,37 @@
+<!--components/toastDialog/toastDialog.wxml-->
+<template name="weConfirmDialog">
+  <view class='wx_dialog_container' hidden="{{!isShow}}">
+    <view class='wx-mask'></view>
+    <view class='wx-dialog'>
+      <view class='wx-dialog-title'>{{title}}</view>
+      <view class='wx-dialog-content'>{{content}}</view>
+      <view class='wx-dialog-footer'>
+        <view class='wx-dialog-btn' catchtap='_cancelDialogEvent'>{{cancelText}}</view>
+        <view class='wx-dialog-btn' catchtap='_confirmDialogEvent'>{{confirmText}}</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<template name="weMenuDialog">
+  <view class='menu_dialog_container' hidden="{{!isShow}}">
+    <view class='wx-mask' catchtap='closeMenuDialog'></view>
+    <view class='menu-dialog'>
+      <view class='menu-box' wx:for="{{menuNodes}}" wx:index="{{index}}" wx:key="key">
+        <view class='menu-icon'>
+          <image class='menu-icon-image' lazy-load='true' src='{{item.iconPath}}'></image>
+        </view>
+        <view class="menu-info {{index%1==0?'menu-split-line':''}}">
+          <block wx:if="{{item.funcName!=undefined && item.funcName!=null}}">
+            <text class="{{item.contentClass}}" data-params='{{item.funcParams}}' bindtap='{{item.funcName}}'>{{item.content}}</text>
+          </block>
+          <block wx:else>
+            <navigator open-type='{{item.openType}}' url='{{item.url}}'>
+              <text class="{{item.contentClass}}">{{item.content}}</text>
+            </navigator>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>

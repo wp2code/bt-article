@@ -1,9 +1,0 @@
-<!--pages/components/bar-ct.wxml-->
-<view class="bar-ct-{{barModel}}" style='width:{{barWidth}};background:{{barBackground}}'>
-  <view class='bar-ct-left-{{barModel}}'>
-    <slot name="left"></slot>
-  </view>
-  <view class='bar-ct-right-{{barModel}}'>
-    <slot name="right"></slot>
-  </view>
-</view>

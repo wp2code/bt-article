@@ -1,5 +1,11 @@
 //app.js
+import {
+  ToastPannel,
+  MenuPannel
+} from './components/toastDialog/toastDialog'
 App({
+  ToastPannel,
+  MenuPannel,
   onLaunch: function() {
     wx.removeStorageSync("detialList");
     wx.removeStorageSync("articleInfo");

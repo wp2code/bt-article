@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    opt: '',
     articleInfo: {
       article_id: '',
       title: '',
@@ -26,6 +27,36 @@ Page({
    */
   onLoad: function(options) {
     console.log("save onLoad.......")
+    var opt = options.opt;
+    var article_id = options.artid;
+    if (opt == 'own') {
+      this.setData({
+        opt: opt,
+      })
+      //更改标题
+      wx.setNavigationBarTitle({
+        title: '编辑文章'
+      })
+      var that = this;
+      ajax.getReq('article_detail', "article_id=" + article_id, function(res) {
+        if (res.code == 1) {
+          var data = res['data'];
+          console.log(data);
+          that.setData({
+            articleInfo: data,
+            detailList: data['detailList']
+          })
+          //放入缓存
+          wx.setStorageSync("articleInfo", that.data.articleInfo);
+          wx.setStorageSync("detailList", that.data.detailList);
+        }
+      })
+    } else {
+      wx.setNavigationBarTitle({
+        title: '新建文章'
+      })
+    }
+
   },
 
   /**
@@ -47,6 +78,17 @@ Page({
     console.log(detailList);
     console.log("--------articleInfo--------");
     var articleInfo = wx.getStorageSync("articleInfo") || this.data.articleInfo;
+    let pages = getCurrentPages();
+    let curPage = pages[pages.length - 2];
+    var opt = "";
+    if (curPage.route == "pages/own/own") {
+      opt = "own";
+      //更改标题
+      wx.setNavigationBarTitle({
+        title: '编辑文章'
+      })
+    }
+    console.log(pages)
     console.log(articleInfo);
     var editInfo = wx.getStorageSync("editInfo");
     if (editInfo) {
@@ -68,6 +110,7 @@ Page({
       }
     }
     this.setData({
+      opt: opt,
       articleInfo: articleInfo,
       detailList: detailList
     });
@@ -89,24 +132,30 @@ Page({
     if (this.data.nextPageFlag == 0) {
       var detailList = wx.getStorageSync("detailList");
       if (detailList.length > 0) {
+        var that = this;
         wx.showModal({
           title: '退出编辑页',
-          content: '是否保存当前内容为草稿?',
-          confirmText: "保存草稿",
+          content: this.data.opt == 'own' ? '是否保存当前编辑内容?' : '是否保存当前内容为草稿?',
+          confirmText: this.data.opt == 'own' ? '保存编辑' : "保存草稿",
           cancelText: "不保存",
           success: function(res) {
             if (res.confirm) {
               console.log("保存")
-              var articleInfo = wx.getStorageSync("articleInfo") || {};
-              articleInfo.status = 0;
-              articleInfo.detailList = detailList;
-              ajax.postReq('article_create', articleInfo, function(res) {
-                if (res.code == 1) {
-                  wx.switchTab({
-                    url: '/pages/own/own'
-                  })
-                }
-              },'保存草稿...')
+              if (that.data.opt == 'own') {
+                //更新内容
+              } else {
+                //保存草稿
+                var articleInfo = wx.getStorageSync("articleInfo") || {};
+                articleInfo.status = 0;
+                articleInfo.detailList = detailList;
+                ajax.postReq('article_create', articleInfo, function(res) {
+                  if (res.code == 1) {
+                    wx.switchTab({
+                      url: '/pages/own/own'
+                    })
+                  }
+                }, '保存草稿...')
+              }
             } else if (res.cancel) {
               console.log("不保存");
               wx.removeStorageSync("detailList");
@@ -190,7 +239,7 @@ Page({
     var detailList = wx.getStorageSync("detailList");
     var that = this;
     wx.showModal({
-      content: "确定删除此段？",
+      content: "确定删除？",
       success: function(res) {
         if (res.confirm) {
           console.log(detailList);
@@ -254,6 +303,27 @@ Page({
       }
     })
   },
+  changeCoverPic: function(event) {
+    var that=this;
+    wx.chooseImage({
+      count: 1, // 默认9
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function(res) {
+        var articleInfo = wx.getStorageSync("articleInfo") || that.data.articleInfo;
+        var tempFilePath = res.tempFilePaths[0];
+        console.log(tempFilePath);
+        // if (articleInfo.cover_pic_url == '') {
+        articleInfo.cover_pic_url = tempFilePath;
+        // }
+        that.setData({
+          articleInfo: articleInfo
+        });
+        wx.setStorageSync("articleInfo", articleInfo);
+      }
+    })
+
+  },
   changeImage: function(event) { //明细变更图片
     var index = event.currentTarget.dataset.index; //位置索引从0开始
     var that = this;
@@ -282,6 +352,19 @@ Page({
       }
     })
   },
+  del: function(event) {
+    var artid = event.currentTarget.dataset.artid;
+    //清一下缓存
+    wx.removeStorageSync("detailList");
+    wx.removeStorageSync("articleInfo");
+    ajax.delReq("article_del", "article_id=" + artid, function(res) {
+      if (res.code == 1) {
+        wx.switchTab({
+          url: '/pages/own/own',
+        })
+      }
+    })
+  },
   save: function(event) { //提交数据
     var status = event.currentTarget.dataset.status;
     console.log("status=====" + status);
@@ -301,6 +384,30 @@ Page({
           })
         }
       }, status == 0 ? "保存草稿..." : "正在发布...")
+    } else {
+      wx.showToast({
+        title: '没找到你的文章内容哦~^-^',
+        icon: 'none',
+        duration: 2000
+      })
+    }
+  },
+  update: function(event) {
+    var articleInfo = wx.getStorageSync("articleInfo") || {};
+    articleInfo.detailList = wx.getStorageSync("detailList") || [];
+    console.log(articleInfo)
+    var that = this;
+    if (articleInfo.detailList.length > 0) {
+      ajax.postReq('article_update', articleInfo, function(res) {
+        that.setData({
+          nextPageFlag: -2
+        });
+        if (res.code == 1) {
+          wx.switchTab({
+            url: '/pages/own/own'
+          })
+        }
+      }, "更新文章...")
     } else {
       wx.showToast({
         title: '没找到你的文章内容哦~^-^',
